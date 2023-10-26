@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<link rel="stylesheet" href="{%static 'css/log_style.css'%}">
+<!--==================== HEADER ====================-->
+<header role="banner" class="header" id="header">
+
+    <!--==================== TOP BAR ====================-->
+    <div class="top__bar">
+
+           <div class="search__container">
+            <i class="bi bi-cart3 fa-2x"></i>
+            <i class="bi bi-suit-heart fa-2x"></i>
+            <i class="bi bi-search fa-2x"></i>
+           </div>
+
+           <a href="{% url 'accueil' %}" class="logo__prin">
+            <img id="logo" src="{% static 'img/logo.png'%}">
+           </a>
+
+           <div class="shop__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+           </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-around; align-items: center;">
+        <img src="{% static 'img/Vector.png'%}" alt="separation" style="width: auto; padding: 2rem;">
+    </div>
+
+    <!--==================== NAVIGATION BAR ====================-->
+    <nav class="nav container">
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list grid">
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}" class="nav__link">
+                         Accueil
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#collection" class="nav__link">
+                         Collection
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                         Artiste
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'articles' %}" class="nav__link">
+                         Articles
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'pierres' %}" class="nav__link">
+                         Pierres
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                         Voyance
+                    </a>
+                </li>
+
+            </ul>
+
+            <!--Close button-->
+            <div class="nav__close" id="nav-close">
+                <i class="ri-close-line"></i>
+            </div>
+        </div>
+
+        <div class="nav__buttons">
+            
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-menu-4-line"></i>
+            </div>
+        </div>
+    </nav>
+
+
+</header>
+
+<!--==================== MAIN ====================-->
+<main class="main">
+
+    <!--==================== CHECKOUT ====================-->
+                    
+    <section class="checkout__section">
+
+        
+    </section>
+
+</main>
+
+{% endblock %}

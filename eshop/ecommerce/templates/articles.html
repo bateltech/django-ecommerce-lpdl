@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+        <!--==================== HEADER ====================-->
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <i class="bi bi-cart3 fa-2x"></i>
+                    <i class="bi bi-suit-heart fa-2x"></i>
+                    <i class="bi bi-search fa-2x"></i>
+                   </div>
+
+                   <a href="{% url 'accueil' %}" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.png' %}">
+                   </a>
+
+                   <div class="shop__container">
+                    <button class="log__button">S'inscrire</button>
+                    <button class="log__button">Se connecter</button>
+                   </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}" class="nav__link">
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="#collection" class="nav__link anchor__link">
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'articles' %}" class="nav__link active-link">
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'pierres' %}" class="nav__link">
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link anchor__link">
+                                 Voyance
+                            </a>
+                        </li>
+                        
+                    </ul>
+
+                    <!--Close button-->
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </div>
+
+                <div class="nav__buttons">
+
+                    <!-- Theme change button -->
+                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="ri-menu-4-line"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+
+            <!--==================== ARTICLES ====================-->
+            <div class="article__main">
+
+                <!-- Sidebar Menu -->
+                <aside>
+                    <p> </p>
+                    <a href="">
+                      Bracelets
+                    </a>
+                    <a href="">
+                      Boucles d'oreilles
+                    </a>
+                    <a href="">
+                      Malas
+                    </a>
+                    <a href="">
+                      Orgonites
+                    </a>
+                    <a href="">
+                      Plaques de rechargement
+                    </a>
+                    <a href="">
+                        Bolas pour grossesse
+                      </a>
+                      <a href="">
+                        Bougeoirs
+                      </a>
+                      <a href="">
+                        Bouddha
+                      </a>
+                </aside>
+
+                <section class="article__section">
+                    <div class="section__header">
+                        <h2>Title Aligned to the Left</h2>
+                        <p>Description sentence below the title</p>
+                    </div>
+            
+                    <div class="horizontal-scroll" id="scrollContainer">
+                        <button class="rounded-button">Button 1</button>
+                        <button class="rounded-button">Button 2</button>
+                        <button class="rounded-button">Button 3</button>
+                        <button class="rounded-button">Button 1</button>
+                        <button class="rounded-button">Button 2</button>
+                        <button class="rounded-button">Button 3</button>
+                        <button class="rounded-button">Button 1</button>
+                        <button class="rounded-button">Button 2</button>
+                        <button class="rounded-button">Button 3</button>
+                        <button class="rounded-button">Button 1</button>
+                        <button class="rounded-button">Button 2</button>
+                        <button class="rounded-button">Button 3</button>
+                        <button class="rounded-button">Button 1</button>
+                        <button class="rounded-button">Button 2</button>
+                        <button class="rounded-button">Button 3</button>
+                        <!-- Add more buttons as needed -->
+                    </div>
+
+                    <div class="product-cards">
+                        <div class="product-card" style="background-image: url('product1.jpg');">
+                            <h3>Product 1</h3>
+                            <p>Product description goes here.</p>
+                            <a href="#">Learn More</a>
+                        </div>
+                    
+                        <div class="product-card" style="background-image: url('product2.jpg');">
+                            <h3>Product 2</h3>
+                            <p>Product description goes here.</p>
+                            <a href="#">Learn More</a>
+                        </div>
+                    
+                        <div class="product-card" style="background-image: url('product3.jpg');">
+                            <h3>Product 3</h3>
+                            <p>Product description goes here.</p>
+                            <a href="#">Learn More</a>
+                        </div>
+                    
+                        <!-- Add more product cards as needed -->
+                    </div>
+                    
+                </section>
+
+            </div>
+
+            <!--==================== LIVRAISON ====================-->
+            <section class="livraison__section">
+
+                <div class="right__line"> </div>
+
+                <div class="livraison__container">
+                    <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="Image SVG">
+                    <div class="livraison__paragraphes">
+                        <b><p>Livraison à domicile</p></b>
+                        <p>5,00 €</p>
+                        <p>2 à 3 jours ouvrables (France)</p>
+                    </div>
+                </div>
+                
+                <div class="left__line"> </div>
+
+                <div class="right__line"> </div>
+
+                <div class="livraison__container">
+                    <div class="livraison__paragraphes">
+                        <p>Livraison gratuite pour tous les achats à partir de 65,00 €</p>
+                    </div>
+                </div>
+                
+                <div class="left__line"> </div>
+            </section>
+
+
+        </main>
+
+{% endblock %}

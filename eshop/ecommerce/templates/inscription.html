@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+        <!--==================== HEADER ====================-->
+        <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <i class="bi bi-cart3 fa-2x"></i>
+                    <i class="bi bi-suit-heart fa-2x"></i>
+                    <i class="bi bi-search fa-2x"></i>
+                   </div>
+
+                   <a href="{% url 'accueil' %}" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.png'%}">
+                   </a>
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+                   </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}" class="nav__link">
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link anchor__link">
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'articles' %}" class="nav__link">
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'pierres' %}" class="nav__link">
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                                 Voyance
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <!--Close button-->
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </div>
+
+                <div class="nav__buttons">
+
+                    <!-- Theme change button -->
+                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="ri-menu-4-line"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+
+            <!--==================== INSCRIPTION ====================-->
+                    
+                <section class="inscription__section">
+                    <h1 class="inscription__title">INSCRIPTION</h1>
+                        <div class="inscription__container">
+                            <p class="register__message">Vous avez déjà un compte? <a href="{% url 'connexion' %}">Connectez-vous</a></p>
+                            <form class="login__form" method="post">
+                                {% csrf_token %}
+                                
+                                <div class="name__container">
+                                    <div class="name__field">
+                                        <!-- <input type="text" id="first_name" name="first_name" placeholder=" Entrez votre prénom" required autocomplete="given-name"> -->
+                                        <!-- Add label tag for first_name field -->
+                                        {{ form.first_name }} <!-- Render the first_name field -->
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                    <div class="name__field">
+                                        <!-- <input type="text" id="last_name" name="last_name" placeholder=" Entrez votre nom" required autocomplete="family-name"> -->
+                                        
+                                        {{ form.last_name }}
+                                        {{ form.last_name.errors }}
+                                    </div>
+                                </div>
+                                <!-- <input type="email" id="email" name="email" placeholder=" Entrez votre adresse email" required autocomplete="email">
+                    
+                                <input type="password" id="password" name="password" placeholder=" Entrez votre mot de passe" required autocomplete="current-password"> -->
+                                
+                                {{ form.email }}
+                                {{ form.email.errors }}
+
+                                {{ form.password1 }}
+                                {{ form.password.errors }}
+
+                                {{ form.password2 }}
+                                {{ form.password2.errors }}
+
+                                <!-- <input type="password" id="confirm_password" class="custom-confirm-password-class" name="confirm_password" placeholder=" Confirmez votre mot de passe" required autocomplete="new-password"> -->
+                                
+
+                                <!-- affichage de message d'erreur -->
+
+                                <div id="error-message" class="error-message" style="color: red;">
+                                    {% if error_message %}
+                                    {{ error_message }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="button__container">
+                                    <button type="submit" class="login__button">S'inscrire</button>
+                                </div>
+                            </form>
+                            
+                            </div>
+                </section>
+
+
+        </main>
+
+{% endblock %}

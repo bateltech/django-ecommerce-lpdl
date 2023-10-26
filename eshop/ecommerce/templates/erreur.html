@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+        <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+        <!--==================== HEADER ====================-->
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <i class="bi bi-cart3 fa-2x"></i>
+                    <i class="bi bi-suit-heart fa-2x"></i>
+                    <i class="bi bi-search fa-2x"></i>
+                   </div>
+
+                   <a href="accueil.html" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.png' %}">
+                   </a>
+
+                   <div class="shop__container">
+                    <a href="inscription.html"><button class="log__button">S'inscrire</button></a>
+                    <a href="connexion.html"><button class="log__button">Se connecter</button></a>
+                   </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="accueil.html" class="nav__link">
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="accueil.html#collection" class="nav__link">
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="accueil.html#artist" class="nav__link">
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="articles.html" class="nav__link">
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="pierres.html" class="nav__link">
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="accueil.html#voyance" class="nav__link">
+                                 Voyance
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <!--Close button-->
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </div>
+
+                <div class="nav__buttons">
+
+                    <!-- Theme change button -->
+                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="ri-menu-4-line"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+
+            <!--==================== ERREUR ====================-->
+                    
+                <section class="connexion__section">
+                    <h1 class="connexion__title" style="font-family: 'Montserrat', sans-serif !important; font-weight: bold; padding-bottom: 1rem;">PAGE INTROUVABLE</h1>
+                    <div class="connexion__container" style="margin-top: 2rem !important; margin-bottom: 2rem !important;">
+                        
+                        <img style="max-width: 40%;" src="{% static 'img/erreur 404.png' %}" alt="error img">
+                        
+                        </div>
+
+            
+                </section>
+
+
+        </main>
+
+
+{% endblock %}

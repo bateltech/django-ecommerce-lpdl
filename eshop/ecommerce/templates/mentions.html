@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+        <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+        <!--==================== HEADER ====================-->
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <i class="bi bi-cart3 fa-2x"></i>
+                    <i class="bi bi-suit-heart fa-2x"></i>
+                    <i class="bi bi-search fa-2x"></i>
+                   </div>
+
+                   <a href="{% url 'accueil' %}" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.png' %}">
+                   </a>
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+                   </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}" class="nav__link">
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link">
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'articles' %}" class="nav__link">
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'pierres' %}" class="nav__link">
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                                 Voyance
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <!--Close button-->
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </div>
+
+                <div class="nav__buttons">
+
+                    <!-- Theme change button -->
+                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="ri-menu-4-line"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+
+            <!--==================== CONNEXION ====================-->
+                    
+                <section class="mentions__section">
+                    <h1 class="mentions__title">MENTIONS LÉGALES</h1>
+                        <div class="mentions__container">
+
+                            <div class="mentions__content">
+                            <p>Ce site est édité par La pierre de lune</p>
+                            <p>Directrice de publication : Delavacherie Sandra</p>
+                            <p>Pour toute information liée au fonctionnement du site, merci de contacter : <a href="mailto:sandramedium@hotmail.com">sandramedium@hotmail.com</a></p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>CONDITIONS D’UTILISATION</h2>
+                            </br>
+
+                            <div class="mentions__content">
+                            <p> En utilisant ce site, le visiteur reconnaît avoir eu la possibilité de prendre connaissance des présentes conditions d’utilisation ainsi que des Conditions Générales de vente. la pierre de lune s’efforce d’assurer au mieux de ses possibilités, l’exactitude et la mise à jour des informations diffusées sur ce site, dont elle se réserve le droit de corriger, à tout moment et sans préavis, le contenu. Toutefois, la pierre de lune ne peut garantir l’exactitude, la précision ou l’exhaustivité des informations mises à la disposition sur ce site.En conséquence, la pierre de lune décline toute responsabilité :-pour toute interruption du site-survenance de bugs.</p>
+                            <p> En conséquence, la pierre de lune décline toute responsabilité :</p>
+                            
+                            </br>
+                            <ul>
+                                <li>pour toute interruption du site</li>
+                                <li>survenance de bugs</li>
+                                <li>Pour toute inexactitude ou omission portant sur des informations disponibles sur le site</li>
+                                
+                            </ul>
+                        </br>
+
+                            <p> Et plus généralement de tout dommage direct et indirect, quelles qu’en soient les causes, origines, natures ou conséquences ; et ce y compris notamment les coûts pouvant survenir du fait de l’acquisition de biens proposés sur le site, les pertes de profits, de clientèle, de données ou tout autre perte de biens incorporels pouvant survenir à raison de l’accès de quiconque au site, de l’impossibilité d’y accéder ou du crédit accordé à une quelconque information provenant directement ou indirectement de ce dernier.</p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>LIENS</h2>
+                        </br>
+                        
+                        <div class="mentions__content">
+                            <p> Le site peut inclure des liens vers d’autres sites Web ou d’autres sources Internet. Dans la mesure où la pierre de lune ne peut contrôler ces sites et ces sources externes, la pierre de lune ne peut être tenu pour responsable de la mise à disposition de ces sites et sources externes, et ne peut supporter aucune responsabilité quant au contenu, publicités, produits, services ou tout autre matériel disponible sur ou à partir de ces sites ou sources externes. De plus, la pierre de lune ne pourra être tenu responsable de tous dommages ou pertes avérés ou allégués consécutifs ou en relation avec l’utilisation ou avec le fait d’avoir fait confiance au contenu, à des biens ou des services disponibles sur ces sites ou sources externes.</p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>DROIT DE PROPRIÉTÉ</h2>
+                        </br>
+
+                        <div class="mentions__content">
+                            <p> Le site ainsi que tout logiciel utilisé nécessairement en relation avec celui-ci peuvent contenir des informations confidentielles et protégées par le droit de propriété intellectuelle en vigueur ou toute autre loi. Ainsi, sauf mention contraire, les droits de propriété intellectuelle sur les documents contenus dans le site et chacun des éléments créés pour ce site sont la propriété exclusive de la pierre de lune celle-ci ne concédant aucune licence, ni aucun autre droit que celui de consulter le site. En particulier, les marques et autres droits de propriété intellectuelle cités sur le site sont la propriété des entités concernées de la pierre de lune. La reproduction de tous documents publiés sur le site est seulement autorisée aux fins exclusives d’information pour un usage personnel et privé, toute reproduction et toute utilisation de copies réalisées à d’autres fins étant expressément interdites. Il est également interdit de copier, modifier, créer une œuvre dérivée, inverser la conception ou l’assemblage ou de toute autre manière tenter de trouver le code source (à l’exception des cas prévus par la loi), vendre, attribuer, sous-licencier ou transférer de quelque manière que ce soit tout droit afférent aux logiciels. De même, il est également interdit de modifier le logiciel ou d’utiliser de versions modifiées des logiciels et notamment (sans que cette énumération soit limitative) en vue d’obtenir un accès non autorisé au service et d’accéder au site par un autre moyen que par l’interface qui vous est fournie par la pierre de lune à cet effet.</p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>CRÉDITS PHOTOS ET SOURCES</h2>
+                        </br>
+
+                        <div class="mentions__content">
+                            <p> La mise à jour de cette page n’est pas automatisée avec celle des photos présentées sur le site. Le Site peut présenter des photos de plusieurs photographes en fonction des saisons. Les informations relatives à l’identité des photographes est disponible sur demande à auprès du Service Client.</p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>INFORMATIQUE ET LIBERTÉS</h2>
+                        </br>
+
+                        <div class="mentions__content">
+                            <p> Toute information personnelle que l’internaute serait amené à transmettre à la pierre de lune pour l’utilisation de certains services est soumise aux dispositions de la Loi n° 78-17 Informatique et Libertés du 06 janvier 1978. A ce titre, l’internaute dispose d’un droit d’accès, de rectification et de suppression des informations personnelles le concernant qu’il peut exercer à tout moment en adressant un courriel à l'adresse <a href="mailto:sandramedium@hotmail.com">sandramedium@hotmail.com</a></p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>COOKIES</h2>
+                        </br>
+
+                        <div class="mentions__content">
+                            <p> Le Site est également conçu pour être particulièrement attentif aux besoins des Clients. C’est notamment à cette fin que la pierre de lune fait usage de témoins de navigation (à savoir dépôt de traceurs sur l’équipement informatique du Client). Le témoin de navigation a pour but de signaler votre passage sur le Site ainsi que sur les différentes pages du Site afin :</p>
+                        </br>
+                            <ul>
+                                <li>D’améliorer le service personnalisé destiné aux Clients</li>
+                                <li>De mesurer l’audience du Site.</li>
+                            </ul>
+                        </br>
+                            <p>   Lors de sa première visite sur le Site, le Client est informé de l’utilisation de ces traceurs et du fait que la poursuite de la navigation vaut acceptation de leur utilisation.</p>
+                            <p>   Le Client peut refuser leur utilisation notamment en paramétrant son équipement. Il peut également effacer les cookies dans les paramètres de son équipement.</p>
+                            <p>   En cas de refus des traceurs, la pierre de lune ne peut garantir l’utilisation de toutes les fonctionnalités du Site.</p>
+                        </div>
+
+                        </br></br></br>
+                            <h2>NEWSLETTERS</h2>
+                        </br>
+
+                        <div class="mentions__content">
+                            <p>   Nos newsletters sont adressées par e-mail aux utilisateurs sollicitant leur adhésion à la newsletter.</p>
+                            <p>   Vous pouvez vous désabonner à tout moment en utilisant le lien présent au bas de chaque newsletter</p>
+                        </div>
+                            </div>
+                </section>
+
+
+        </main>
+
+{% endblock %}
