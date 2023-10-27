@@ -52,7 +52,7 @@ class Pierre(models.Model):
     libelle = models.CharField(max_length=255, null=False)
     description = models.TextField(null=False)
     image = models.ImageField(upload_to='pierres/', null=False)
-
+    couverture = models.ImageField(upload_to='pierres/', null=False, default='pierres/default.png')
     def __str__(self):
         return self.libelle
 
