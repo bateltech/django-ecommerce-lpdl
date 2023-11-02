@@ -1,3 +1,4 @@
+
 /*=============== SHOW MENU ===============*/
 const navMenu = document.getElementById('nav-menu'),
       navToggle = document.getElementById('nav-toggle'),
@@ -34,6 +35,16 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
 
 
 
+
+
+
+
+/*************************************************/
+
+
+
+
+
 /*const sections = document.querySelectorAll('section[id]')
     
 const scrollActive = () =>{
@@ -58,7 +69,7 @@ window.addEventListener('scroll', scrollActive)
 
 
 // Select all navigation links with anchor hrefs
-const navLinks = document.querySelectorAll('.nav__link');
+const navLinks = document.querySelectorAll('.anchor__link');
 
 // Add click event listener to each navigation link
 navLinks.forEach(link => {

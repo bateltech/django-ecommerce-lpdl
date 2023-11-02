@@ -17,7 +17,7 @@
                     <i class="bi bi-search fa-2x"></i>
                    </div>
 
-                   <a href="accueil.html" class="logo__prin">
+                   <a href="{% url 'accueil' %}" class="logo__prin">
                     <img id="logo" src="{% static 'img/logo.png' %}">
                    </a>
 
@@ -36,37 +36,37 @@
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list grid">
                         <li class="nav__item">
-                            <a href="accueil.html" class="nav__link">
+                            <a href="{% url 'accueil' %}" class="nav__link">
                                  Accueil
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="accueil.html#collection" class="nav__link">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link">
                                  Collection
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="accueil.html#artist" class="nav__link">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link">
                                  Artiste
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="articles.html" class="nav__link">
+                            <a href="{% url 'articles' %}" class="nav__link">
                                  Articles
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="pierres.html" class="nav__link">
+                            <a href="{% url 'pierres' %}" class="nav__link">
                                  Pierres
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="accueil.html#voyance" class="nav__link">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link">
                                  Voyance
                             </a>
                         </li>

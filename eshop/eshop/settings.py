@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp
 DEBUG = True
 #DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com']
 
 
 # Application definition
@@ -81,6 +81,7 @@ WSGI_APPLICATION = 'eshop.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # pour Test Local
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pierre_db',
@@ -92,10 +93,24 @@ DATABASES = {
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
         }
     }
+
+    # # pour PythonAnywhere
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'ImeneMedjaoui$pierre_db',
+    #     'USER': 'ImeneMedjaoui',
+    #     'PASSWORD': 'djangolpdl',
+    #     'HOST': 'ImeneMedjaoui.mysql.pythonanywhere-services.com',
+    #     'OPTIONS': {
+    #         'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
+    #     }
+    # }
 }
 
-AUTH_USER_MODEL = 'auth.User'  # Assurez-vous que le chemin est correct
-#AUTH_USER_MODEL = 'ecommerce.ClientUser'  # Assurez-vous que le chemin est correct
+
+
+#AUTH_USER_MODEL = 'auth.User'  # Assurez-vous que le chemin est correct
+AUTH_USER_MODEL = 'ecommerce.ClientUser'  # Assurez-vous que le chemin est correct
 
 
 
@@ -143,6 +158,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Spécifiez l'emplacement où les fichiers statiques seront collectés lors du déploiement
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

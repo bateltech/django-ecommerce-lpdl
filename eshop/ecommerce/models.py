@@ -34,7 +34,7 @@ class Commande(models.Model):
     etat = models.IntegerField(null=False,default=0)
 
     def __str__(self):
-        return f"Commande #{self.id} par {self.fk_user.nom} {self.fk_user.prenom}"
+        return f"Commande #{self.id} par {self.fk_user.last_name} {self.fk_user.first_name}"
 
 
 # Table Détail Commande
@@ -52,7 +52,7 @@ class Pierre(models.Model):
     libelle = models.CharField(max_length=255, null=False)
     description = models.TextField(null=False)
     image = models.ImageField(upload_to='pierres/', null=False)
-    couverture = models.ImageField(upload_to='pierres/', null=False, default='pierres/default.png')
+    couverture = models.ImageField(upload_to='covers/', null=False)
     def __str__(self):
         return self.libelle
 
@@ -145,4 +145,4 @@ class Feedback(models.Model):
     etat = models.IntegerField(null=False,default=0)
 
     def __str__(self):
-        return f"Feedback #{self.id} de {self.fk_user.nom} {self.fk_user.prenom}"
+        return f"Feedback #{self.id} de {self.fk_user.last_name} {self.fk_user.first_name}"

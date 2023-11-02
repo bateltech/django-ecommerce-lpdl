@@ -89,7 +89,9 @@ def conditions_view(request):
     return render(request, 'conditions.html')
 
 def pierres_view(request):
-    return render(request, 'pierres.html')
+    pierres = Pierre.objects.all()
+    context = {'pierres': pierres}
+    return render(request, 'pierres.html', context)
  
 def erreur_view(request):
     return render(request, 'erreur.html')

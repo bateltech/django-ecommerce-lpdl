@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+<!--==================== HEADER ====================-->
+<header role="banner" class="header" id="header">
+
+    <!--==================== TOP BAR ====================-->
+    <div class="top__bar">
+
+           <div class="search__container">
+            <i class="bi bi-cart3 fa-2x"></i>
+            <i class="bi bi-suit-heart fa-2x"></i>
+            <i class="bi bi-search fa-2x"></i>
+           </div>
+
+           <a href="{% url 'accueil' %}" class="logo__prin">
+            <img id="logo" src="{% static 'img/logo.png' %}">
+           </a>
+
+           <div class="shop__container">
+            <a href="inscription.html"><button class="log__button">S'inscrire</button></a>
+            <a href="connexion.html"><button class="log__button">Se connecter</button></a>
+           </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-around; align-items: center;">
+        <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+    </div>
+
+    <!--==================== NAVIGATION BAR ====================-->
+    <nav class="nav container">
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list grid">
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}" class="nav__link">
+                         Accueil
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#collection" class="nav__link">
+                         Collection
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#artist" class="nav__link">
+                         Artiste
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'articles' %}" class="nav__link">
+                         Articles
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'pierres' %}" class="nav__link">
+                         Pierres
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                         Voyance
+                    </a>
+                </li>
+
+            </ul>
+
+            <!--Close button-->
+            <div class="nav__close" id="nav-close">
+                <i class="ri-close-line"></i>
+            </div>
+        </div>
+
+        <div class="nav__buttons">
+
+            <!-- Theme change button -->
+            <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+            
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="ri-menu-4-line"></i>
+            </div>
+        </div>
+    </nav>
+
+
+</header>
+
+<!--==================== MAIN ====================-->
+<main class="main">
+
+    <!--==================== PIERRES ====================-->
+            
+            <!-- swiper test -->
+
+            <section class="swiper mySwiper" style="padding-bottom: 0 !important;">
+                <h1 class="collection__title">DÉCOUVREZ NOS PIERRES</h1>
+
+                <div class="swiper-wrapper">
+
+
+                    {% for pierre in pierres %}
+                    <div class="card swiper-slide pierre-card"
+                    data-image="{{ pierre.image.url }}"
+                    data-description="{{ pierre.description }}"
+                    data-couverture="{{pierre.couverture.url}}">
+                        <div class="card__image">
+                            <img src="{{ pierre.couverture.url }}" alt="pierre image">
+                        </div>
+                        <div class="card__content">
+                            <span class="card__title">{{ pierre.libelle }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+                            
+
+            <div class="pierre__container">
+
+                <div class="swiper-button-next next_pierre">    <i class="fa-regular fa-chevrons-right"></i>    </div>
+
+                <div class="swiper-button-prev prev_pierre">    <i class="fa-regular fa-chevrons-left"></i>    </div>
+
+                <div class="pierre__background"></div>
+                <div class="pierre__image">
+                    <img src="" alt="pierre image" id="pierre-image">
+                </div>
+            
+                <div class="pierre__content">
+                    <p class="pierre-text" id="pierre-description">
+                    </p>
+                </div>
+            </div>
+            
+</main>
+
+
+
+{% endblock %}

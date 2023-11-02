@@ -131,6 +131,73 @@
                         el: ".swiper-pagination",
                     },
                     });
+
+
+                    var activeSlideIndex = swiper.activeIndex;
+                    
+                    // Récupérez l'attribut "couverture" de la pierre en fonction de l'indice de la diapositive
+                    const pierreCards = document.querySelectorAll('.pierre-card');
+                    const couverture = pierreCards[activeSlideIndex].getAttribute('data-couverture');
+                    
+                    // Sélectionnez l'élément avec la classe "pierre__container"
+                    const pierreContainer = document.querySelector('.pierre__background');
+                    
+                    // Définissez l'attribut "backgroundImage" de l'élément comme l'URL de la couverture
+                    pierreContainer.style.backgroundImage = `url(${couverture})`;
+                    // Centrer l'image de background verticalement
+                    pierreContainer.style.backgroundPosition = 'center';
+
+
+                    // Récupérez les données de l'image et de la description en fonction de l'indice de la diapositive
+                    const image = pierreCards[activeSlideIndex].getAttribute('data-image');
+                    const description = pierreCards[activeSlideIndex].getAttribute('data-description');
+                
+                    // Affichez ces données dans l'élément HTML approprié (pierre__image et pierre-text)
+                    const pierreImage = document.querySelector('.pierre__image img');
+                    const pierreText = document.querySelector('.pierre-text');
+                
+                    // Mettez à jour le contenu de l'image et de la description
+                    pierreImage.src = image;
+                    pierreText.textContent = description;
+
+
+                    
+
+
+                        // Cette fonction met à jour le contenu en fonction de l'élément actuel
+                    function updateContentBasedOnSlide(activeSlideIndex) {
+
+                    const couverture = pierreCards[activeSlideIndex].getAttribute('data-couverture');
+                    
+                    // Sélectionnez l'élément avec la classe "pierre__container"
+                    const pierreContainer = document.querySelector('.pierre__background');
+                    
+                    // Définissez l'attribut "backgroundImage" de l'élément comme l'URL de la couverture
+                    pierreContainer.style.backgroundImage = `url(${couverture})`;
+                    // Centrer l'image de background verticalement
+                    pierreContainer.style.backgroundPosition = 'center';
+                    
+
+
+                    // Récupérez les données de l'image et de la description en fonction de l'indice de la diapositive
+                    const image = pierreCards[activeSlideIndex].getAttribute('data-image');
+                    const description = pierreCards[activeSlideIndex].getAttribute('data-description');
+                
+                    // Affichez ces données dans l'élément HTML approprié (pierre__image et pierre-text)
+                    const pierreImage = document.querySelector('.pierre__image img');
+                    const pierreText = document.querySelector('.pierre-text');
+                
+                    // Mettez à jour le contenu de l'image et de la description
+                    pierreImage.src = image;
+                    pierreText.textContent = description;
+                }
+
+                    swiper.on('slideChange', function () {
+                        var activeSlideIndex = swiper.activeIndex; // Indice de la diapositive actuelle
+                        // Mettez à jour le contenu en fonction de l'élément actuel (par exemple, en utilisant AJAX pour charger des données dynamiques)
+                        updateContentBasedOnSlide(activeSlideIndex);
+                    });
+
                 </script>
 
     </body>

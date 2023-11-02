@@ -1,0 +1,176 @@
+/*-----------------------------------*\
+ * #log_style.css
+\*-----------------------------------*/
+
+/**
+ * copyright 2023 Batel Technology
+ */
+
+
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Roboto:wght@400;500&display=swap");
+
+/*=================== BASE ===================*/
+
+html {
+    background: none !important;
+    background-color: hsla(0, 0%, 0%, 1) !important;
+ }
+
+/*-----------------------------------*\
+ * connexion.html
+\*-----------------------------------*/
+
+
+.connexion__container,
+.inscription__container,
+.mentions__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    margin-bottom: 7rem;
+}
+
+.login__form {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 20px;
+    width: 100%;
+    max-width: 30rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    display: none;
+    margin-bottom: 1rem;
+}
+
+.register__message,
+.reset__message {
+    color: white;
+    margin: 10px 0;
+    font-family: "Montserrat", sans-serif !important; 
+}
+
+.register__message a,
+.reset__message a {
+    color: white; /* Set the link color to white */
+    text-decoration: underline; /* Add underline to the links */
+}
+
+.button__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reset__message {
+    color: white;
+    margin: 0; /* Reset margin to make the message align closely to the button */
+}
+
+button.login__button {
+    padding: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-right: 0.5rem;
+    border-radius: 3rem;
+    border: 1px solid;
+    color: white;
+    font-family: "Montserrat", sans-serif !important; 
+    font-size: large;
+    background-color: hsla(0, 1%, 67%, 0.6);
+    border-color: hsla(0, 0%, 90%, 0.7);
+    cursor: pointer;
+    margin-right: 2rem; /* Add a margin to separate the button and message */
+}
+
+button.login__button:hover {
+    background-color: hsla(0, 0%, 80%, 0.7);
+    border-color: white;
+}
+
+
+/* #first_name,
+#last_name,
+input[type="email"],
+input[type="password"] { */
+ .name__container .name__field .custom-first-name-class,
+ .name__container .name__field .custom-last-name-class,
+ .custom-email-class,
+ .custom-password-class,
+ .custom-confirm-password-class {
+    border: none;
+    border-radius: 3rem;
+    padding: 0.5rem;
+    padding-left: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    font-size: large;
+}
+
+/* #first_name:focus,
+#last_name:focus,
+input[type="email"]:focus,
+input[type="password"]:focus { */
+ .name__container .name__field .custom-first-name-class,
+ .name__container .name__field .custom-last-name-class,
+ .custom-email-class,
+ .custom-password-class,
+ .custom-confirm-password-class {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.name__container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.name__field {
+    flex: 1;
+    margin-right: 10px;
+}
+
+
+/*-----------------------------------*\
+ * mentions.html
+\*-----------------------------------*/
+
+.mentions__container {
+    margin: 5rem;
+}
+
+.mentions__content {
+    min-width: 80%;
+    max-width: 80%;
+    padding: 3rem;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+}
+
+.mentions__content p, 
+.mentions__content ul {
+    text-align: left;
+    line-height: 1.5;
+    font-size: large;
+}
+
+.mentions__container ul {
+    list-style-type: disc;
+    padding-left: 2rem;
+}
+
+.mentions__content a {
+    color : rgb(0, 172, 238); /* Twitter color */
+}
