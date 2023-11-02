@@ -1051,9 +1051,9 @@ border: none;
    }
 
    .pierre-text{
-    text-align: center;
+    text-align: left;
     font-family: Garamond, serif;
-    color: white;
+    color: var(--title-color);
     font-size: 1.4rem;
     font-weight: bold;
     line-height: 1.5;
@@ -1065,7 +1065,7 @@ border: none;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    background: rgba(150, 150, 150, 0.5);
+    background: rgba(200, 200, 200, 0.6);
     -webkit-text-stroke: 0.2px rgb(0, 0, 0); /* Largeur et couleur de la bordure (navigateurs WebKit, y compris Chrome et Safari) */
    }
 
