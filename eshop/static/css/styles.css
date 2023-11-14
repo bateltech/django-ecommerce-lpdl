@@ -238,9 +238,20 @@ img {
   padding-top: 2rem;
   display: grid;
   column-gap: 4rem;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 33% auto 33%;
+  grid-auto-flow: column;
   align-items: center;
   justify-content: space-around;
+}
+
+.search__container{
+  padding-left: 6rem;
+}
+
+.shop__container{
+  position:absolute;
+  padding-right: 8.5rem;
+  right:0;
 }
 
 .log__button {
@@ -265,9 +276,7 @@ img {
   color: white;
 }
 
-.shop__container i{
-  padding: 1rem;
-}
+
 
 .search__container i{
   padding: 1rem;
