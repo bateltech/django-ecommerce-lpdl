@@ -18,10 +18,29 @@
                     <img id="logo" src="{% static 'img/logo.png' %}">
                    </a>
 
+                   {% if utilisateur_connecte %}
+
+
+                   <div class="shop__container">
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter</button></a>
+                    <a href="{% url 'profil' %}"><button class="log__button" >
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        {{ prenom_utilisateur }}
+                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                    </button></a>
+                   </div>
+
+
+                   {% else %}
+
                    <div class="shop__container">
                     <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
                     <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
                    </div>
+
+
+                   {% endif %} 
+
             </div>
 
             <div style="display: flex; justify-content: space-around; align-items: center;">

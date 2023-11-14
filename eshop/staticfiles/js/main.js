@@ -1,3 +1,4 @@
+
 /*=============== SHOW MENU ===============*/
 const navMenu = document.getElementById('nav-menu'),
       navToggle = document.getElementById('nav-toggle'),
@@ -31,6 +32,16 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
 
 
 /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
+
+
+
+
+
+
+
+/*************************************************/
+
+
 
 
 

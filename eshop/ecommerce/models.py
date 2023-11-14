@@ -24,29 +24,6 @@ class ClientUser(AbstractUser):
         super().save(*args, **kwargs)
 
 
-
-# Table Commande
-class Commande(models.Model):
-    fk_user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    date = models.DateField(null=False)
-    montant = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-    quantite = models.PositiveIntegerField(null=False)
-    etat = models.IntegerField(null=False,default=0)
-
-    def __str__(self):
-        return f"Commande #{self.id} par {self.fk_user.last_name} {self.fk_user.first_name}"
-
-
-# Table Détail Commande
-class DetailCommande(models.Model):
-    fk_article = models.ForeignKey('Article', on_delete=models.CASCADE)
-    fk_commande = models.ForeignKey('Commande', on_delete=models.CASCADE)
-    prix = models.DecimalField(max_digits=10, decimal_places=2, null=False)
-
-    def __str__(self):
-        return f"DetailCommande #{self.id}"
-
-
 # Table Pierre
 class Pierre(models.Model):
     libelle = models.CharField(max_length=255, null=False)
@@ -135,6 +112,65 @@ class TailleArticle(models.Model):
 
     def __str__(self):
         return f"{self.article.libelle} - {self.taille}"
+
+
+# Table Wishlist
+class Wishlist(models.Model):
+    client = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    articles = models.ManyToManyField(Article)
+
+    def __str__(self):
+        return f"{self.client}'s Wishlist"
+    
+
+# Table Panier 
+class Cart(models.Model):
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    articles = models.ManyToManyField(Article, through='CartItem')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def save(self, *args, **kwargs):
+        # Calculate total price based on CartItems
+        self.total_price = sum(item.quantity * item.item_price for item in self.cartitem_set.all())
+        super().save(*args, **kwargs)
+
+# Table Item Panier
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    item_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        # Update Cart total_price when saving CartItem
+        self.cart.save()
+        super().save(*args, **kwargs)
+
+# Table Commande
+class Commande(models.Model):
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    articles = models.ManyToManyField(Article, through='DetailCommande')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)  
+    etat = models.IntegerField(null=False,default=0)
+
+    def save(self, *args, **kwargs):
+        # Calculate total price based on DetailCommandes
+        self.total_price = sum(item.quantity * item.item_price for item in self.commandeitem_set.all())
+        super().save(*args, **kwargs)
+
+# Table Détail Commande
+class DetailCommande(models.Model):
+    commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    item_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        # Update Commande total_price when saving DetailCommande
+        self.commande.save()
+        super().save(*args, **kwargs)
+
 
 
 # Table Feedback

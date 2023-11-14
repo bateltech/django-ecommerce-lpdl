@@ -1,11 +1,14 @@
 from django.contrib import admin
 
 
-from .models import Article, Commande, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser
-
+from .models import Article, Commande, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser, Wishlist
+from .models import Cart, CartItem
 
 
 admin.site.register(ClientUser)
+admin.site.register(Wishlist)
+admin.site.register(Cart)
+admin.site.register(CartItem)
 
 
 admin.site.register(Article)

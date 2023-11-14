@@ -112,6 +112,7 @@ DATABASES = {
 #AUTH_USER_MODEL = 'auth.User'  # Assurez-vous que le chemin est correct
 AUTH_USER_MODEL = 'ecommerce.ClientUser'  # Assurez-vous que le chemin est correct
 
+LOGIN_REDIRECT_URL = 'accueil'  # Replace 'home' with the actual name or path of your home page
 
 
 

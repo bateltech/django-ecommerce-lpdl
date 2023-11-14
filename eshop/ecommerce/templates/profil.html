@@ -21,14 +21,31 @@
             <img id="logo" src="{% static 'img/logo.png'%}">
            </a>
 
-           <div class="shop__container">
-            <a href=""><button class="log__button">Se déconnecter</button></a>
-            <a href="{% url 'profil' %}"><button class="log__button" >
-                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
-                 Utilisateur 
-                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
-            </button></a>
-           </div>
+
+                   {% if utilisateur_connecte %}
+
+
+                   <div class="shop__container">
+                    <a href=""><button class="log__button">Se déconnecter</button></a>
+                    <a href="{% url 'profil' %}"><button class="log__button" >
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        {{ prenom_utilisateur }}
+                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                    </button></a>
+                   </div>
+
+
+                   {% else %}
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+                   </div>
+
+
+                   {% endif %} 
+
+
     </div>
 
     <div style="display: flex; justify-content: space-around; align-items: center;">
@@ -92,6 +109,39 @@
         </div>
     </nav>
 
+    <style>
+        .card-settings {
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+        }
+        .card-settings {
+        padding: 1.5rem;
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #696868;
+        background-clip: border-box;
+        border: 1px solid #e5e9f2;
+        border-radius: .2rem;
+        }
+        .card-settings-header:first-child {
+        border-radius: calc(.2rem - 1px) calc(.2rem - 1px) 0 0;
+        }
+        .card-settings-settings-header {
+        border-bottom-width: 1px;
+        }
+        .card-settings-settings-header {
+        padding: .75rem 1.25rem;
+        margin-bottom: 0;
+        color: inherit;
+        background-color: #9c9999;
+        border-bottom: 1px solid #e5e9f2;
+        }
+    </style>
 
 </header>
 
@@ -103,7 +153,7 @@
     <div class="profil__main">
 
         <!-- Sidebar Menu -->
-        <aside>
+        <aside role="tablist">
             <p> </p>
             <a href="">
               Mon profil
@@ -122,6 +172,139 @@
             </a>
         </aside>
 
+        <div class="container p-0">
+           
+            <div class="row">
+            <div class="col-md-7 col-xl-8">
+            <div class="tab-content">
+            <div class="tab-pane fade show active" id="account" role="tabpanel">
+            <div class="card-settings">
+            <div class="card-settings-header">
+            <div class="card-settings-actions float-right">
+            <div class="dropdown show">
+            <a href="#" data-toggle="dropdown" data-display="static">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+            </svg>
+            </a>
+
+            </div>
+            </div>
+            <h5 class="card-settings-title mb-0">Public info</h5>
+            </div>
+            <div class="card-settings-body">
+            <form>
+            <div class="row">
+            <div class="col-md-8">
+            <div class="form-group">
+            <label for="inputUsername">Username</label>
+            <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+            </div>
+
+            </div>
+
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+            </div>
+            </div>
+            
+            <div class="card-settings">
+            <div class="card-settings-header">
+            <div class="card-settings-actions float-right">
+            <div class="dropdown show">
+            <a href="#" data-toggle="dropdown" data-display="static">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+            </svg>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+            </div>
+            </div>
+            <h5 class="card-settings-title mb-0">Private info</h5>
+            </div>
+            <div class="card-settings-body">
+            <form>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputFirstName">First name</label>
+            <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+            </div>
+            <div class="form-group col-md-6">
+            <label for="inputLastName">Last name</label>
+            <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+            </div>
+            </div>
+            <div class="form-group">
+            <label for="inputEmail4">Email</label>
+            <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+            </div>
+            <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+            <div class="form-group">
+            <label for="inputAddress2">Address 2</label>
+            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputCity">City</label>
+            <input type="text" class="form-control" id="inputCity">
+            </div>
+            <div class="form-group col-md-4">
+            <label for="inputState">State</label>
+            <select id="inputState" class="form-control">
+            <option selected="">Choose...</option>
+            <option>...</option>
+            </select>
+            </div>
+            <div class="form-group col-md-2">
+            <label for="inputZip">Zip</label>
+            <input type="text" class="form-control" id="inputZip">
+            </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+            </div>
+            </div>
+            </div>
+            <div class="tab-pane fade" id="password" role="tabpanel">
+            <div class="card-settings">
+            <div class="card-settings-body">
+            <h5 class="card-settings-title">Password</h5>
+            <form>
+            <div class="form-group">
+            <label for="inputPasswordCurrent">Current password</label>
+            <input type="password" class="form-control" id="inputPasswordCurrent">
+            <small><a href="#">Forgot your password?</a></small>
+            </div>
+            <div class="form-group">
+            <label for="inputPasswordNew">New password</label>
+            <input type="password" class="form-control" id="inputPasswordNew">
+            </div>
+            <div class="form-group">
+            <label for="inputPasswordNew2">Verify password</label>
+            <input type="password" class="form-control" id="inputPasswordNew2">
+            </div>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+
+            </div> 
         <section class="profil__section">
 
             

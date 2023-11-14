@@ -1,22 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import ClientUser
-from django.contrib.auth.models import User
 
-from django.contrib.auth.forms import UserChangeForm
-
-
-# class ClientUserCreationForm(UserCreationForm):
-
-#     class Meta:
-#         model = ClientUser
-#         fields = ('username', 'email')
-
-# class ClientUserChangeForm(UserChangeForm):
-
-#     class Meta:
-#         model = ClientUser
-#         fields = ('username', 'email')
 
 
 class SignupForm(UserCreationForm):
@@ -42,3 +27,17 @@ class SignupForm(UserCreationForm):
         for field_name, attributes in custom_attributes.items():
             self.fields[field_name].widget.attrs.update(attributes)
 
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Define a dictionary to hold custom attributes and classes for each field
+        custom_attributes = {
+            'username': {'class': 'custom-email-class', 'placeholder': ' Entrez votre adresse email'},
+            'password': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Entrez votre mot de passe'},
+        }
+        
+        # Update each field's attributes and classes
+        for field_name, attributes in custom_attributes.items():
+            self.fields[field_name].widget.attrs.update(attributes)

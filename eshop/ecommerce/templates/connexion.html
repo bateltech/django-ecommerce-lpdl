@@ -99,11 +99,17 @@
                     <h1 class="connexion__title">CONNEXION</h1>
                         <div class="connexion__container">
                             <p class="register__message">Vous n'avez pas de compte? <a href="{% url 'inscription' %}">Inscrivez-vous</a></p>
-                            <form class="login__form">
-                                <input type="email" id="email" name="email" placeholder="  Entrez votre adresse email" required>
+                            <form class="login__form" method="post">
+                                {% csrf_token %}
+                                <!-- <input type="email" id="email" name="email" placeholder="  Entrez votre adresse email" required>
                                 
-                                <input type="password" id="password" name="password" placeholder="  Entrez votre mot de passe" required>
-                                
+                                <input type="password" id="password" name="password" placeholder="  Entrez votre mot de passe" required> -->
+                                {{ form.username }}
+                                {{ form.username.errors }}
+
+                                {{ form.password }}
+                                {{ form.password.errors }}
+
                                 <div class="button__container">
                                     <button type="submit" class="login__button">Connexion</button>
                                     <p class="reset__message"><a href="{% url 'reset_password' %}">Mot de passe oublié?</a></p>
