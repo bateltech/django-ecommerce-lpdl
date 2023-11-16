@@ -990,94 +990,80 @@ border: none;
   * PIERRES.HTML
   \*-----------------------------------*/
 
-
-  .pierre__container{
-    background-color: hsla(0, 0%, 0%, 1);
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    width: 100%;
-    height: 32rem;
-    padding-top: 1rem;
-    padding-bottom: 2rem;
-    margin-bottom: 4rem;
+  .pierre__container {
     position: relative;
-    top: 50%;
-   }
-
-
-   .pierre__background {
+    width: 100%;
+    height: 38rem; /* Fixed height */
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: hsla(0, 0%, 0%, 1);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 4rem;
+    display: flex; /* Use flexbox for centering vertically */
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: center; /* Center vertically */
+  }
+  
+  .pierre__background {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background-size: cover;
-    background-position: center center; /* Centrer l'image horizontalement et verticalement */
-    filter: blur(5px); /* Ajustez la valeur pour contrôler le flou */
-}
-
-
-   .pierre__content{
+    background-position: center center;
+    filter: blur(5px);
+  }
+  
+  .pierre__content {
     position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-   }
-
-
-   .pierre__image{
+   margin-left:20rem;
+  }
+  
+  .pierre__image {
     position: absolute;
-    height: 26rem;
+    height: 24rem;
     width: auto;
     z-index: 1;
-    margin: 2rem;
-    top: 40%;
-    padding-left: 2rem;
+    margin: 2rem auto; /* Center horizontally */
     transform: translateY(-50%);
-    float: left;
-   }
+    left: 17%;
+    transform: translateX(-50%);
+  }
   
-   .next_pierre{
-      position: absolute;
-      right: 0;
-      background-color: #0000 !important;
-      box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5) !important;
-   }
-
-   .prev_pierre{
+  .next_pierre,
+  .prev_pierre {
     position: absolute;
-    left: 0;
-    background-color: #0000 !important;
+    top: 50%;
+    background-color: rgba(60, 60, 60, 0.3) !important;
     box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5) !important;
-   }
-
-   .pierre__image img{
+    transform: translateY(-50%);
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .pierre__image img {
     height: 100%;
-    width: 22rem;
+    width: auto;
     object-fit: cover;
-   }
-
-   .pierre-text{
-    text-align: left;
+  }
+  
+  .pierre-text {
+    text-align: center; /* Center the text horizontally */
     font-family: Garamond, serif;
     color: var(--title-color);
     font-size: 1.4rem;
     font-weight: bold;
     line-height: 1.5;
-    float: right !important;
     width: 70%;
-    margin: 1rem;
-    margin-right: 3rem;
+    margin: 1rem auto; /* Center the text vertically */
     padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 0.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background: rgba(200, 200, 200, 0.6);
-    -webkit-text-stroke: 0.2px rgb(0, 0, 0); /* Largeur et couleur de la bordure (navigateurs WebKit, y compris Chrome et Safari) */
-   }
-
+    -webkit-text-stroke: 0.2px rgb(0, 0, 0);
+  }
 
   
   /*-----------------------------------*\
@@ -1321,6 +1307,20 @@ border: none;
     padding: 0;
   }
 
+
+
+  .fixed_nav{
+    align-items: center;
+    background-color: var(--title-color);
+    position: fixed;
+    width: 100%;
+    height: 5rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding-top: 1rem;
+    border-radius: 0rem 0rem 2rem 2rem;
+  }
   
 
   .nav__link i,

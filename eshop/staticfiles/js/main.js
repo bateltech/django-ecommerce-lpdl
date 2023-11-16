@@ -106,6 +106,15 @@ const scrollHeader = () =>{
 }
 window.addEventListener('scroll', scrollHeader)
 
+const scrollNav = () =>{
+    const header = document.getElementById('nav_bar')
+    // When the scroll is greater than 50 viewport height, add the scroll-header class to the header tag
+    this.scrollY >= 240 ? header.classList.add('fixed_nav') 
+                       : header.classList.remove('fixed_nav')
+}
+window.addEventListener('scroll', scrollNav)
+
+
 
 /* HORIZONTAL SCROLL BAR FOR FILTERS */
 

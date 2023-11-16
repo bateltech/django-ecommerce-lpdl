@@ -45,7 +45,7 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
 
 
 
-/*const sections = document.querySelectorAll('section[id]')
+const sections = document.querySelectorAll('section[id]')
     
 const scrollActive = () =>{
   	const scrollY = window.pageYOffset
@@ -64,7 +64,6 @@ const scrollActive = () =>{
 	})
 }
 window.addEventListener('scroll', scrollActive)
-*/
 
 
 
@@ -88,23 +87,32 @@ navLinks.forEach(link => {
 });
 
 
-// /*=============== SHOW SCROLL UP ===============*/ 
-// const scrollUp = () =>{
-// 	const scrollUp = document.getElementById('scroll-up')
-//     // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scrollup class
-// 	this.scrollY >= 350 ? scrollUp.classList.add('show-scroll')
-// 						: scrollUp.classList.remove('show-scroll')
-// }
-// window.addEventListener('scroll', scrollUp)
+/*=============== SHOW SCROLL UP ===============*/ 
+const scrollUp = () =>{
+	const scrollUp = document.getElementById('scroll-up')
+    // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scrollup class
+	this.scrollY >= 350 ? scrollUp.classList.add('show-scroll')
+						: scrollUp.classList.remove('show-scroll')
+}
+window.addEventListener('scroll', scrollUp)
 
 /*=============== CHANGE BACKGROUND HEADER ===============*/
 const scrollHeader = () =>{
     const header = document.getElementById('header')
     // When the scroll is greater than 50 viewport height, add the scroll-header class to the header tag
-    this.scrollY >= 50 ? header.classList.add('bg-header') 
+    this.scrollY >= 230 ? header.classList.add('bg-header') 
                        : header.classList.remove('bg-header')
 }
 window.addEventListener('scroll', scrollHeader)
+
+const scrollNav = () =>{
+    const header = document.getElementById('nav_bar')
+    // When the scroll is greater than 300 viewport height, add the scroll-header class to the header tag
+    this.scrollY >= 240 ? header.classList.add('fixed_nav') 
+                       : header.classList.remove('fixed_nav')
+}
+window.addEventListener('scroll', scrollNav)
+
 
 
 /* HORIZONTAL SCROLL BAR FOR FILTERS */
