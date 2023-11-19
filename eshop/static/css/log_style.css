@@ -174,3 +174,153 @@ input[type="password"]:focus { */
 .mentions__content a {
     color : rgb(0, 172, 238); /* Twitter color */
 }
+
+
+
+
+  /*-----------------------------------*\
+  * PROFIL.HTML
+  \*-----------------------------------*/
+
+  .profil__section {
+    display: flex;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+.profile-info {
+    width: 45%;
+}
+
+.alert {
+    width: 100%;
+    margin: 1.25rem auto;
+    padding: 1rem;
+    position: relative;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 5px 5px #7e7e7e;
+  }
+  
+  .close {
+    position: absolute;
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.5;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 50%;
+    right: 1rem;
+    top: 0.95rem;
+    text-align: center;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  .msg-content {
+    font-family: Quicksand;
+    color: rgb(0, 26, 0);
+  }
+  
+  .success-alert {
+    background-color: #6fc492 !important;
+    border-left: 5px solid #178344 !important;
+  }
+  .success-alert .close {
+    border-color: #178344 !important;
+    color: #178344 !important;
+  }
+
+.profil-button {
+    float: right;
+    padding: 0.5rem;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    border-radius: 3rem;
+    border: 1px solid;
+    color: rgb(40, 40, 40);
+    background-color: hsl(0, 0%, 90%);
+  }
+  
+  .profil-button:hover {
+    cursor: pointer;
+    background-color: hsla(0, 0%, 80%, 0.8);
+    border-color: white;
+  }
+
+.personal-info,
+.password-settings {
+    margin-bottom: 4rem;
+}
+
+.personal-info h3,
+.password-settings h3 {
+    margin-bottom: 10px;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 15px 0;
+}
+
+.personal-info .name__container .name__field,
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.personal-info .name__container .name__field label,
+.input-group label {
+    margin-bottom: 0.5rem !important;
+    color: white;
+}
+
+
+.date-input {
+    position: relative;
+    width: 47.5% !important; 
+}
+
+
+.date-input input[type="text"]:hover {
+    cursor: pointer;
+}
+
+/* Styles for inputs can be adjusted according to your design */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3rem;
+}
+
+.date-input {
+    width: 80%;
+}
+
+/* .input-group input[type="email"],
+.input-group input[type="tel"],
+.input-group input[type="date"], */
+.input-group input[type="password"] {
+width: 47.5% !important;
+} 
+
+  /* Style pour le datepicker */
+  .custom-datepicker .ui-datepicker-header {
+    background-color: #aaa9a9;
+    color: rgb(197, 25, 25);
+  }
+  .custom-datepicker .ui-datepicker-title {
+    color: white;
+  }
+  .custom-datepicker .ui-datepicker-calendar td a {
+    color: #333;
+  }

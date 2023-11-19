@@ -8,6 +8,11 @@ from .views import *
 #     path('', include(router.urls)),
 # ]
 
+handler404 = 'ecommerce.views.erreur_view'
+handler500 = 'ecommerce.views.erreur_view'
+handler403 = 'ecommerce.views.erreur_view'
+handler400 = 'ecommerce.views.erreur_view'
+
 urlpatterns = [
     
     path('', accueil_view, name='accueil'),
@@ -24,4 +29,7 @@ urlpatterns = [
     path('mon-profil/', profil_view, name='profil'),
     path('deconnexion/', logout_view, name='deconnexion'),
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
+
+    path('profil/update_personal_info/', update_personal_info, name='update_personal_info'),
+    path('profil/update_password/', update_password, name='update_password'),
 ]

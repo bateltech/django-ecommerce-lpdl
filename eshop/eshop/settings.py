@@ -114,7 +114,9 @@ AUTH_USER_MODEL = 'ecommerce.ClientUser'  # Assurez-vous que le chemin est corre
 
 LOGIN_REDIRECT_URL = 'accueil'  # Replace 'home' with the actual name or path of your home page
 
+DATE_FORMAT = 'd/m/Y'
 
+USE_L10N = False
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

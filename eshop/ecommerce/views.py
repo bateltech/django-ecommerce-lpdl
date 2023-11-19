@@ -109,7 +109,7 @@ def pierres_view(request):
     context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
     return render(request, 'pierres.html', context)
  
-def erreur_view(request):
+def erreur_view(request, exception=None):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
@@ -128,7 +128,10 @@ def checkout_view(request):
 def profil_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    return render(request, 'profil.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur})
+    utilisateur = request.user if utilisateur_connecte else None
+    
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    return render(request, 'profil.html', context)
 
 @csrf_protect
 def signup_view(response):
@@ -162,3 +165,41 @@ class CustomLoginView(LoginView):
     template_name = 'connexion.html'  # Specify your login template
     form_class = LoginForm
     success_url = reverse_lazy('accueil')  # Replace 'home' with the actual name or path of your home page
+
+
+from django.contrib import messages
+
+def update_personal_info(request):
+    if request.method == 'POST':
+        user = request.user
+        user.last_name = request.POST.get('nom')
+        user.first_name = request.POST.get('prenom')
+        user.birthdate = request.POST.get('dob')
+        user.email = request.POST.get('email')
+        user.phone_number = request.POST.get('phone')
+        user.save()
+        messages.success(request, 'Informations personnelles mises à jour avec succès.')
+        request.session['update_success'] = True  # Stockez un indicateur de succès dans la session
+
+    return redirect('profil')
+
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
+
+def update_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important to keep the user logged in
+            messages.success(request, 'Votre mot de passe a été mis à jour avec succès.')
+            
+            request.session['password_success'] = True  # Stockez un indicateur de succès dans la session
+            return redirect('profil')  # Replace 'profile' with your profile page URL name
+        else:
+            for error in form.errors.values():
+                messages.error(request, error)
+    return redirect('profil')
+
+

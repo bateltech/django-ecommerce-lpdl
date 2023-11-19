@@ -1,13 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import datetime
+
+
+class CustomDateFormatField(models.DateField):
+    def to_python(self, value):
+        if value:
+            return datetime.strptime(value, '%d/%m/%Y').date()
+        return None
 
 # Table Client
 class ClientUser(AbstractUser):
     # Ajoutez des champs d'utilisateur personnalisés si nécessaire
      # New fields
     phone_number = PhoneNumberField(null=True, blank=True)
-    birthdate = models.DateField(null=True, blank=True)
+    birthdate = CustomDateFormatField(null=True, blank=True)
     
     # Add related_name to avoid clashes with the default User model
     groups = models.ManyToManyField(Group, related_name='client_users')
