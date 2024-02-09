@@ -10,9 +10,15 @@
 
                    <div class="search__container">
                     <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'profil' %}#wishlist" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
+
+                    <!-- Barre de recherche -->
+                    <div id="searchBar" class="search-bar">
+                        <input type="text" placeholder="Rechercher...">
+                    </div>
+
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
                     <img id="logo" src="{% static 'img/logo.png' %}">
@@ -21,29 +27,36 @@
                    {% if utilisateur_connecte %}
 
 
+                   <!-- Desktop version -->
                    <div class="shop__container">
-                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter</button></a>
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
                     <a href="{% url 'profil' %}"><button class="log__button" >
                         <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
                         {{ prenom_utilisateur }}
                         <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
                     </button></a>
                    </div>
-
+                
 
                    {% else %}
 
                    <div class="shop__container">
-                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
-                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                        <i class="fa fa-user-plus"></i>
+                    </button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                        <i class="fa fa-sign-in"></i>
+                    </button></a>
                    </div>
-
 
                    {% endif %} 
 
             </div>
 
-            <div style="display: flex; justify-content: space-around; align-items: center;">
+
+            <div  class="separation_img"  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
                 <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
             </div>
 
@@ -52,37 +65,43 @@
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list grid">
                         <li class="nav__item">
-                            <a href="#" class="nav__link active-link scroll-to-top">
+                            <a href="#" class="nav__link active-link">
+                                <i class="fa-regular fa-moon"></i>
                                  Accueil
                             </a>
                         </li>
 
                         <li class="nav__item">
                             <a href="#collection" class="nav__link anchor__link">
+                                <i class="fa-solid fa-shapes"></i>
                                  Collection
                             </a>
                         </li>
 
                         <li class="nav__item">
                             <a href="#artist" class="nav__link anchor__link">
+                                <i class="fa-solid fa-person-rays"></i>
                                  Artiste
                             </a>
                         </li>
 
                         <li class="nav__item">
                             <a href="{% url 'articles' %}" class="nav__link">
+                                <i class="ri-store-2-line"></i>
                                  Articles
                             </a>
                         </li>
 
                         <li class="nav__item">
                             <a href="{% url 'pierres' %}" class="nav__link">
+                                <i class="fa-regular fa-gem"></i>
                                  Pierres
                             </a>
                         </li>
 
                         <li class="nav__item">
                             <a href="#voyance" class="nav__link anchor__link">
+                                <i class="fa-solid fa-hand-sparkles"></i>
                                  Voyance
                             </a>
                         </li>
@@ -90,15 +109,20 @@
                     </ul>
 
                     <!--Close button-->
-                    <div class="nav__close" id="nav-close">
+                <div class="nav__close" id="nav-close">
                         <i class="ri-close-line"></i>
                     </div>
                 </div>
 
+                <a href="{% url 'accueil' %}" class="nav__logo">
+                    <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+                </a>
+
                 <div class="nav__buttons">
 
-                    <!-- Theme change button -->
-                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    <a href="#" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -108,7 +132,43 @@
             </nav>
 
         
-        </header>
+                </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
+        
+
+
 
         <!--==================== MAIN ====================-->
         <main class="main">
@@ -122,9 +182,17 @@
                         DES BIJOUX ARTISANAUX RIEN<br>QUE POUR VOUS !
                     </p>
 
-                    <button class="accueil__button">
+                    <button class="accueil__button" onclick="redirectToArticles()">
                         Commencer
                     </button>
+                
+                    <script>
+                        function redirectToArticles() {
+                            // Utilisez window.location.href pour rediriger l'utilisateur vers la page 'articles'
+                            window.location.href = "{% url 'articles' %}";
+                        }
+                    </script>
+
                 </div>
             </section>
 
@@ -132,7 +200,7 @@
             <!--==================== COLLECTION ====================-->
             <!-- swiper test -->
 
-                <section class="swiper mySwiper" id="collection">
+                <section class="swiper accueilSwiper" id="collection">
                     <h1 class="collection__title">DÉCOUVREZ NOS COLLECTIONS</h1>
 
                     <div class="swiper-wrapper">
@@ -329,7 +397,9 @@
                 <div class="voyance__content">
 
                     <p class="voyance-text">
-                        Vous vous posez des questions, je peux vous répondre par mail très rapide et m'expliquer un peu le contenu, car très souvent les questions ne sont pas claires.<br><br>
+                        Vous vous posez des questions, je peux vous répondre par mail très rapidement.<br><br>
+
+                        Vous pouvez poser trois questions, et m'expliquer un peu le contenu, car très souvent les questions ne sont pas claires.<br><br>
 
                         Il me faut impérativement une photo de vous de la tête au pied.
 
@@ -338,15 +408,18 @@
                         <br><br>N'appelez pas à mon numéro, je ne fais aucune voyance par téléphone.
                     </p>
 
-                    <button class="voyance__button">
+                    <button id="voyance-button" class="voyance__button">
                         Envoyez une demande
                     </button>
 
                 </div>
 
+                <script>function togglePopup() {
+                    var popup = document.getElementById('popupOverlay');
+                    popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'flex' : 'none';
+                }</script>
 
             </section>
-
 
             <!--==================== GOOGLE MAPS ====================-->
             
@@ -356,5 +429,31 @@
                  height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </section>
 
+        <!--=============== MAIN JS ===============-->
+        <script src="{% static 'js/main.js' %}"></script>
+        
         </main>
+
+        <div class="overlay bg-modal" id="popupOverlay">
+            <div class="popup">
+                <span class="close" id="voyance-close" onclick="togglePopup()">&times;</span> 
+                <!-- close-btn -->
+                <form>
+                    <label for="nom">Nom:</label>
+                    <input type="text" id="nom" name="nom" required>
+    
+                    <label for="prenom">Prénom:</label>
+                    <input type="text" id="prenom" name="prenom" required>
+    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+    
+                    <label for="contenu">Contenu de la demande:</label>
+                    <textarea id="contenu" name="contenu" rows="10" required></textarea>
+    
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
+
 {% endblock %}

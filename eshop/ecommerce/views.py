@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer
 from django.views.decorators.csrf import csrf_protect
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -15,6 +15,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout  # Importez les fonctions authenticate et login
 from .models import Cart, CartItem
 from .serializers import CartSerializer, CartItemSerializer
+from django.contrib import messages
 
 # Vues des modèles
 
@@ -79,6 +80,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     serializer_class = FeedbackSerializer
 
 
+
 def accueil_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -102,13 +104,42 @@ def conditions_view(request):
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
     return render(request, 'conditions.html',context)
 
+
+
+# def pierres_view(request):
+#     pierres = Pierre.objects.all()
+#     utilisateur_connecte = request.user.is_authenticated
+#     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+#     context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+#     return render(request, 'pierres.html', context)
+ 
+
+
+from django.shortcuts import get_object_or_404
+
 def pierres_view(request):
     pierres = Pierre.objects.all()
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+
+    # Récupérez les paramètres d'URL
+    libelle = request.GET.get('pierre', None)
+    pierre_id = request.GET.get('id', None)
+
+    print("la pierre ", libelle)
+
+    if libelle and pierre_id:
+        # Sélectionnez la pierre correspondante
+        selected_pierre = get_object_or_404(Pierre, id=pierre_id)
+    else:
+        # Par défaut, sélectionnez la première pierre
+        selected_pierre = pierres.first()
+
+    print("la pierre selectionnée ", selected_pierre.libelle)
+    context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'selected_pierre': selected_pierre}
     return render(request, 'pierres.html', context)
- 
+
+
 def erreur_view(request, exception=None):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -130,19 +161,73 @@ def profil_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
     
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    form = PersonalInfoForm(instance=request.user)
+
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur, 'form': form}
     return render(request, 'profil.html', context)
+
+
+@login_required()  # A CHERCHER COMMENT L'UTILISER
+def securite_view(request):
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    utilisateur = request.user if utilisateur_connecte else None
+
+    form = PasswordResetForm(request.user)
+
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur, 'form': form}
+    return render(request, 'securite.html', context)
+
+
+@login_required()  # A CHERCHER COMMENT L'UTILISER
+def favoris_view(request):
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    utilisateur = request.user if utilisateur_connecte else None
+    
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    return render(request, 'favoris.html', context)
+
+
+@login_required()  # A CHERCHER COMMENT L'UTILISER
+def commentaires_view(request):
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    utilisateur = request.user if utilisateur_connecte else None
+    
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    return render(request, 'commentaires.html', context)
+
+
+@login_required()  # A CHERCHER COMMENT L'UTILISER
+def historique_view(request):
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    utilisateur = request.user if utilisateur_connecte else None
+    
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    return render(request, 'historique.html', context)
+
+from django.db import IntegrityError
 
 @csrf_protect
 def signup_view(response):
     if response.method == "POST":
         form = SignupForm(response.POST)
         if form.is_valid():
-                print("HURRAAAAY SUCCESS")
-                user = form.save()
-                login(response, user)  # Log in the user after registration
-                return redirect('accueil')  
+                try:
+                    print("HURRAAAAY SUCCESS")
+                    user = form.save()
+                    login(response, user)  # Log in the user after registration
+                    return redirect('accueil')  
 
+                except IntegrityError as e:
+                    print("OUPS !")
+                    
+                    # Gérer le cas où l'email existe déjà
+                    form.add_error('email', 'Cet email est déjà utilisé.')
+                    print("MOTHER FUCKER => ", form.errors)
+                    return render(response, "inscription.html", {"form":form, "error_message":"Cet email est déjà utilisé. Veuillez choisir un autre email."})
 
         else: 
             print("failed to register")
@@ -167,39 +252,59 @@ class CustomLoginView(LoginView):
     success_url = reverse_lazy('accueil')  # Replace 'home' with the actual name or path of your home page
 
 
-from django.contrib import messages
-
+@login_required
 def update_personal_info(request):
+
     if request.method == 'POST':
-        user = request.user
-        user.last_name = request.POST.get('nom')
-        user.first_name = request.POST.get('prenom')
-        user.birthdate = request.POST.get('dob')
-        user.email = request.POST.get('email')
-        user.phone_number = request.POST.get('phone')
-        user.save()
-        messages.success(request, 'Informations personnelles mises à jour avec succès.')
-        request.session['update_success'] = True  # Stockez un indicateur de succès dans la session
+        form = PersonalInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            # Save the form data
+            form.save()
+
+            print("HURRAAAAAAAAAAAAAAAAAY")
+            
+            # Redirect or add success message
+            messages.success(request, 'Informations personnelles mises à jour avec succès.')
+            request.session['update_success'] = True  # Stockez un indicateur de succès dans la session
+            return redirect('update_personal_info')
+        else:
+            print("que pd")
+            print(request.user.phone_number)
+            print(form.errors)
+            # Error message
+            messages.error(request, 'Erreur lors de la mise à jour des informations personnelles. Veuillez corriger les erreurs ci-dessous.')
+            # Print form errors to console (for debugging)
+            print("Error in form submission:", form.errors)
+            return redirect('update_personal_info')
+    else:
+        form = PersonalInfoForm(instance=request.user)  # Replace with your user object
 
     return redirect('profil')
 
-from django.contrib.auth import update_session_auth_hash
+
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
-
+@login_required
 def update_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important to keep the user logged in
+            user=form.save()
+            update_session_auth_hash(request, user)
             messages.success(request, 'Votre mot de passe a été mis à jour avec succès.')
-            
-            request.session['password_success'] = True  # Stockez un indicateur de succès dans la session
-            return redirect('profil')  # Replace 'profile' with your profile page URL name
+            request.session['update_success'] = True  # Stockez un indicateur de succès dans la session
+            return redirect('update_password')
         else:
-            for error in form.errors.values():
-                messages.error(request, error)
-    return redirect('profil')
+            print("que pd")
+            print(form.errors)
 
+            messages.error(request, 'Les deux champs du nouveau mot de passe ne correspondent pas')
+            # Print form errors to console (for debugging)
+            print("Error in form submission:", form.errors)
+            return redirect('update_password')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return redirect('securite')
 

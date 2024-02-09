@@ -118,6 +118,16 @@ input[type="password"] { */
     font-size: large;
 }
 
+
+.name__container .name__field .custom-first-name-class::placeholder,
+ .name__container .name__field .custom-last-name-class::placeholder,
+ .custom-email-class::placeholder,
+ .custom-password-class::placeholder,
+ .custom-confirm-password-class::placeholder {
+
+    color: #333333a2;
+ }
+
 /* #first_name:focus,
 #last_name:focus,
 input[type="email"]:focus,
@@ -131,7 +141,7 @@ input[type="password"]:focus { */
 }
 
 .name__container {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
 }
 
@@ -195,37 +205,53 @@ input[type="password"]:focus { */
 }
 
 .alert {
-    width: 50%;
-    margin: 20px auto;
-    padding: 30px;
+    width: 100%;
+    margin: 1.25rem auto;
+    padding: 1rem;
     position: relative;
-    border-radius: 5px;
-    box-shadow: 0 0 15px 5px #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 5px 5px #7e7e7e;
   }
   
   .close {
     position: absolute;
-    width: 30px;
-    height: 30px;
+    width: 1.5rem;
+    height: 1.5rem;
     opacity: 0.5;
     border-width: 1px;
     border-style: solid;
     border-radius: 50%;
-    right: 15px;
-    top: 25px;
+    right: 1rem;
+    top: 0.95rem;
     text-align: center;
-    font-size: 1.6em;
+    font-size: 1.2em;
     cursor: pointer;
+  }
+
+  .msg-content {
+    font-family: Quicksand;
+    color: rgb(0, 26, 0);
   }
   
   .success-alert {
-    background-color: #a8f0c6 !important;
+    background-color: #6fc492 !important;
     border-left: 5px solid #178344 !important;
   }
+
   .success-alert .close {
     border-color: #178344 !important;
     color: #178344 !important;
   }
+
+  .error-alert {
+    background-color: #ffcccc !important;  /* Couleur de fond rouge */
+    border-left: 5px solid #ff6666 !important;  /* Couleur de bordure rouge */
+}
+
+.error-alert .close {
+    border-color: #ff6666 !important;  /* Couleur de bordure du bouton de fermeture rouge */
+    color: #ff6666 !important;  /* Couleur du texte du bouton de fermeture rouge */
+}
 
 .profil-button {
     float: right;
@@ -292,7 +318,7 @@ input[type="tel"],
 input[type="date"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
+    /* padding: 8px; */
     border: 1px solid #ccc;
     border-radius: 3rem;
 }

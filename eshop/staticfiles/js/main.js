@@ -172,3 +172,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+/* Barre de recherche */
+document.getElementById('searchIcon').addEventListener('click', function () {
+    document.getElementById('searchBar').style.width = '20%' ? document.getElementById('searchBar').style.width = '0'
+                                                             : document.getElementById('searchBar').style.width = '20%';
+});
+
+
+window.addEventListener('scroll', function () {
+    document.getElementById('searchBar').style.width = '0';
+});
+
+
+/* Pop up Voyance */
+document.getElementById('voyance-button').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "flex";
+});
+
+document.querySelector('.close').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "none";
+});

@@ -2,13 +2,30 @@
 {% load static %}
 
 {% block content %}
-
+    
 
 <!--==================== HEADER ====================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/vader/jquery-ui.min.css" integrity="sha512-b+rStEv2LsoFlPtCVrnze9rzblG5UM3clN0yt94YKe0wqG2q2j5NZ47qcybd4ThhH+OX+4KXGWdK80gjjtsxGQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+ <!-- Include intl-tel-input styles -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+
+ <!-- Include jQuery (required for intl-tel-input) -->
+ <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+ <!-- Include intl-tel-input script -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.js"></script>
+
+ <!-- Include intl-tel-input utils script -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+
+ 
 <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+
+
 
 <header role="banner" class="header" id="header">
 
@@ -16,9 +33,9 @@
     <div class="top__bar">
 
            <div class="search__container">
-            <i class="bi bi-cart3 fa-2x"></i>
-            <i class="bi bi-suit-heart fa-2x"></i>
-            <i class="bi bi-search fa-2x"></i>
+            <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
 
            <a href="{% url 'accueil' %}" class="logo__prin">
@@ -30,7 +47,9 @@
 
 
                    <div class="shop__container">
-                    <a href=""><button class="log__button">Se déconnecter</button></a>
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
                     <a href="{% url 'profil' %}"><button class="log__button" >
                         <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
                         {{ prenom_utilisateur }}
@@ -52,7 +71,7 @@
 
     </div>
 
-    <div style="display: flex; justify-content: space-around; align-items: center;">
+    <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
         <img src="{% static 'img/Vector.png'%}" alt="separation" style="width: auto; padding: 2rem;">
     </div>
 
@@ -62,36 +81,42 @@
             <ul class="nav__list grid">
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}" class="nav__link">
+                        <i class="fa-regular fa-moon"></i>
                          Accueil
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#collection" class="nav__link">
+                        <i class="fa-solid fa-shapes"></i>
                          Collection
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                        <i class="fa-solid fa-person-rays"></i>
                          Artiste
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'articles' %}" class="nav__link">
+                        <i class="ri-store-2-line"></i>
                          Articles
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'pierres' %}" class="nav__link">
+                        <i class="fa-regular fa-gem"></i>
                          Pierres
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                        <i class="fa-solid fa-hand-sparkles"></i>
                          Voyance
                     </a>
                 </li>
@@ -104,7 +129,15 @@
             </div>
         </div>
 
+        <a href="{% url 'accueil' %}" class="nav__logo">
+            <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+           </a>
+           
         <div class="nav__buttons">
+
+            <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+            <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
             
             <!-- Toggle button -->
             <div class="nav__toggle" id="nav-toggle">
@@ -113,164 +146,216 @@
         </div>
     </nav>
 
-</header>
+        </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
+        
 
 <!--==================== MAIN ====================-->
-<main class="main">
+<main class="main user-main">
 
     <!--==================== PROFILE ====================-->
       
     
         <!-- Sidebar Menu -->
-        <aside role="tablist">
+        <aside role="tablist" class="aside-tab">
             <p> </p>
-            <a href="">
-              Mon profil
+            <a class="active" href="#">
+              Informations personnelles
             </a>
-            <a href="">
+            <a href="{% url 'securite' %}">
+              Sécurité
+            </a>
+            <a href="{% url 'historique' %}">
               Historiques des achats
             </a>
-            <a href="">
-              Mes commandes
+            <!-- <a href="">
+              Mes commandes -->
             </a>
-            <a href="">
+            <a href="{% url 'favoris' %}">
               Mes favoris
             </a>
-            <a href="">
+            <a href="{% url 'commentaires' %}">
               Mes commentaires
             </a>
         </aside>
-    <div class="profil__main">
 
-
-        <section class="profil__section" id="profil-1">
-            <div class="profile-info">
-
-
+    
+        <!-- Sidebar Menu Mobile Ver -->
+        <div class="sidebar">
+            <a href="#" class="side-closebtn" onclick="closeNav()">&times;</a>
+            <a href="#" class="active-sidebar"><i class="fas fa-user"></i>&nbsp;&nbsp;&nbsp;Profil</a>
+            <a href="{% url 'securite' %}"><i class="fas fa-shield-alt"></i>&nbsp;&nbsp;&nbsp;Sécurité</a>
+            <a href="{% url 'historique' %}"><i class="fas fa-history"></i>&nbsp;&nbsp;&nbsp;Historique</a>
+            <a href="{% url 'favoris' %}"><i class="fas fa-heart"></i>&nbsp;&nbsp;&nbsp;Favoris</a>
+            <a href="{% url 'commentaires' %}"><i class="fas fa-comments"></i>&nbsp;&nbsp;&nbsp;Commentaires</a>
             
-                {% for msg in messages %}
+          </div>
+          
+        <!-- MAIN  -->
+        <div class="profil__main">
 
-                <div class="alert success-alert">
-                    <h3 class="msg-content">{{msg}}</h3>
-                    <a class="close">&times;</a>
-                  </div>
-                  
-                {% endfor %}
+            <span class="side-openbtn" onclick="openNav()">&#9776;</span>
 
-                <h2 style="margin: 2rem 0 2rem 0;">MON PROFIL</h2>
 
-                <form class="personal-info"  id="personal-info-form" method="post" action="{% url 'update_personal_info' %}">
-                    {% csrf_token %}
+            <section class="profil__section" id="profil-1">
 
-                    <h3 style="margin: 2rem 0 2rem 0;">Informations Personnelles</h3>
-                    <hr class="divider">
+                <div class="profile-info">
 
-                    <div class="name__container">
-                        <div class="name__field">
 
-                            <label for="nom">Nom</label>
-                            <input type="text" id="nom" name="nom" placeholder="Votre nom" {% if user.last_name %} value="{{ user.last_name }}" {% endif %}>
+                
+                    <!-- {% for msg in messages %}
+
+                    <div class="alert success-alert">
+                        <h3 class="msg-content">{{msg}}</h3>
+                        <a class="close">&times;</a>
+                    </div>
+                    
+                    {% endfor %} -->
+
+
+                    {% for msg in messages %}
+                        <div class="alert {% if msg.tags == 'success' %}success-alert{% elif msg.tags == 'error' %}error-alert{% endif %}">
+                            <h3 class="msg-content">{{ msg }}</h3>
+                            <a class="close">&times;</a>
                         </div>
-                        <div class="name__field">
+                    {% endfor %}
+
+
+
+                    <h2 style="margin: 2rem 0 2rem 0;">MON PROFIL</h2>
+
+                    <form class="personal-info" id="personal-info-form" method="post" action="{% url 'update_personal_info' %}">
+                        {% csrf_token %}
+                        <h3 style="margin: 2rem 0 2rem 0;">Informations Personnelles</h3>
+                        <hr class="divider">
+                    
+                        <div class="input-group name__container">
+                            <label for="{{ form.nom.id_for_label }}">Nom</label>
+                            {{ form.last_name }}
+
+                            <label for="{{ form.prenom.id_for_label }}">Prénom</label>
+                            {{ form.first_name }}
+
+                        </div>
+                    
+                        <!-- <div class="input-group">
                             
-                            <label for="prenom">Prénom</label>
-                            <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" {% if user.first_name %} value="{{ user.first_name }}" {% endif %}>
+                        </div> -->
+                    
+                        <div class="input-group">
+                            <label for="{{ form.dob.id_for_label }}">Date de naissance</label>
+                            {{ form.birthdate }}
                         </div>
-                    </div>
-
-                    <!-- <div class="input-group">
-                        <label for="dob">Date de naissance</label>
-                        <div class="date-input">
-                            <input type="date" id="dob" name="dob" {% if user.birthdate %} value="{{ user.birthdate|date:'d/m/Y' }}" {% endif %} pattern="\d{2}/\d{2}/\d{4}" required>
+                    
+                        <div class="input-group">
+                            <label for="{{ form.email.id_for_label }}">Adresse email</label>
+                            {{ form.email }}
                         </div>
-                    </div> -->
-
-                    <!-- Champ de date au format texte -->
-                    <div class="input-group">
-                        <label for="dob">Date de naissance</label>
-                        <div class="date-input custom-datepicker">
-                            <input type="text" id="dob" name="dob" placeholder="jj/mm/AAAA" {% if user.birthdate %} value="{{ user.birthdate }}" {% endif %} pattern="\d{2}/\d{2}/\d{4}" required>
+                    
+                        <div class="input-group">
+                            <label for="{{ form.phone.id_for_label }}">Numéro de téléphone</label>
+                            {{ form.phone_number }}
+                            <div style="color: red; padding-bottom: 0.5rem;">
+                                {{ form.phone_number.errors }}</div>
                         </div>
-                    </div>
+                    
+                        <button class="profil-button" type="submit">Sauvegarder</button>
+                    </form>
+
+                    <div style="padding-bottom: 5rem;"></div>
+
+                </div>
+
+                <script>
 
 
-                    <div class="input-group">
-                        <label for="email">Adresse email</label>
-                        <input type="email" id="email" name="email" placeholder="Votre adresse email" {% if user.email %} value="{{ user.email }}" {% endif %}>
-                    </div>
+                // document.addEventListener('DOMContentLoaded', function() {
+                // const phoneInputField = document.querySelector("#phone_number");
+                // const phoneInput = window.intlTelInput(phoneInputField, {
+                //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                //     initialCountry: 'auto',
+                //     geoIpLookup: function(callback) { callback('fr'); }
+                //     });
+                // });
 
-                    <div class="input-group">
-                        <label for="phone">Numéro de téléphone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Votre numéro de téléphone" {% if user.phone_number %} value="{{ user.phone_number }}" {% endif %}>
-                    </div>
 
-                    <button class="profil-button" type="submit" form="personal-info-form"> Sauvegarder </button>
 
-                </form>
+                document.addEventListener('DOMContentLoaded', function() {
+                // Code for initializing intlTelInput
+                const phoneInputFieldIntlTel = document.querySelector("#phone_number");
+                const phoneInputIntlTel = window.intlTelInput(phoneInputFieldIntlTel, {
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                    initialCountry: 'auto',
+                    geoIpLookup: function(callback) { callback('fr'); }
+                });
 
-                <form class="password-settings" id="password-settings-form" method="post" action="{% url 'update_password' %}">
-                    {% csrf_token %}
-                    <h3 style="margin: 2rem 0 2rem 0;">Paramètres du mot de passe</h3>
-                    <hr class="divider">
+                // Code for additional phone number input handling
+                const phoneInputField = document.querySelector("#phone_number");
 
-                    <div class="input-group">
-                        <label for="current-password">Mot de passe actuel</label>
-                        <input type="password" id="old-password" placeholder="Mot de passe actuel">
-                    </div>
+                // Attach an event listener to the form submission
+                const form = document.querySelector("#personal-info-form");  // Replace with your actual form ID
+                form.addEventListener('submit', function(event) {
+                    // Get the current value of the input
+                    let inputValue = phoneInputField.value;
 
-                    <div class="input-group">
-                        <label for="new-password">Nouveau mot de passe</label>
-                        <input type="password" id="new-password" placeholder="Nouveau mot de passe">
-                    </div>
+                    // Remove non-numeric characters
+                    inputValue = inputValue.replace(/[^0-9]/g, '');
 
-                    <div class="input-group">
-                        <label for="confirm-password">Confirmation du nouveau mot de passe</label>
-                        <input type="password" id="new-password2" placeholder="Confirmer le nouveau mot de passe">
-                    </div>
+                    // Get the selected country data from intlTelInput
+                    const selectedCountryData = phoneInputIntlTel.getSelectedCountryData();
 
-                    <button class="profil-button" type="submit" form="password-settings-form"> Sauvegarder </button>
+                    // Add the country code to the input value
+                    const phoneNumberWithCountryCode = `+${selectedCountryData.dialCode}${inputValue}`;
 
-                </form>
-
-            </div>
-
-            <script>
-            
-            /*============ ALERT MESSAGE CLOSE ============*/
-            $(".close").click(function() {
-                $(this)
-                .parent(".alert")
-                .fadeOut();
-            });
-            
-
-            $(document).ready(function() {
-                // Initialise le champ de date avec le sélecteur de date de jQuery UI
-                $.datepicker.setDefaults($.datepicker.regional['fr']);
-                $("#dob").datepicker({
-                    dateFormat: 'dd/mm/yy', // Format de la date que vous souhaitez
-                    changeYear: true,
-                    changeMonth: true,
-                    yearRange: "-100:+0", // Vous pouvez ajuster cela pour limiter la plage des années
-                    closeText: 'Fermer',
-                    prevText: 'Précédent',
-                    nextText: 'Suivant',
-                    currentText: 'Aujourd\'hui',
-                    monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-                    monthNamesShort: ['Janv.', 'Févr.', 'Mars', 'Avril', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'],
-                    dayNames: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-                    dayNamesShort: ['Dim.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
-                    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-                    weekHeader: 'Sem.',
-                    showButtonPanel: true
+                    // Update the input field value
+                    phoneInputField.value = phoneNumberWithCountryCode;
                 });
             });
-            </script>
-            
-        </section>
 
-    </div>
+                /*============ ALERT MESSAGE CLOSE ============*/
+                $(".close").click(function() {
+                    $(this)
+                    .parent(".alert")
+                    .fadeOut();
+                });
+                
+                </script>
+                
+            </section>
 
+        </div>
 
 </main>
 

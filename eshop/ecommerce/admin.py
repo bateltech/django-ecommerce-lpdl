@@ -10,8 +10,10 @@ admin.site.register(Wishlist)
 admin.site.register(Cart)
 admin.site.register(CartItem)
 
+class ArticleAdmin(admin.ModelAdmin):
+    filter_horizontal = ('tags', 'pierres')  # Display tags and pierres as checkboxes
 
-admin.site.register(Article)
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(Pierre)
 admin.site.register(TagBesoin)
 admin.site.register(PrixArticle)

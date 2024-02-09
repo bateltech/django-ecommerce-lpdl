@@ -12,22 +12,47 @@
     <div class="top__bar">
 
            <div class="search__container">
-            <i class="bi bi-cart3 fa-2x"></i>
-            <i class="bi bi-suit-heart fa-2x"></i>
-            <i class="bi bi-search fa-2x"></i>
+            <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
 
            <a href="{% url 'accueil' %}" class="logo__prin">
             <img id="logo" src="{% static 'img/logo.png'%}">
            </a>
 
-           <div class="shop__container">
-            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
-            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
-           </div>
+           {% if utilisateur_connecte %}
+
+
+                   <!-- Desktop version -->
+                   <div class="shop__container">
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
+                    <a href="{% url 'profil' %}"><button class="log__button" >
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        {{ prenom_utilisateur }}
+                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                    </button></a>
+                   </div>
+                
+
+                   {% else %}
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                        <i class="fa fa-user-plus"></i>
+                    </button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                        <i class="fa fa-sign-in"></i>
+                    </button></a>
+                   </div>
+
+                   {% endif %} 
+                   
     </div>
 
-    <div style="display: flex; justify-content: space-around; align-items: center;">
+    <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
         <img src="{% static 'img/Vector.png'%}" alt="separation" style="width: auto; padding: 2rem;">
     </div>
 
@@ -79,7 +104,15 @@
             </div>
         </div>
 
+        <a href="{% url 'accueil' %}" class="nav__logo">
+            <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+           </a>
+           
         <div class="nav__buttons">
+
+            <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+            <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
             
             <!-- Toggle button -->
             <div class="nav__toggle" id="nav-toggle">
@@ -89,7 +122,41 @@
     </nav>
 
 
-</header>
+        </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
+        
 
 <!--==================== MAIN ====================-->
 <main class="main">

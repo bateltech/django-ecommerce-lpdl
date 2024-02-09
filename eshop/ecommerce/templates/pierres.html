@@ -13,9 +13,9 @@
     <div class="top__bar">
 
            <div class="search__container">
-            <i class="bi bi-cart3 fa-2x"></i>
-            <i class="bi bi-suit-heart fa-2x"></i>
-            <i class="bi bi-search fa-2x"></i>
+            <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
 
            <a href="{% url 'accueil' %}" class="logo__prin">
@@ -27,7 +27,9 @@
 
 
            <div class="shop__container">
-            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter</button></a>
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
             <a href="{% url 'profil' %}"><button class="log__button" >
                 <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
                 {{ prenom_utilisateur }}
@@ -48,7 +50,7 @@
 
     </div>
 
-    <div style="display: flex; justify-content: space-around; align-items: center;">
+    <div  class="separation_img"  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
         <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
     </div>
 
@@ -58,36 +60,42 @@
             <ul class="nav__list grid">
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}" class="nav__link">
+                        <i class="fa-regular fa-moon"></i>
                          Accueil
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#collection" class="nav__link">
+                        <i class="fa-solid fa-shapes"></i>
                          Collection
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#artist" class="nav__link">
+                        <i class="fa-solid fa-person-rays"></i>
                          Artiste
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'articles' %}" class="nav__link">
+                        <i class="ri-store-2-line"></i>
                          Articles
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'pierres' %}" class="nav__link active-link">
+                        <i class="fa-regular fa-gem"></i>
                          Pierres
                     </a>
                 </li>
 
                 <li class="nav__item">
                     <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                        <i class="fa-solid fa-hand-sparkles"></i>
                          Voyance
                     </a>
                 </li>
@@ -100,10 +108,15 @@
             </div>
         </div>
 
+        <a href="{% url 'accueil' %}" class="nav__logo">
+            <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+           </a>
+           
         <div class="nav__buttons">
 
-            <!-- Theme change button -->
-            <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+            <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+            <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+            <a href="#" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
             
             <!-- Toggle button -->
             <div class="nav__toggle" id="nav-toggle">
@@ -113,7 +126,41 @@
     </nav>
 
 
-</header>
+        </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
+        
 
 <!--==================== MAIN ====================-->
 <main class="main">
@@ -123,16 +170,18 @@
             <!-- swiper test -->
 
             <section class="swiper mySwiper" style="padding-bottom: 0 !important;">
-                <h1 class="collection__title">DÉCOUVREZ NOS PIERRES</h1>
+                <h1 class="collection__title pierre__title">DÉCOUVREZ NOS PIERRES</h1>
 
-                <div class="swiper-wrapper">
+                <div class="swiper-wrapper swiper-pierre">
 
 
                     {% for pierre in pierres %}
                     <div class="card swiper-slide pierre-card"
                     data-image="{{ pierre.image.url }}"
+                    data-libelle="{{ pierre.libelle }}"
                     data-description="{{ pierre.description }}"
-                    data-couverture="{{pierre.couverture.url}}">
+                    data-couverture="{{pierre.couverture.url}}"
+                    data-id="{{ pierre.id}}">
                         <div class="card__image">
                             <img src="{{ pierre.couverture.url }}" alt="pierre image">
                         </div>
@@ -153,20 +202,108 @@
                 <div class="swiper-button-next next_pierre">    <i class="fa-regular fa-chevrons-right"></i>    </div>
 
                 <div class="swiper-button-prev prev_pierre">    <i class="fa-regular fa-chevrons-left"></i>    </div>
-
-                <div class="pierre__background"></div>
+                {% if selected_pierre %}
+                <div class="pierre__background" id="pierre-background">
+                </div>
                 <div class="pierre__image">
-                    <img src="" alt="pierre image" id="pierre-image">
+                    <img src="{{ selected_pierre.image.url }}" alt="pierre image" id="pierre-image">
                 </div>
             
                 <div class="pierre__content">
                     <p class="pierre-text" id="pierre-description">
+                        {{ selected_pierre.description }}
                     </p>
                 </div>
+                {% endif %}
             </div>
             
 </main>
 
+        
+<!-- Initialize Swiper -->
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Récupérez les paramètres d'URL lors du chargement initial de la page
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialLibelle = urlParams.get('pierre');
+        const initialId = urlParams.get('id');
+
+        // Sélectionnez les éléments une seule fois
+        const pierreCards = document.querySelectorAll('.pierre-card');
+        const pierreContainer = document.querySelector('.pierre__background');
+        const pierreImage = document.querySelector('.pierre__image img');
+        const pierreText = document.querySelector('.pierre-text');
+
+        // Trouvez l'index de la pierre dans votre liste
+        const initialIndex = Array.from(pierreCards).findIndex(card => card.getAttribute('data-libelle') === initialLibelle && card.getAttribute('data-id') === initialId);
+
+        // Initialisez le swiper avec l'index de la pierre spécifiée dans l'URL
+        var swiper = new Swiper(".mySwiper", {
+            effect: "coverflow",
+            initialSlide: initialIndex || 0,
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            coverflowEffect: {
+                rotate: 0,
+                stretch: 0,
+                depth: 300,
+                modifier: 1,
+                slideShadows: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: ".swiper-pagination",
+            },
+        });
+
+        function updateContentBasedOnSlide(activeSlideIndex) {
+            const couverture = pierreCards[activeSlideIndex].getAttribute('data-couverture');
+            pierreContainer.style.backgroundImage = `url(${couverture})`;
+            pierreContainer.style.backgroundPosition = 'center';
+
+            const image = pierreCards[activeSlideIndex].getAttribute('data-image');
+            const description = pierreCards[activeSlideIndex].getAttribute('data-description');
+            pierreImage.src = image;
+            pierreText.textContent = description;
+        }
+
+
+        // Vérifiez si l'URL contient le libellé et l'ID de la pierre
+        if (!initialLibelle || !initialId) {
+            // Si l'URL ne contient pas le libellé et l'ID, utilisez l'index de la première carte
+            const firstCardIndex = 0;
+            updateContentBasedOnSlide(firstCardIndex);
+        }
+
+        
+        swiper.on('slideChange', function () {
+            var activeSlideIndex = swiper.activeIndex;
+            updateContentBasedOnSlide(activeSlideIndex);
+
+            const libelle = pierreCards[activeSlideIndex].getAttribute('data-libelle');
+            const id = pierreCards[activeSlideIndex].getAttribute('data-id');
+
+            const currentUrl = window.location.href;
+            const newUrl = `${currentUrl.split('?')[0]}?pierre=${libelle}&id=${id}`;
+
+            history.replaceState({}, '', newUrl);
+
+            const pierreBackground = document.getElementById('pierre-background');
+            pierreBackground.style.backgroundImage = `url(${pierreCards[activeSlideIndex].getAttribute('data-couverture')})`;
+            pierreBackground.style.backgroundPosition = 'center';
+        });
+
+        // Mettez à jour le contenu pour la première slide lors du chargement initial
+        if (initialIndex !== undefined && initialIndex !== null) {
+            updateContentBasedOnSlide(initialIndex);
+        }
+
+    });
+</script>
 
 {% endblock %}

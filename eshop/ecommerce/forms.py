@@ -1,7 +1,21 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import ClientUser
+from django.contrib.admin.widgets import AdminDateWidget
 
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Define a dictionary to hold custom attributes and classes for each field
+        custom_attributes = {
+            'username': {'class': 'custom-email-class', 'placeholder': ' Entrez votre adresse email'},
+            'password': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Entrez votre mot de passe'},
+        }
+        
+        # Update each field's attributes and classes
+        for field_name, attributes in custom_attributes.items():
+            self.fields[field_name].widget.attrs.update(attributes)
 
 
 class SignupForm(UserCreationForm):
@@ -22,22 +36,68 @@ class SignupForm(UserCreationForm):
             'password1': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Entrez votre mot de passe'},
             'password2': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Confirmez votre mot de passe'},
         }
-        
+    
+
         # Update each field's attributes and classes
         for field_name, attributes in custom_attributes.items():
             self.fields[field_name].widget.attrs.update(attributes)
 
 
-class LoginForm(AuthenticationForm):
+from django import forms
+from django.forms import DateInput
+import phonenumbers
+from phonenumber_field.formfields import PhoneNumberField
+from django.core.exceptions import ValidationError
+
+class DatePickerInput(DateInput):
+    input_type = 'date'
+    format_key = 'DATE_INPUT_FORMATS'
+    format = ['%d/%m/%Y']
+
+class PersonalInfoForm(forms.ModelForm):
+    class Meta:
+        model = ClientUser
+        fields = ['last_name', 'first_name', 'birthdate', 'email', 'phone_number']
+
+    last_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class': 'custom-name-class','placeholder': 'Votre nom'}))
+    first_name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class': 'custom-name-class','placeholder': 'Votre prénom'}))
+    birthdate = forms.DateField(widget=DatePickerInput(attrs={'class': 'custom-date-class','placeholder': 'jj/mm/AAAA'}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'custom-mail-class','placeholder': 'Votre adresse email'}))
+    phone_number = PhoneNumberField(widget=forms.TextInput(attrs={'class': 'custom-phone-class', 'id': 'phone_number', 'placeholder': '06 60 00 00 60'}))
+
+
+    # def clean_phone_number(self):
+    #     phone_number = self.cleaned_data.get('phone_number', '')
+    #     try:
+    #         if not phonenumbers.is_valid_number(phone_number):  # Check if the PhoneNumber object is valid
+    #             raise ValidationError('The phone number entered is not valid.')
+            
+    #         # Format the number based on its detected country
+    #         formatted_number = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            
+    #         return formatted_number
+    #     except phonenumbers.NumberParseException:
+    #         raise ValidationError('The phone number entered is still not valid.')
+        
+
+from django.contrib.auth.forms import PasswordChangeForm
+
+class PasswordResetForm(PasswordChangeForm):
+
+    class Meta:
+        model = ClientUser
+        fields = ('old_password', 'new_password1', 'new_password2')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
-        # Define a dictionary to hold custom attributes and classes for each field
-        custom_attributes = {
-            'username': {'class': 'custom-email-class', 'placeholder': ' Entrez votre adresse email'},
-            'password': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Entrez votre mot de passe'},
-        }
-        
-        # Update each field's attributes and classes
-        for field_name, attributes in custom_attributes.items():
-            self.fields[field_name].widget.attrs.update(attributes)
+
+        # Ajouter des classes aux champs
+        self.fields['old_password'].widget.attrs['class'] = 'custom-class-old-password'
+        self.fields['new_password1'].widget.attrs['class'] = 'custom-class-new-password1'
+        self.fields['new_password2'].widget.attrs['class'] = 'custom-class-new-password2'
+
+        # Ajouter des placeholders
+        self.fields['old_password'].widget.attrs['placeholder'] = ' votre mot de passe actuel'
+        self.fields['new_password1'].widget.attrs['placeholder'] = ' votre nouveau mot de passe'
+        self.fields['new_password2'].widget.attrs['placeholder'] = ' confirmer votre nouveau mot de passe'
+

@@ -118,6 +118,16 @@ input[type="password"] { */
     font-size: large;
 }
 
+
+.name__container .name__field .custom-first-name-class::placeholder,
+ .name__container .name__field .custom-last-name-class::placeholder,
+ .custom-email-class::placeholder,
+ .custom-password-class::placeholder,
+ .custom-confirm-password-class::placeholder {
+
+    color: #333333a2;
+ }
+
 /* #first_name:focus,
 #last_name:focus,
 input[type="email"]:focus,
@@ -131,7 +141,7 @@ input[type="password"]:focus { */
 }
 
 .name__container {
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
 }
 
@@ -200,7 +210,6 @@ input[type="password"]:focus { */
     padding: 1rem;
     position: relative;
     border-radius: 0.5rem;
-    box-shadow: 0 0 5px 5px #7e7e7e;
   }
   
   .close {
@@ -227,10 +236,21 @@ input[type="password"]:focus { */
     background-color: #6fc492 !important;
     border-left: 5px solid #178344 !important;
   }
+
   .success-alert .close {
     border-color: #178344 !important;
     color: #178344 !important;
   }
+
+  .error-alert {
+    background-color: #ffcccc !important;  /* Couleur de fond rouge */
+    border-left: 5px solid #ff6666 !important;  /* Couleur de bordure rouge */
+}
+
+.error-alert .close {
+    border-color: #ff6666 !important;  /* Couleur de bordure du bouton de fermeture rouge */
+    color: #ff6666 !important;  /* Couleur du texte du bouton de fermeture rouge */
+}
 
 .profil-button {
     float: right;
@@ -242,17 +262,18 @@ input[type="password"]:focus { */
     border: 1px solid;
     color: rgb(40, 40, 40);
     background-color: hsl(0, 0%, 90%);
-  }
+}
   
-  .profil-button:hover {
+.profil-button:hover {
     cursor: pointer;
     background-color: hsla(0, 0%, 80%, 0.8);
     border-color: white;
-  }
+}
 
 .personal-info,
 .password-settings {
     margin-bottom: 4rem;
+    width: 85%;
 }
 
 .personal-info h3,
@@ -297,7 +318,7 @@ input[type="tel"],
 input[type="date"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
+    /* padding: 8px; */
     border: 1px solid #ccc;
     border-radius: 3rem;
 }
@@ -308,19 +329,29 @@ input[type="password"] {
 
 /* .input-group input[type="email"],
 .input-group input[type="tel"],
-.input-group input[type="date"], */
+.input-group input[type="date"], 
 .input-group input[type="password"] {
-width: 47.5% !important;
-} 
+    width: 47.5% !important;
+} */
 
   /* Style pour le datepicker */
-  .custom-datepicker .ui-datepicker-header {
+.custom-datepicker .ui-datepicker-header {
     background-color: #aaa9a9;
     color: rgb(197, 25, 25);
   }
-  .custom-datepicker .ui-datepicker-title {
+
+.custom-datepicker .ui-datepicker-title {
     color: white;
   }
-  .custom-datepicker .ui-datepicker-calendar td a {
+
+.custom-datepicker .ui-datepicker-calendar td a {
     color: #333;
   }
+
+.sidebar {
+    display: none;
+}
+
+.side-openbtn {
+    display: none;
+}

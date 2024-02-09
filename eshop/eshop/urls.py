@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.accueil_view, name='accueil'),
     path('admin/', admin.site.urls),
     path('lapierredelune/', include('ecommerce.urls')),
+    #path('admin/', include('admin_black.urls')),
 
 ]
 

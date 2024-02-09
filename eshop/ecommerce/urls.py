@@ -1,4 +1,4 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from .views import *
 
 # router = routers.DefaultRouter()
@@ -21,15 +21,18 @@ urlpatterns = [
     #path('connexion/', connexion_view, name='connexion'),
     path('mentions-legales/', mentions_view, name='mentions'),
     path('conditions-generales-de-vente/', conditions_view, name='conditions'),
-    path('pierres-en-lithotherapie/', pierres_view, name='pierres'),
+    re_path(r'^pierres-en-lithotherapie/$', pierres_view, name='pierres'),
     path('erreur-404/', erreur_view, name='erreur404'),
     path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password'),
     path('mon-panier/', panier_view, name='panier'),
     path('confirmation-de-commande/', checkout_view, name='checkout'),
     path('mon-profil/', profil_view, name='profil'),
+    path('securite/', securite_view, name='securite'),
+    path('mes-favoris/', favoris_view, name='favoris'),
+    path('mes-commentaires/', commentaires_view, name='commentaires'),
+    path('historique-des-achats/', historique_view, name='historique'),
     path('deconnexion/', logout_view, name='deconnexion'),
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
-
-    path('profil/update_personal_info/', update_personal_info, name='update_personal_info'),
-    path('profil/update_password/', update_password, name='update_password'),
+    path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
+    path('mon-profil/update_password/', update_password, name='update_password'),
 ]

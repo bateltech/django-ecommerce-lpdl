@@ -4,18 +4,20 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
 
 
-class CustomDateFormatField(models.DateField):
-    def to_python(self, value):
-        if value:
-            return datetime.strptime(value, '%d/%m/%Y').date()
-        return None
+# class CustomDateFormatField(models.DateField):
+#     def to_python(self, value):
+#         if value:
+#             return datetime.strptime(value, '%d/%m/%Y').date()
+#         return None
 
 # Table Client
 class ClientUser(AbstractUser):
     # Ajoutez des champs d'utilisateur personnalisés si nécessaire
      # New fields
     phone_number = PhoneNumberField(null=True, blank=True)
-    birthdate = CustomDateFormatField(null=True, blank=True)
+    #birthdate = CustomDateFormatField(null=True, blank=True)
+    
+    birthdate = models.DateField(null=True, blank=True)
     
     # Add related_name to avoid clashes with the default User model
     groups = models.ManyToManyField(Group, related_name='client_users')
@@ -90,8 +92,7 @@ class PrixArticle(models.Model):
     type_prix = models.CharField(max_length=20, choices=PRICE_TYPE_CHOICES, default='fixed')
     prix = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
 
-    min_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    max_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    taille = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
         return f"{self.get_type_prix_display()} - ${self.prix}"
@@ -103,11 +104,17 @@ class Article(models.Model):
     libelle = models.CharField(max_length=128, null=False)
     description = models.TextField(null=False)
     image = models.ImageField(upload_to="articles/", blank=True, null=True)
-    fk_prix_article = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
+    stock = models.IntegerField(default=0, null=False)
+    # fk_prix_article = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
+    fk_prix_article = models.ManyToManyField(PrixArticle, related_name='articles')  # Many-to-Many relationship with PrixArticle
     fk_categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     fk_sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE)
-    fk_tag = models.ForeignKey(TagBesoin, on_delete=models.CASCADE)
-    fk_pierre = models.ForeignKey('Pierre', on_delete=models.CASCADE, blank=True, null=True)
+    # fk_tag = models.ForeignKey(TagBesoin, on_delete=models.CASCADE)
+    # fk_pierre = models.ForeignKey('Pierre', on_delete=models.CASCADE, blank=True, null=True)
+    tags = models.ManyToManyField(TagBesoin, related_name='articles')  # Many-to-Many relationship with Tag
+    pierres = models.ManyToManyField(Pierre, related_name='articles')  # Many-to-Many relationship with Pierre
+    #  when I want to access all the articles related to an instance of a tag or pierre,
+    #  I should use this : my_tag.articles.all() that's what related_name is for
 
     def __str__(self):
         return self.libelle

@@ -105,14 +105,27 @@ const scrollHeader = () =>{
 }
 window.addEventListener('scroll', scrollHeader)
 
-const scrollNav = () =>{
-    const header = document.getElementById('nav_bar')
-    // When the scroll is greater than 300 viewport height, add the scroll-header class to the header tag
-    this.scrollY >= 240 ? header.classList.add('fixed_nav') 
-                       : header.classList.remove('fixed_nav')
-}
-window.addEventListener('scroll', scrollNav)
+// const scrollNav = () =>{
+//     const header = document.getElementById('nav_bar')
+//     // When the scroll is greater than 300 viewport height, add the scroll-header class to the header tag
+//     this.scrollY >= 240 ? header.classList.add('fixed_nav') 
+//                        : header.classList.remove('fixed_nav')
+// }
 
+const scrollNav = () => {
+    const header = document.getElementById('nav_bar');
+    const main = document.querySelector('.main');
+
+    if (window.scrollY >= 240) {
+        header.classList.add('fixed_nav');
+        main.style.paddingTop = '4rem';
+    } else {
+        header.classList.remove('fixed_nav');
+        main.style.paddingTop = '0';
+    }
+}
+
+window.addEventListener('scroll', scrollNav)
 
 
 /* HORIZONTAL SCROLL BAR FOR FILTERS */
@@ -172,3 +185,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+/* Barre de recherche */
+document.getElementById('searchIcon').addEventListener('click', function () {
+    document.getElementById('searchBar').style.width == '20%' ? document.getElementById('searchBar').style.width = '0'
+                                                             : document.getElementById('searchBar').style.width = '20%';
+});
+
+
+window.addEventListener('scroll', function () {
+    document.getElementById('searchBar').style.width = '0';
+});
+
+
+/* Pop up Voyance */
+
+document.getElementById('voyance-button').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "flex";
+});
+
+document.getElementById('voyance-close').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "none";
+});
+
+// document.querySelector('.close').addEventListener("click", function() {
+// 	document.querySelector('.bg-modal').style.display = "none";
+// });
+
+
+
+
+/* sidebar menu for profil.html */
+
+function openNav() {
+    document.getElementsByClassName("sidebar")[0].style.width = "250px";
+    document.getElementsByClassName("side-openbtn")[0].style.display = "none";
+  }
+  
+function closeNav() {
+    document.getElementsByClassName("sidebar")[0].style.width = "0";
+    document.getElementsByClassName("side-openbtn")[0].style.display = "inline";
+  }
+  

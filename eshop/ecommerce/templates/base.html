@@ -73,7 +73,7 @@
                             </ul>
         
                             <ul class="footer__social">
-                                <a href="https://www.facebook.com/sandramedium1" target="_blank"> <i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="https://www.facebook.com/lapierredelune2" target="_blank"> <i class="fa-brands fa-facebook-f"></i></a>
                                 <a href="https://www.instagram.com/la_pierre_de_.lune/" target="_blank"> <i class="fa-brands fa-instagram"></i></a>
                                 <a href="https://www.tiktok.com/@lapierredelune" target="_blank"> <i class="fa-brands fa-tiktok"></i></a>
                             </ul>
@@ -121,97 +121,34 @@
                 <!-- Swiper JS -->
                 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
         
-                <!-- Initialize Swiper -->
-                <script>
-                    var swiper = new Swiper(".mySwiper", {
-                    effect: "coverflow",
-                    initialSlide:2,          
-                    grabCursor: true,
-                    centeredSlides: true,
-                    slidesPerView: "auto",
-                    coverflowEffect: {
-                        rotate: 0,
-                        stretch: 0,
-                        depth: 300,
-                        modifier: 1,
-                        slideShadows: false,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                    pagination: {
-                        el: ".swiper-pagination",
-                    },
-                    });
 
 
-                    var activeSlideIndex = swiper.activeIndex;
-                    
-                    // Récupérez l'attribut "couverture" de la pierre en fonction de l'indice de la diapositive
-                    const pierreCards = document.querySelectorAll('.pierre-card');
-                    const couverture = pierreCards[activeSlideIndex].getAttribute('data-couverture');
-                    
-                    // Sélectionnez l'élément avec la classe "pierre__container"
-                    const pierreContainer = document.querySelector('.pierre__background');
-                    
-                    // Définissez l'attribut "backgroundImage" de l'élément comme l'URL de la couverture
-                    pierreContainer.style.backgroundImage = `url(${couverture})`;
-                    // Centrer l'image de background verticalement
-                    pierreContainer.style.backgroundPosition = 'center';
-
-
-                    // Récupérez les données de l'image et de la description en fonction de l'indice de la diapositive
-                    const image = pierreCards[activeSlideIndex].getAttribute('data-image');
-                    const description = pierreCards[activeSlideIndex].getAttribute('data-description');
-                
-                    // Affichez ces données dans l'élément HTML approprié (pierre__image et pierre-text)
-                    const pierreImage = document.querySelector('.pierre__image img');
-                    const pierreText = document.querySelector('.pierre-text');
-                
-                    // Mettez à jour le contenu de l'image et de la description
-                    pierreImage.src = image;
-                    pierreText.textContent = description;
-
-
-                    
-
-
-                        // Cette fonction met à jour le contenu en fonction de l'élément actuel
-                    function updateContentBasedOnSlide(activeSlideIndex) {
-
-                    const couverture = pierreCards[activeSlideIndex].getAttribute('data-couverture');
-                    
-                    // Sélectionnez l'élément avec la classe "pierre__container"
-                    const pierreContainer = document.querySelector('.pierre__background');
-                    
-                    // Définissez l'attribut "backgroundImage" de l'élément comme l'URL de la couverture
-                    pierreContainer.style.backgroundImage = `url(${couverture})`;
-                    // Centrer l'image de background verticalement
-                    pierreContainer.style.backgroundPosition = 'center';
-                    
-
-
-                    // Récupérez les données de l'image et de la description en fonction de l'indice de la diapositive
-                    const image = pierreCards[activeSlideIndex].getAttribute('data-image');
-                    const description = pierreCards[activeSlideIndex].getAttribute('data-description');
-                
-                    // Affichez ces données dans l'élément HTML approprié (pierre__image et pierre-text)
-                    const pierreImage = document.querySelector('.pierre__image img');
-                    const pierreText = document.querySelector('.pierre-text');
-                
-                    // Mettez à jour le contenu de l'image et de la description
-                    pierreImage.src = image;
-                    pierreText.textContent = description;
-                }
-
-                    swiper.on('slideChange', function () {
-                        var activeSlideIndex = swiper.activeIndex; // Indice de la diapositive actuelle
-                        // Mettez à jour le contenu en fonction de l'élément actuel (par exemple, en utilisant AJAX pour charger des données dynamiques)
-                        updateContentBasedOnSlide(activeSlideIndex);
-                    });
-
-                </script>
-
+                <!--=============== MAIN JS ===============-->
+                <script src="{% static 'js/main.js' %}"></script>
+        
+                                <!-- Initialize Swiper -->
+                                <script>
+                                    var swiper = new Swiper(".accueilSwiper", {
+                                    effect: "coverflow",
+                                    initialSlide:2,          
+                                    grabCursor: true,
+                                    centeredSlides: true,
+                                    slidesPerView: "auto",
+                                    coverflowEffect: {
+                                        rotate: 0,
+                                        stretch: 0,
+                                        depth: 300,
+                                        modifier: 1,
+                                        slideShadows: false,
+                                    },
+                                    navigation: {
+                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.swiper-button-prev',
+                                    },
+                                    pagination: {
+                                        el: ".swiper-pagination",
+                                    },
+                                    });
+</script>                
     </body>
 </html>
