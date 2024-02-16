@@ -111,8 +111,8 @@ class Article(models.Model):
     fk_sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE)
     # fk_tag = models.ForeignKey(TagBesoin, on_delete=models.CASCADE)
     # fk_pierre = models.ForeignKey('Pierre', on_delete=models.CASCADE, blank=True, null=True)
-    tags = models.ManyToManyField(TagBesoin, related_name='articles')  # Many-to-Many relationship with Tag
-    pierres = models.ManyToManyField(Pierre, related_name='articles')  # Many-to-Many relationship with Pierre
+    tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)  # Many-to-Many relationship with Tag
+    pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)  # Many-to-Many relationship with Pierre
     #  when I want to access all the articles related to an instance of a tag or pierre,
     #  I should use this : my_tag.articles.all() that's what related_name is for
 
@@ -146,17 +146,22 @@ class Cart(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculate total price based on CartItems
-        self.total_price = sum(item.quantity * item.item_price for item in self.cartitem_set.all())
+        #self.total_price = sum(item.quantity * item.item_price for item in self.cartitem_set.all())
         super().save(*args, **kwargs)
 
 # Table Item Panier
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article_price = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def save(self, *args, **kwargs):
+        # Calculate item price by multiplying article price by quantity
+        self.item_price = self.article_price.prix * self.quantity
+        #self.cart.total_price = self.cart.total_price + self.item_price
+
         # Update Cart total_price when saving CartItem
         self.cart.save()
         super().save(*args, **kwargs)

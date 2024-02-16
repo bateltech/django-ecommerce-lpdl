@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+        <!--==================== HEADER ====================-->
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <i class="bi bi-cart3 fa-2x"></i>
+                    <i class="bi bi-suit-heart fa-2x"></i>
+                    <i class="bi bi-search fa-2x"></i>
+                   </div>
+
+                   <a href="{% url 'accueil' %}" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.png' %}">
+                   </a>
+
+                   <div class="shop__container">
+                    <button class="log__button">S'inscrire</button>
+                    <button class="log__button">Se connecter</button>
+                   </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container" id="nav_bar">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}" class="nav__link">
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="#collection" class="nav__link anchor__link">
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'articles' %}" class="nav__link active-link">
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'pierres' %}" class="nav__link">
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link anchor__link">
+                                 Voyance
+                            </a>
+                        </li>
+                        
+                    </ul>
+
+                    <!--Close button-->
+                    <div class="nav__close" id="nav-close">
+                        <i class="ri-close-line"></i>
+                    </div>
+                </div>
+
+                <div class="nav__buttons">
+
+                    <!-- Theme change button -->
+                    <!-- <i class="ri-moon-clear-line change-theme" id="theme-button"></i> -->
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="ri-menu-4-line"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+        </header>
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+            <div style="margin: 54px;">
+                <p style="color: white; font-size: 15sp; ">Articles / Bracelets / Bracelets Femmes / Bracelets Hématite</p>
+            </div>
+
+            <!--==================== ARTICLES ====================-->
+            <div class="article__main">
+
+                <!-- Sidebar Menu -->
+                <aside>
+                    <p> </p>
+                    <a href="">
+                      Bracelets
+                    </a>
+                    <a href="">
+                      Boucles d'oreilles
+                    </a>
+                    <a href="">
+                      Malas
+                    </a>
+                    <a href="">
+                      Orgonites
+                    </a>
+                    <a href="">
+                      Plaques de rechargement
+                    </a>
+                    <a href="">
+                        Bolas pour grossesse
+                      </a>
+                      <a href="">
+                        Bougeoirs
+                      </a>
+                      <a href="">
+                        Bouddha
+                      </a>
+                </aside>
+
+                <section class="article__section">
+
+                    <div class="flex-container" style="display: -webkit-flex; display: flex;">
+                        <div class="card__image" style="-webkit-box-flex: 2; -ms-flex: 2; flex: 2; padding: 20px;">
+                            <img src="{% static 'img/produits/bracelets.png' %}" alt="card image">
+                        </div>
+
+                        <div id="products-container"></div>
+
+                        <div class="card_content" style="-webkit-box-flex: 1; -ms-flex: 1; flex: 1; padding: 10px;">
+                            <h1>{{article.libelle}}</h1>
+                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+                            <div style="display: -webkit-flex;">
+                                {% if price.type_prix == "size_based" %}
+                                <div>
+                                    <label style="color: white; font-size: 20px; ">Taille<br></label>
+                                    <select name="size" id="size" style ="width: 80px; height: 32px; border-radius: 40px; border: 0.50px white solid; background-color: black; color: white; padding: 5px; font-size:   18px;" >
+                                        {% for p in prices %}
+
+                                        <option value={{p.prix}} id={{p.id}} style="color: white; font-size: 20px;"> 
+                                            {{p.taille}}
+                                        </option>
+
+                                        {% endfor %}
+
+                                    </select>
+                    
+                                </div>
+                                <div>
+                                    <label style="color: white; font-size: 20px;">Prix</label>
+                                    <p id="prixparTaille" style="color: white; font-size: 20px;">{{price.prix}} €</p>
+                                </div>
+                                {% else %}
+                                <div>
+                                    <label style="color: white; font-size: 20px;">Prix</label>
+                                    <p style="color: white; font-size: 20px;">{{price.prix}} €</p>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div style="display: -webkit-flex;">
+                                
+                                <!-- 
+                                <div class="StarReview" style="width: 161.32px; height: 24.38px; position: relative">
+
+                                </div>
+                                <span style="color: white;"> 4.5</span>
+                                <div class="Line10" style="width: 19.30px; height: 0px; transform: rotate(90.42deg); transform-origin: 0 0; border: 1px #D9D9D9 solid; margin: 10px;"></div>
+                             -->
+                                <a href="http://127.0.0.1:8000/" style="color: white; font-size: 15px;"> Voir les avis </a>
+                            </div>
+
+                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+
+                            {% if article.stock > 0 %}
+                            <div style="width: 325.58px; height: 42px; background: #D9D9D9; border-radius: 20px; padding: 10px 10px;">
+                                <img src="{% static 'img/icon_detail_valider.svg' %}" alt="icon valider" style="width: 19.55px; height: 17.14px;"/>
+                                <span style="width: 152.52px; height: 19.30px; color: #555555; font-size: 15px; margin-left: 10px;"> en stock</span>
+                                
+                            </div>
+                            {% else %}
+                            <div style="width: 325.58px; height: 42px; background: #d8bbbb; border-radius: 20px; padding: 10px 10px;">
+                                <img src="{% static 'img/icon_detail_close.svg' %}" alt="icon valider" style="width: 20.55px; height: 17.14px;"/>
+                                <span style="width: 152.52px; height: 19.30px; color: #811414; font-size: 15px; margin-left: 10px;"> repture de stock</span>
+                                
+                            </div>
+                            {% endif %}
+                            <div style="display: -webkit-flex;">
+                                <form method="POST" action="{% url 'add_to_cart' %}">
+                                    {% csrf_token %}
+                                    <input id="price_Taille" type="hidden" name="price_id" value="{{ price.id }}">
+                                    <input type="hidden" name="article_id" value="{{ article.id }}">
+                                    <button type="submit" class="login__button" >Ajouter au panier </button>
+                                </form>
+                                <form method="POST" action="{% url 'add_to_wishlist' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="article_id" value="{{ article.id }}">
+                                    <button id="favorie" type="submit" style="width: 40.09px; height: 41px; background: rgba(255, 255, 255, 0.50); border-radius: 50px; border: 1px white solid" >
+                                        <img src="{% static 'img/icon_detail_favorie.svg' %}" style="padding-top: 5px;"/>
+                                       </button>
+                                </form>
+                            </div>
+
+                            <div style="display: -webkit-flex; padding: 10px 10px;">
+                                <img src="{% static 'img/camion.svg' %}" style="width: 29.33px; height: 30.47px;"/>
+                                <span style="width: 280px; height: 26.41px; text-align: center; color: white; font-size: 16px; padding-top: 5px;"> La livraison gratuite à partir de 65 €.</span>
+
+                            </div>
+                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+                            
+                            <div>
+                                <h2>Description</h2>
+                                
+                                <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description|linebreaks|truncatechars:200 }}</div>
+                                
+                                <a id="readMore" style="color: white; font-weight: bold;">
+                                  <ins>Lire plus...</ins>
+                                </a>
+                                
+                                <p id="fullDesc" style="display:none; color: white; font-weight: lighter;">{{ article.description }}</p>
+                                
+                                <a id="readLess" style="display: none; color: white; font-weight: bold;">
+                                    <ins>Lire moins...</ins>
+                                  </a>
+                            </div>
+
+                              
+                        </div>
+                    </div>
+            
+
+                    
+                    
+                </section>
+
+            </div>
+
+            <!--==================== LIVRAISON ====================-->
+            <section class="livraison__section">
+
+                <div class="right__line"> </div>
+
+                <div class="livraison__container">
+                    <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="Image SVG">
+                    <div class="livraison__paragraphes">
+                        <b><p>Livraison à domicile</p></b>
+                        <p>5,00 €</p>
+                        <p>2 à 3 jours ouvrables (France)</p>
+                    </div>
+                </div>
+                
+                <div class="left__line"> </div>
+
+                <div class="right__line"> </div>
+
+                <div class="livraison__container">
+                    <div class="livraison__paragraphes">
+                        <p>Livraison gratuite pour tous les achats à partir de 65,00 €</p>
+                    </div>
+                </div>
+                
+                <div class="left__line"> </div>
+            </section>
+
+            <script>
+                console.log('Test');
+                const selectedElement = document.getElementById("size");
+                const selectedValue = selectedElement.value;
+                const inputElement = document.getElementById("price_Taille");
+
+                selectedElement.addEventListener("change",function(event){
+                    const selectedOption = selectedElement.options[selectedElement.selectedIndex];
+                    const selectedValue = selectedOption.value;
+                    console.log('selected value 2', selectedValue);
+                    const priceSelected = document.getElementById("prixparTaille");
+                    priceSelected.textContent = selectedValue +" €";
+                    const selectedId = selectedOption.getAttribute("id");
+                    inputElement.setAttribute("value", selectedId);
+                    console.log('id : ', inputElement.value);
+                })
+
+                console.log('input : ', inputElement.value);
+                console.log('selected value', selectedValue);
+
+                /* réduire/afficher la description complète */
+                const shortDesc = document.getElementById('shortDesc');
+                const fullDesc = document.getElementById('fullDesc');
+                const readMore = document.getElementById('readMore');
+                const readLess = document.getElementById('readLess');
+
+                readMore.addEventListener('click', () => {
+                shortDesc.style.display = 'none';
+                readMore.style.display = 'none';
+                fullDesc.style.display = 'block';
+                readLess.style.display = 'block';
+                });
+
+                readLess.addEventListener('click', () => {
+                shortDesc.style.display = 'block';
+                readMore.style.display = 'block';
+                fullDesc.style.display = 'none';
+                readLess.style.display = 'none';
+                });
+            </script>
+
+
+        </main>
+
+{% endblock %}

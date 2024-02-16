@@ -89,6 +89,15 @@ def accueil_view(request):
 def articles_view(request):
     return render(request, 'articles.html')
 
+def details_view(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    price = article.fk_prix_article.all()
+    context = {
+        'article': article,
+        'prices': price,
+        'price': price.first() }
+    return render(request, 'details.html', context)
+
 def mentions_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -308,3 +317,87 @@ def update_password(request):
     
     return redirect('securite')
 
+
+@login_required
+def add_to_wishlist(request):
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        # Check if the user has a wishlist
+        try:
+            wishlist = Wishlist.objects.get(client=request.user)
+        except Wishlist.DoesNotExist:
+            # If the user doesn't have a wishlist, create one
+            wishlist = Wishlist.objects.create(client=request.user)
+        
+        # get article
+        article = Article.objects.get(pk=article_id)
+        # Add the article to the wishlist
+        if wishlist.articles.contains(article):
+            wishlist.articles.remove(article)
+        else:
+            wishlist.articles.add(article)
+        
+        # Redirect to the desired page
+        return redirect('details', article_id = article_id)
+    
+
+@login_required
+def add_to_card(request):
+    if request.method == 'POST':
+        article_id = request.POST.get('article_id')
+        price_id = request.POST.get('price_id')
+         # get article
+        article = Article.objects.get(pk=article_id)
+        price = PrixArticle.objects.get(pk=price_id)
+
+        # Check if the user has a cart
+        try:
+            cart = Cart.objects.get(user=request.user)
+        except Cart.DoesNotExist:
+            # If the user doesn't have a cart, create one
+            cart = Cart.objects.create(user=request.user)
+
+        cart.save()
+
+        # Create cart item
+        try:
+            item = CartItem.objects.get(cart=cart, article=article, article_price=price)
+            item.quantity = item.quantity + 1
+        except CartItem.DoesNotExist:
+            item = CartItem.objects.create(
+            cart=cart, 
+            article=article,
+            article_price=price)
+        
+        item.save()
+
+        cart.total_price = cart.total_price + price.prix
+        cart.save()
+        
+        # Redirect to the desired page
+        return redirect('details', article_id = article_id)
+    
+
+from django.http import JsonResponse
+from django.core.serializers.json import DjangoJSONEncoder
+def search_results(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        article =request.POST.get('article')
+        query_ar = Article.objects.filter(libelle__icontains=article)
+        if len(query_ar)>0 and len(article)>0:
+            data=[]
+            for pos in query_ar:
+                item={
+                    'id':pos.id,
+                    'name':pos.libelle,
+                    'description':pos.description,
+                    'image':pos.image.url if pos.image else None,
+
+                }
+                data.append(item)
+
+            return JsonResponse({'data': data}, encoder=DjangoJSONEncoder)  # Use Django's JSON encoder
+        else:
+            return JsonResponse({'data': 'Aucun résultat...'})
+
+    return JsonResponse({})

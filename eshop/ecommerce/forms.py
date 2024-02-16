@@ -30,8 +30,8 @@ class SignupForm(UserCreationForm):
         
         # Define a dictionary to hold custom attributes and classes for each field
         custom_attributes = {
-            'first_name': {'class': 'custom-first-name-class', 'placeholder': ' Entrez votre prénom'},
-            'last_name': {'class': 'custom-last-name-class', 'placeholder': ' Entrez votre nom'},
+            'first_name': {'class': 'custom-first-name-class', 'placeholder': ' Votre prénom'},
+            'last_name': {'class': 'custom-last-name-class', 'placeholder': ' Votre nom'},
             'email': {'class': 'custom-email-class', 'placeholder': ' Entrez votre adresse email'},
             'password1': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Entrez votre mot de passe'},
             'password2': {'type': 'password', 'class': 'custom-password-class', 'placeholder': ' Confirmez votre mot de passe'},

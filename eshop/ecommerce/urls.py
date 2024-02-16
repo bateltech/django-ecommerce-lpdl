@@ -33,6 +33,12 @@ urlpatterns = [
     path('historique-des-achats/', historique_view, name='historique'),
     path('deconnexion/', logout_view, name='deconnexion'),
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
+    path('details/<int:article_id>/', details_view, name="details"),
+
+
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
+    path('addtowishlist/', add_to_wishlist, name='add_to_wishlist'),
+    path('add_to_cart/', add_to_card, name='add_to_cart'),
+    path('search/', search_results, name='search'),
 ]

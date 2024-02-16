@@ -15,7 +15,7 @@
 html {
     background: none !important;
     background-color: hsla(0, 0%, 0%, 1) !important;
- }
+}
 
 /*-----------------------------------*\
  * connexion.html
@@ -60,7 +60,7 @@ html {
 
 .register__message a,
 .reset__message a {
-    color: white; /* Set the link color to white */
+    color: rgb(0, 172, 238); /* Set the link color to white */
     text-decoration: underline; /* Add underline to the links */
 }
 
@@ -80,7 +80,6 @@ button.login__button {
     padding: 0.5rem;
     padding-left: 2rem;
     padding-right: 2rem;
-    margin-right: 0.5rem;
     border-radius: 3rem;
     border: 1px solid;
     color: white;
@@ -98,21 +97,17 @@ button.login__button:hover {
 }
 
 
-/* #first_name,
-#last_name,
-input[type="email"],
-input[type="password"] { */
- .name__container .name__field .custom-first-name-class,
- .name__container .name__field .custom-last-name-class,
- .custom-email-class,
- .custom-password-class,
- .custom-confirm-password-class {
+.name__container .name__field .custom-first-name-class,
+.name__container .name__field .custom-last-name-class,
+.custom-email-class,
+.custom-password-class,
+.custom-confirm-password-class {
     border: none;
     border-radius: 3rem;
     padding: 0.5rem;
     padding-left: 2rem;
     margin-bottom: 2rem;
-    width: 100%;
+    width: 95%;
     background-color: rgb(255, 255, 255);
     color: black;
     font-size: large;
@@ -120,23 +115,20 @@ input[type="password"] { */
 
 
 .name__container .name__field .custom-first-name-class::placeholder,
- .name__container .name__field .custom-last-name-class::placeholder,
- .custom-email-class::placeholder,
- .custom-password-class::placeholder,
- .custom-confirm-password-class::placeholder {
+.name__container .name__field .custom-last-name-class::placeholder,
+.custom-email-class::placeholder,
+.custom-password-class::placeholder,
+.custom-confirm-password-class::placeholder {
 
-    color: #333333a2;
- }
+    color: #333333c0;
+}
 
-/* #first_name:focus,
-#last_name:focus,
-input[type="email"]:focus,
-input[type="password"]:focus { */
- .name__container .name__field .custom-first-name-class,
- .name__container .name__field .custom-last-name-class,
- .custom-email-class,
- .custom-password-class,
- .custom-confirm-password-class {
+
+.name__container .name__field .custom-first-name-class,
+.name__container .name__field .custom-last-name-class,
+.custom-email-class,
+.custom-password-class,
+.custom-confirm-password-class {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
@@ -147,7 +139,6 @@ input[type="password"]:focus { */
 
 .name__field {
     flex: 1;
-    margin-right: 10px;
 }
 
 
@@ -160,8 +151,7 @@ input[type="password"]:focus { */
 }
 
 .mentions__content {
-    min-width: 80%;
-    max-width: 80%;
+    width: 80%;
     padding: 3rem;
     color: white;
     background-color: rgba(255, 255, 255, 0.05);
@@ -188,11 +178,11 @@ input[type="password"]:focus { */
 
 
 
-  /*-----------------------------------*\
-  * PROFIL.HTML
-  \*-----------------------------------*/
+/*-----------------------------------*\
+* PROFIL.HTML
+\*-----------------------------------*/
 
-  .profil__section {
+.profil__section {
     display: flex;
     margin-bottom: 4rem;
     flex-wrap: wrap;
@@ -210,9 +200,9 @@ input[type="password"]:focus { */
     padding: 1rem;
     position: relative;
     border-radius: 0.5rem;
-  }
+}
   
-  .close {
+.close {
     position: absolute;
     width: 1.5rem;
     height: 1.5rem;
@@ -225,24 +215,24 @@ input[type="password"]:focus { */
     text-align: center;
     font-size: 1.2em;
     cursor: pointer;
-  }
+}
 
-  .msg-content {
+.msg-content {
     font-family: Quicksand;
     color: rgb(0, 26, 0);
-  }
+}
   
-  .success-alert {
+.success-alert {
     background-color: #6fc492 !important;
     border-left: 5px solid #178344 !important;
-  }
+}
 
-  .success-alert .close {
+.success-alert .close {
     border-color: #178344 !important;
     color: #178344 !important;
-  }
+}
 
-  .error-alert {
+.error-alert {
     background-color: #ffcccc !important;  /* Couleur de fond rouge */
     border-left: 5px solid #ff6666 !important;  /* Couleur de bordure rouge */
 }
@@ -327,14 +317,7 @@ input[type="password"] {
     width: 80%;
 }
 
-/* .input-group input[type="email"],
-.input-group input[type="tel"],
-.input-group input[type="date"], 
-.input-group input[type="password"] {
-    width: 47.5% !important;
-} */
-
-  /* Style pour le datepicker */
+/* Style pour le datepicker */
 .custom-datepicker .ui-datepicker-header {
     background-color: #aaa9a9;
     color: rgb(197, 25, 25);
@@ -354,4 +337,51 @@ input[type="password"] {
 
 .side-openbtn {
     display: none;
+}
+
+
+
+
+/*=============== BREAKPOINTS ===============*/
+/* For small devices */
+
+@media screen and (min-width: 320px) and (max-width: 576px) {
+
+    .name__container .name__field .custom-first-name-class,
+    .name__container .name__field .custom-last-name-class,
+    .custom-email-class,
+    .custom-password-class,
+    .custom-confirm-password-class {
+        padding-left: 0.5rem !important;
+    }
+    
+    /*-----------------------------------*\
+    * CONNEXION.HTML
+    \*-----------------------------------*/
+
+    .button__container {
+        height: 5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .login__button {
+        margin-right: 0 !important;
+    }
+    
+}
+
+@media screen and (max-width: 767px) {
+    
+    .mentions__container {
+        margin: 2rem 0;
+    }
+
+    .mentions__content {
+        width: 100%;
+        padding: 0.5rem;
+    }
+
 }

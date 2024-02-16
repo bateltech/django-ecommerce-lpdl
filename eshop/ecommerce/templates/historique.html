@@ -182,7 +182,7 @@
             <a href="{% url 'securite' %}">
               Sécurité
             </a>
-            <a class="active" href="">
+            <a class="active" href="#">
               Historiques des achats
             </a>
             <!-- <a href="">
@@ -225,40 +225,8 @@
                 {% endfor %}
 
 
-                <h2 style="margin: 2rem 0 2rem 0;">MON PROFIL</h2>
+                <h2 style="margin: 2rem 0 2rem 0;">hISTORIQUE DES ACHATS</h2>
 
-                <form class="personal-info" id="personal-info-form" method="post" action="{% url 'update_personal_info' %}">
-                    {% csrf_token %}
-                    <h3 style="margin: 2rem 0 2rem 0;">Informations Personnelles</h3>
-                    <hr class="divider">
-                
-                    <div class="input-group">
-                        <label for="{{ form.nom.id_for_label }}">Nom</label>
-                        {{ form.last_name }}
-                    </div>
-                
-                    <div class="input-group">
-                        <label for="{{ form.prenom.id_for_label }}">Prénom</label>
-                        {{ form.first_name }}
-                    </div>
-                
-                    <div class="input-group">
-                        <label for="{{ form.dob.id_for_label }}">Date de naissance</label>
-                        {{ form.birthdate }}
-                    </div>
-                
-                    <div class="input-group">
-                        <label for="{{ form.email.id_for_label }}">Adresse email</label>
-                        {{ form.email }}
-                    </div>
-                
-                    <div class="input-group">
-                        <label for="{{ form.phone.id_for_label }}">Numéro de téléphone</label>
-                        {{ form.phone }}
-                    </div>
-                
-                    <button class="profil-button" type="submit">Sauvegarder</button>
-                </form>
 
             </div>
 

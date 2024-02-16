@@ -234,21 +234,10 @@
                 <div class="profile-info">
 
 
-                
-                    <!-- {% for msg in messages %}
-
-                    <div class="alert success-alert">
-                        <h3 class="msg-content">{{msg}}</h3>
-                        <a class="close">&times;</a>
-                    </div>
-                    
-                    {% endfor %} -->
-
-
                     {% for msg in messages %}
                         <div class="alert {% if msg.tags == 'success' %}success-alert{% elif msg.tags == 'error' %}error-alert{% endif %}">
                             <h3 class="msg-content">{{ msg }}</h3>
-                            <a class="close">&times;</a>
+                            <a class="close"><b>&times;</b></a>
                         </div>
                     {% endfor %}
 
