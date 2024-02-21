@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+        <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+        <!--==================== HEADER ====================-->
+        <header role="banner" class="header" id="header">
+
+            <!--==================== TOP BAR ====================-->
+            <div class="top__bar">
+
+                   <div class="search__container">
+                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                   </div>
+
+                    <!-- Barre de recherche -->
+                    <div id="searchBar" class="search-bar">
+                        <form id="search-form" method="post" autocomplete="off">
+                            {% csrf_token %}
+                        <input type="text" id="searchInput" placeholder="Rechercher...">
+                        </form>
+                        <div id="results-box" class="results-card" style="display:none"></div>
+                    </div>
+                
+                    <!-- Script to log search input to console -->
+
+                    <script>
+                        $(document).ready(function() {
+
+                            const searchForm = document.getElementById('search-form');
+                            const searchInput = document.getElementById('searchInput');
+                            const resultsBox = document.getElementById('results-box');
+                            const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    
+                            function sendSearchData(article) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{% url "search" %}',  // Change this to the correct URL if needed
+                                    data: {
+                                        'csrfmiddlewaretoken': csrf,
+                                        'article': article,
+                                    },
+                                    success: function(res) {
+                                        let data = res.data;
+                                        if (Array.isArray(data)) {
+                                            // Clear previous results
+                                            resultsBox.innerHTML = '';
+                                            data.forEach(article => {
+                                                // Create container for each article
+                                                let articleContainer = document.createElement('a');
+                                                articleContainer.href ="details/"+ article.id;
+                                                articleContainer.classList.add('link', 'article-container');
+                                    
+                                                // Create image element
+                                                let imgElement = document.createElement('img');
+                                                imgElement.src = article.image;
+                                                imgElement.alt = article.name;
+                                                imgElement.classList.add('article-img');
+                                                imgElement.style.marginRight = '10px';
+                                    
+                                                // Create name element
+                                                let nameElement = document.createElement('h5');
+                                                nameElement.textContent = article.name;
+                                                nameElement.style.color = 'black'; // Set text color to black
+                                                // Append image and name to the article container
+                                                articleContainer.appendChild(imgElement);
+                                                articleContainer.appendChild(nameElement);
+                                    
+                                                // Append article container to the results box
+                                                resultsBox.appendChild(articleContainer);
+                                            });
+                                        } else {
+                                            if (searchInput.value.length > 0) {
+                                                resultsBox.innerHTML = `<b>${data}</b>`;
+                                            } else {
+                                                resultsBox.innerHTML = '';
+                                                resultsBox.style.display = 'none';
+                                            }
+                                        }
+                                    },
+                                    
+                                    error: function(err) {
+                                        console.log(err);
+                                    },
+                                });
+                            }
+                        
+                            searchInput.addEventListener('input', function(e) {
+                                const searchQuery = e.target.value.trim();
+                                if (searchQuery.length > 0) {
+                                    resultsBox.style.display = 'block';
+                                } else {
+                                    resultsBox.style.display = 'none';
+                                }
+                                sendSearchData(searchQuery);
+                            });
+                        });
+                    </script>
+
+                   <a href="{% url 'accueil' %}" class="logo__prin">
+                    <img id="logo" src="{% static 'img/logo.webp' %}">
+                   </a>
+
+                   {% if utilisateur_connecte %}
+
+
+                   <!-- Desktop version -->
+                   <div class="shop__container">
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
+                    <a href="{% url 'profil' %}"><button class="log__button" >
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        {{ prenom_utilisateur }}
+                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                    </button></a>
+                   </div>
+                
+
+                   {% else %}
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                        <i class="fa fa-user-plus"></i>
+                    </button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                        <i class="fa fa-sign-in"></i>
+                    </button></a>
+                   </div>
+
+                   {% endif %} 
+
+            </div>
+
+
+            <div  class="separation_img"  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
+                <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
+            </div>
+
+            <!--==================== NAVIGATION BAR ====================-->
+            <nav class="nav container" id="nav-bar">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list grid">
+                        <li class="nav__item">
+                            <a href="#" class="nav__link">
+                                <i class="fa-regular fa-moon"></i>
+                                 Accueil
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="#collection" class="nav__link anchor__link">
+                                <i class="fa-solid fa-shapes"></i>
+                                 Collection
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="#artist" class="nav__link anchor__link">
+                                <i class="fa-solid fa-person-rays"></i>
+                                 Artiste
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'articles' %}" class="nav__link">
+                                <i class="fa-solid fa-store"></i>
+                                 Articles
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'pierres' %}" class="nav__link">
+                                <i class="fa-regular fa-gem"></i>
+                                 Pierres
+                            </a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="#voyance" class="nav__link anchor__link">
+                                <i class="fa-solid fa-hand-sparkles"></i>
+                                 Voyance
+                            </a>
+                        </li>
+
+                    </ul>
+
+                    <!--Close button-->
+                <div class="nav__close" id="nav-close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+
+                <a href="{% url 'accueil' %}" class="nav__logo">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+                </a>
+
+                <div class="nav__buttons">
+
+                    <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    <a href="" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    
+                    <!-- Toggle button -->
+                    <div class="nav__toggle" id="nav-toggle">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </div>
+                </div>
+            </nav>
+
+        
+                </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
+        
+
+
+        <!--==================== MAIN ====================-->
+        <main class="main">
+
+            <section class="section__payment">
+                <h1>Paiement de Voyance</h1>
+                <div class="payment__form">
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <label for="card_number">Numéro de carte</label>
+                        <input type="text" id="card_number" name="card_number" required>
+                        <label for="expiry_date">Date d'expiration</label>
+                        <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/AA" required>
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" required>
+                        <button type="submit">Payer</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+{% endblock %}

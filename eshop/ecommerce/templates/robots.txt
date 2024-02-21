@@ -1,0 +1,59 @@
+User-agent: * # Cette ligne spécifie les instructions qui suivent sont applicables à tous les robots d'indexation.
+
+# Informations de contact
+Sitemap: https://www.lapierredelune.fr/sitemap.xml
+Contact: sandramedium@hotmail.com
+Phone: +33563596168
+
+# Disallow: /  # Interdit l'indexation de toutes les pages par défaut
+
+
+Allow: /  # Autorise l'indexation de toutes les autres pages
+
+# Autorise l'indexation de certaines pages spécifiques
+Allow: /accueil/
+Allow: /articles/
+Allow: /inscription/
+Allow: /mentions-legales/
+Allow: /conditions-generales-de-vente/
+Allow: /pierres-en-lithotherapie/
+Allow: /erreur-404/
+Allow: /connexion/
+Allow: /details/<int:article_id>/
+
+# Interdit l'indexation de certaines pages spécifiques
+Disallow: /admin/*   # Interdit aux robots d'indexer les pages d'administration
+Disallow: /checkout/   # Interdit aux robots d'indexer les pages de paiement
+Disallow: /mot-de-passe-oublié/
+Disallow: /mon-panier/
+Disallow: /confirmation-de-commande/
+Disallow: /mon-profil/
+Disallow: /securite/
+Disallow: /mes-favoris/
+Disallow: /mes-commentaires/
+Disallow: /historique-des-achats/
+Disallow: /deconnexion/
+Disallow: /paiement-de-voyance/
+Disallow: /mon-profil/update_personal_info/
+Disallow: /mon-profil/update_password/
+Disallow: /addtowishlist/
+Disallow: /add_to_cart/
+Disallow: /search/
+Disallow: /formulaire-de-voyance/
+Disallow: /submit-feedback/
+Disallow: /reinitialisation-du-mot-de-passe/
+Disallow: /reinitialiser/<uidb64>/<token>/
+Disallow: /reset_password_complete/
+
+
+# Interdit aux robots de suivre les liens vers certaines pages
+NoFollow: /admin/
+NoFollow: /checkout/
+NoFollow: /account/
+
+# Informations spécifiques sur le magasin
+# Magasin La pierre de Lune
+# Sandra Delavacherie créatrice de bijoux
+# en pierres de lithothérapie
+# 14 Pl. Gambetta, 81200 Mazamet, France
+# Voyance avec Sandra Delavacherie, La pierre de Lune

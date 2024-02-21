@@ -1,10 +1,10 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist
-from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer
+from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem
+from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
-from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm
+from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -13,10 +13,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout  # Importez les fonctions authenticate et login
-from .models import Cart, CartItem
-from .serializers import CartSerializer, CartItemSerializer
-from django.contrib import messages
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+from django.contrib import messages
 # Vues des modèles
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -82,12 +83,18 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
 
 def accueil_view(request):
+    form = VoyanceForm()
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    return render(request, 'accueil.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur})
+    return render(request, 'accueil.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'form':form})
 
 def articles_view(request):
-    return render(request, 'articles.html')
+    categories = Categorie.objects.all()
+    sub_categories = SousCategorie.objects.filter(fk_categorie__in=categories)
+    articles = Article.objects.filter(fk_sous_categorie__in=sub_categories)
+    print("Categories:", categories)
+    print("Subcategories:", sub_categories)
+    return render(request, 'articles.html', {'sub_categories': sub_categories, 'articles': articles, 'categories': categories})
 
 def details_view(request, article_id):
     article = Article.objects.get(pk=article_id)
@@ -111,17 +118,15 @@ def conditions_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
-    return render(request, 'conditions.html',context)
+    return render(request, 'conditions.html', context)
 
 
 
-# def pierres_view(request):
-#     pierres = Pierre.objects.all()
-#     utilisateur_connecte = request.user.is_authenticated
-#     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-#     context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
-#     return render(request, 'pierres.html', context)
- 
+def paiement_voyance_view(request):
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    return render(request, 'paiement_voyance.html', context)
 
 
 from django.shortcuts import get_object_or_404
@@ -156,13 +161,71 @@ def erreur_view(request, exception=None):
     return render(request, 'erreur.html', context)
 
 def resetpwrd_view(request):
-    return render(request, 'resetpwrd.html')
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    utilisateur = request.user if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    return render(request, 'resetpwrd.html', context)
 
+
+@login_required()
 def panier_view(request):
-    return render(request, 'panier.html')
+    # Retrieve the current user
+    user = request.user
+    
+    # Check if the user has a cart
+    has_cart = CartItem.objects.filter(cart__user=user).exists()
+    cart_items = CartItem.objects.filter(cart__user=user)
+    # Retrieve feedback data
+    feedback_items = Feedback.objects.filter(etat=1)
 
+    total_price = sum(item.item_price for item in cart_items)
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    nom_utiisateur = request.user.last_name if utilisateur_connecte else None
+    email_utilisateur = request.user.email if utilisateur_connecte else None
+    context = {
+            'utilisateur_connecte': utilisateur_connecte,
+            'prenom_utilisateur': prenom_utilisateur,
+            'has_cart': has_cart,
+            'cart_items': cart_items,
+            'nom_utilisateur': nom_utiisateur,
+            'email_utilisateur': email_utilisateur,
+            'feedback_items': feedback_items,
+            'total_price' : total_price
+        }
+    return render(request, 'panier.html', context)
+
+@login_required() 
 def checkout_view(request):
-    return render(request, 'checkout.html')
+    user = request.user
+
+    utilisateur_connecte =  request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    nom_utilisateur = request.user.last_name if utilisateur_connecte else None
+    email_utilisateur = request.user.email if utilisateur_connecte else None
+
+    # Check if the user has a cart
+    has_cart = CartItem.objects.filter(cart__user=user).exists()
+
+    total_price =0
+    if has_cart:
+        cart = Cart.objects.get(user=user)
+        cart_items = CartItem.objects.filter(cart__user=user)
+        total_price = cart.total_price
+
+    context= {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur' : prenom_utilisateur,
+        'nom_utilisateur' : nom_utilisateur,
+        'email_utilisateur' : email_utilisateur,
+        'cart_items': cart_items,
+        'has_cart': has_cart,
+        'total_price' : total_price
+    }
+    return render(request, 'checkout.html', context)
+
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def profil_view(request):
@@ -378,8 +441,8 @@ def add_to_card(request):
         return redirect('details', article_id = article_id)
     
 
-from django.http import JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
+
 def search_results(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         article =request.POST.get('article')
@@ -401,3 +464,118 @@ def search_results(request):
             return JsonResponse({'data': 'Aucun résultat...'})
 
     return JsonResponse({})
+
+
+
+def formulaire_voyance(request):
+    print(request.method)
+    if request.method == 'POST':
+        form = VoyanceForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Save the form data
+            form.save()
+
+            print("HURRAAAAAAAAAAAAAAAAAY")
+        
+            # Redirection vers la page de paiement
+            return redirect('paiement_voyance')  # Assurez-vous d'avoir une URL nommée 'page_paiement' dans urls.py
+        else: 
+            print(form.errors)
+            print("WHY GOD WHY GOD WHYYYYYYYY")
+            return redirect('accueil')
+    else:
+        form = VoyanceForm(request.user)
+        print("ARE YOU FUCKING KIDDING ME ???")
+
+    return render(request, 'accueil', {'form': form})
+
+
+
+@require_POST
+@csrf_protect
+def update_quantity_ajax(request, item_id, new_quantity):
+    try:
+        # Perform the lookup for the cart item
+        cart_item = CartItem.objects.get(id=item_id)
+
+        # Get the cart associated with the cart item
+        cart = cart_item.cart
+
+        # Update the quantity
+        cart_item.quantity = new_quantity
+        cart_item.save()
+
+        # Recalculate the total price of the cart
+        cart.calculate_total_price()
+        cart.save()
+
+        return JsonResponse({'success': True, 'message': 'Quantity updated successfully' })
+    except CartItem.DoesNotExist:
+        # Log the error and return a response
+        print(f'Error: Cart item with id {item_id} not found.')
+        return JsonResponse({'success': False, 'message': 'Cart item not found'})
+    except Exception as e:
+        # Log other exceptions
+        print(f'Error updating quantity: {e}')
+        return JsonResponse({'success': False, 'message': 'An error occurred during quantity update'})
+
+
+from django.db.models import Sum
+
+def get_item_price(request, item_id):
+    try:
+        # Fetch the CartItem object based on item_id
+        cart_item = CartItem.objects.get(pk=item_id)
+        item_price = cart_item.item_price
+        cart = cart_item.cart
+
+        # Calculate the total price of the cart
+        total_price = cart.cartitem_set.aggregate(total=Sum('item_price'))['total']
+
+        # Return the item price and total price as JSON response
+        return JsonResponse({'item_price': item_price, 'total_price': total_price})
+    except CartItem.DoesNotExist:
+        # Handle the case where CartItem with given item_id does not exist
+        return JsonResponse({'error': 'CartItem not found'}, status=404)
+    except Exception as e:
+        # Handle any other exceptions
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@require_POST
+@csrf_protect
+def delete_Cart_item_ajax (request, item_id):
+    try:
+        # Retrieve the CartItem instance
+        cart_item = CartItem.objects.get(pk=item_id)
+
+        # Delete the Item
+        cart_item.delete()
+
+        return JsonResponse({'success': True, 'message': 'Item successfully deleted'})
+    except CartItem.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Cart item not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+    
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        contenu = request.POST.get('contenu')
+
+        user_id = request.user.id if request.user.is_authenticated else None
+
+        # Create a Feedback object and save it to the database
+        feedback = Feedback(
+            contenu=contenu,
+            date_envoi=timezone.now(),
+            fk_user_id=user_id,
+            etat=0 
+        )
+        feedback.save()
+
+        messages.success(request, 'Feedback submitted successfully!')
+        return redirect('panier')  # Redirect to a success page or another URL
+    else:
+        # Handle non-POST requests as needed
+        return render(request, 'accueil.html')

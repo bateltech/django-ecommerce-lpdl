@@ -1,3 +1,15 @@
+# Ignore migration files if not already in version control
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
+
+# Ignore Django specific files
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+
+# Ignore local settings
+local_settings.py
+sitemapper.js

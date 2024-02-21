@@ -9,9 +9,9 @@
             <div class="top__bar">
 
                    <div class="search__container">
-                    <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                     <!-- Barre de recherche -->
@@ -98,8 +98,8 @@
                         });
                     </script>
 
-                   <a href="{% url 'accueil' %}" class="logo__prin">
-                    <img id="logo" src="{% static 'img/logo.png' %}">
+                   <a href="{% url 'accueil' %}" class="logo__prin"> 
+                    <img id="logo" src="{% static 'img/logo.webp' %}" alt="logo la pierre de lune">
                    </a>
 
                    {% if utilisateur_connecte %}
@@ -135,11 +135,11 @@
 
 
             <div  class="separation_img"  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
-                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+                <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
             </div>
 
             <!--==================== NAVIGATION BAR ====================-->
-            <nav class="nav container" id="nav_bar">
+            <nav class="nav container" id="nav-bar">
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list grid">
                         <li class="nav__item">
@@ -165,7 +165,7 @@
 
                         <li class="nav__item">
                             <a href="{% url 'articles' %}" class="nav__link">
-                                <i class="ri-store-2-line"></i>
+                                <i class="fa-solid fa-store"></i>
                                  Articles
                             </a>
                         </li>
@@ -188,23 +188,23 @@
 
                     <!--Close button-->
                 <div class="nav__close" id="nav-close">
-                        <i class="ri-close-line"></i>
+                        <i class="fa-solid fa-xmark"></i>
                     </div>
                 </div>
 
                 <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;" alt="logo version mobile">
                 </a>
 
                 <div class="nav__buttons">
 
-                    <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
-                    <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    <a href="" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
-                        <i class="ri-menu-4-line"></i>
+                        <i class="fa-solid fa-bars-staggered"></i>
                     </div>
                 </div>
             </nav>
@@ -287,7 +287,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/bracelets.png' %}" alt="card image">
+                        <img src="{% static 'img/produits/bracelets.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -300,7 +300,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/boucle.png' %}" alt="card image">
+                        <img src="{% static 'img/produits/boucle.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -314,7 +314,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/orgonites.jpg' %}" alt="card image">
+                        <img src="{% static 'img/produits/orgonites.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -328,7 +328,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/bouddhas.jpg' %}" alt="card image">
+                        <img src="{% static 'img/produits/bouddhas.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -341,7 +341,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/malas.png' %}" alt="card image">
+                        <img src="{% static 'img/produits/malas.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -353,7 +353,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/bolas.png' %}" alt="card image">
+                        <img src="{% static 'img/produits/bolas.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -367,7 +367,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/plaques.jpg' %}" alt="card image">
+                        <img src="{% static 'img/produits/plaques.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -380,7 +380,7 @@
 
                     <div class="card swiper-slide">
                         <div class="card__image">
-                        <img src="{% static 'img/produits/deco.jpg' %}" alt="card image">
+                        <img src="{% static 'img/produits/deco.webp' %}" alt="card image">
                         </div>
 
                         <div class="card__content">
@@ -410,7 +410,7 @@
 
                     <div class="artiste__image">
                         <div class="artiste__frame"></div>
-                        <img src="{% static 'img/artiste.PNG' %}" alt="artiste image">
+                        <img src="{% static 'img/artiste.webp' %}" alt="artiste image">
                     </div>
 
                     <div class="artiste__content">
@@ -500,7 +500,7 @@
 
                     function previewImage(event) {
 
-                        var image = document.getElementById('imagePreview');
+                        var image = document.getElementById('image-preview');
 
                         if(event.target.files.length == 0) {
                         image.style.display = "none";
@@ -516,6 +516,17 @@
 
                     }
 
+                    // Fonction pour valider le formulaire et rediriger vers la page de paiement
+                    function validateAndRedirect(event) {
+                        event.preventDefault(); // Empêche l'envoi du formulaire
+                        var form = document.querySelector('form');
+                        if (form.checkValidity()) { // Vérifie si le formulaire est valide
+                            window.location.href = "/paiement"; // Redirige vers la page de paiement
+                        } else {
+                            alert("Veuillez remplir tous les champs du formulaire."); // Affiche un message d'erreur si le formulaire n'est pas valide
+                        }
+                    }
+
                 </script>
 
             </section>
@@ -525,7 +536,7 @@
             <section class="maps__section">
                 <div class="floating-label">VISITEZ-NOUS !</div>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2894.533093464446!2d2.372805111524024!3d43.49121346277241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12ae1933a0a3a0d3%3A0x634215eade142367!2sLa%20pierre%20de%20lune!5e0!3m2!1sfr!2sdz!4v1686522074819!5m2!1sfr!2sdz" 
-                 height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                 height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="google maps"></iframe>
             </section>
 
         <!--=============== MAIN JS ===============-->
@@ -537,23 +548,26 @@
             <div class="popup">
                 <span class="close" id="voyance-close" onclick="togglePopup()">&times;</span> 
                 <!-- close-btn -->
-                <form>
-                    <label for="nom">Nom:</label>
-                    <input type="text" id="nom" name="nom" required>
+                <form action="{% url 'formulaire_voyance' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <label for="{{ form.nom.id_for_label }}">Nom:</label>
+                    {{ form.nom }}
     
-                    <label for="prenom">Prénom:</label>
-                    <input type="text" id="prenom" name="prenom" required>
-    
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="{{ form.prenom.id_for_label }}">Prénom:</label>
+                    {{ form.prenom }}
 
-                    <label for="image">Image:</label>
-                    <input type="file" class="form__image" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
-                    <img id="imagePreview" src="#" alt="Aperçu de l'image" style="display: none; max-width: 100%; margin-top: 10px;">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    {{ form.email }}
+                    
+                    <label for="{{ form.image.id_for_label }}">Photo:</label>
+                    {{ form.image }}
+
+                    <img id="image-preview" src="#" alt="Aperçu de l'image" style="display: none; max-width: 100%; margin-top: 10px;">
     
-                    <label for="contenu">Contenu de la demande:</label>
-                    <textarea id="contenu" name="contenu" rows="8" required></textarea>
-    
+                    <label for="{{ form.contenu_demande.id_for_label }}">Contenu de la demande:</label>
+                    {{ form.contenu_demande }}
+
                     <button type="submit">Envoyer</button>
                 </form>
             </div>

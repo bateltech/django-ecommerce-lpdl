@@ -143,10 +143,12 @@ class Cart(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     articles = models.ManyToManyField(Article, through='CartItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-
+    
+    def calculate_total_price(self):
+        total_price = sum(item.item_price for item in self.cartitem_set.all())
+        self.total_price = total_price
+        
     def save(self, *args, **kwargs):
-        # Calculate total price based on CartItems
-        #self.total_price = sum(item.quantity * item.item_price for item in self.cartitem_set.all())
         super().save(*args, **kwargs)
 
 # Table Item Panier
@@ -159,12 +161,11 @@ class CartItem(models.Model):
 
     def save(self, *args, **kwargs):
         # Calculate item price by multiplying article price by quantity
+        
         self.item_price = self.article_price.prix * self.quantity
-        #self.cart.total_price = self.cart.total_price + self.item_price
-
-        # Update Cart total_price when saving CartItem
-        self.cart.save()
+        
         super().save(*args, **kwargs)
+
 
 # Table Commande
 class Commande(models.Model):
@@ -202,3 +203,16 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"Feedback #{self.id} de {self.fk_user.last_name} {self.fk_user.first_name}"
+
+
+
+# Table Voyance
+class Voyance(models.Model):
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    image = models.ImageField(upload_to='images/')
+    contenu_demande = models.TextField()
+    tarif = models.FloatField(default=30.00)
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
+    created_at = models.DateTimeField(auto_now_add=True)

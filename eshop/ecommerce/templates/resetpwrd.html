@@ -3,6 +3,206 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+<!--==================== HEADER ====================-->
+<header role="banner" class="header" id="header">
+
+    <!--==================== TOP BAR ====================-->
+    <div class="top__bar">
+
+           <div class="search__container">
+            <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+            <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+           </div>
+
+           <a href="{% url 'accueil' %}" class="logo__prin">
+            <img id="logo" src="{% static 'img/logo.webp' %}">
+           </a>
+
+           
+           
+           {% if utilisateur_connecte %}
+
+
+           <div class="shop__container">
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+           </div>
+
+
+           {% else %}
+
+           <div class="shop__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire</button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter</button></a>
+           </div>
+
+
+           {% endif %} 
+
+           
+    </div>
+
+    <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
+        <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
+    </div>
+
+    <!--==================== NAVIGATION BAR ====================-->
+    <nav class="nav container" id="nav-bar">
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list grid">
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}" class="nav__link">
+                        <i class="fa-regular fa-moon"></i>
+                         Accueil
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#collection" class="nav__link">
+                        <i class="fa-solid fa-shapes"></i>
+                         Collection
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#artist" class="nav__link">
+                        <i class="fa-solid fa-person-rays"></i>
+                         Artiste
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'articles' %}" class="nav__link">
+                        <i class="fa-solid fa-store"></i>
+                         Articles
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'pierres' %}" class="nav__link">
+                        <i class="fa-regular fa-gem"></i>
+                         Pierres
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                        <i class="fa-solid fa-hand-sparkles"></i>
+                         Voyance
+                    </a>
+                </li>
+
+            </ul>
+
+            <!--Close button-->
+            <div class="nav__close" id="nav-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+
+        <a href="{% url 'accueil' %}" class="nav__logo">
+            <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+           </a>
+           
+        <div class="nav__buttons">
+
+            <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+            <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+            <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+            
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </div>
+        </div>
+    </nav>
+
+
+        </header>
+
+
+<!--=============== LOG HEADER BUTTONS ==================-->
+
+<!-- Mobile version -->
+
+{% if utilisateur_connecte %}
+
+<div class="log__container">
+    <a href="{% url 'profil' %}"><button class="log__button" >
+        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+        {{ prenom_utilisateur }}
+        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+    </button></a>
+
+    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+        <i class="fa fa-sign-out"></i>
+    </button></a>
+
+</div>
+
+{% else %}
+
+<div class="log__container">
+    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+        <i class="fa fa-user-plus"></i>
+    </button></a>
+    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+        <i class="fa fa-sign-in"></i>
+    </button></a>
+</div>
+
+{% endif %}
+
+<style>
+    .resetpswrd__section {
+        padding: 2rem;
+        margin: auto;
+        width: 50%;
+        text-align: center;
+    }
+
+    .resetpswrd__form {
+        margin-top: 3rem;
+    }
+
+    .resetpswrd__input {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+    }
+
+    .resetpswrd__button {
+        padding: 10px 20px;
+        background-color:  #f2f2f2;
+        color: #555;
+        border: none;
+        border-radius: 5rem;
+        cursor: pointer;
+    }
+</style>
+
+<!--==================== MAIN ====================-->
+<main class="main">
+
+    <!--==================== PASSWORD RESET ====================--> 
+    <section class="resetpswrd__section">
+        <h1 class="resetpswrd__title">RÉINITIALISATION DU MOT DE PASSE</h1>
+        <form action="{% url 'reset_password' %}" method="post" class="resetpswrd__form">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Adresse email" class="resetpswrd__input" required><br>
+            <button type="submit" class="resetpswrd__button">Confirmer</button>
+        </form>
+    </section>
+
+</main>
 
 
 {% endblock %}

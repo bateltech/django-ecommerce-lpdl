@@ -1,5 +1,7 @@
 from django.urls import include, path, re_path
+from django.contrib.auth import views as auth_views
 from .views import *
+from django.views.generic.base import TemplateView  # new
 
 # router = routers.DefaultRouter()
 # router.register(r'articles', ArticleViewSet)
@@ -15,15 +17,14 @@ handler400 = 'ecommerce.views.erreur_view'
 
 urlpatterns = [
     
-    path('', accueil_view, name='accueil'),
+    path('accueil/', accueil_view, name='accueil'),
     path('articles/', articles_view, name='articles'),
     path('inscription/', signup_view, name='inscription'),
-    #path('connexion/', connexion_view, name='connexion'),
     path('mentions-legales/', mentions_view, name='mentions'),
     path('conditions-generales-de-vente/', conditions_view, name='conditions'),
     re_path(r'^pierres-en-lithotherapie/$', pierres_view, name='pierres'),
     path('erreur-404/', erreur_view, name='erreur404'),
-    path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password'),
+    path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password_process'),
     path('mon-panier/', panier_view, name='panier'),
     path('confirmation-de-commande/', checkout_view, name='checkout'),
     path('mon-profil/', profil_view, name='profil'),
@@ -34,11 +35,21 @@ urlpatterns = [
     path('deconnexion/', logout_view, name='deconnexion'),
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
     path('details/<int:article_id>/', details_view, name="details"),
-
+    path('paiement-de-voyance/', paiement_voyance_view, name='paiement_voyance'),
 
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
     path('addtowishlist/', add_to_wishlist, name='add_to_wishlist'),
     path('add_to_cart/', add_to_card, name='add_to_cart'),
     path('search/', search_results, name='search'),
+    path('formulaire-de-voyance/', formulaire_voyance, name='formulaire_voyance'),
+
+    path('submit-feedback/', submit_feedback, name='submit_feedback'),
+
+    path('reinitialisation-du-mot-de-passe/', auth_views.PasswordResetView.as_view(), name='reset_password'),
+    path('reinitialiser/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    path('robots.txt/', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
+
 ]

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import ClientUser
+from .models import ClientUser, Voyance
 from django.contrib.admin.widgets import AdminDateWidget
 
 class LoginForm(AuthenticationForm):
@@ -43,7 +43,6 @@ class SignupForm(UserCreationForm):
             self.fields[field_name].widget.attrs.update(attributes)
 
 
-from django import forms
 from django.forms import DateInput
 import phonenumbers
 from phonenumber_field.formfields import PhoneNumberField
@@ -66,20 +65,6 @@ class PersonalInfoForm(forms.ModelForm):
     phone_number = PhoneNumberField(widget=forms.TextInput(attrs={'class': 'custom-phone-class', 'id': 'phone_number', 'placeholder': '06 60 00 00 60'}))
 
 
-    # def clean_phone_number(self):
-    #     phone_number = self.cleaned_data.get('phone_number', '')
-    #     try:
-    #         if not phonenumbers.is_valid_number(phone_number):  # Check if the PhoneNumber object is valid
-    #             raise ValidationError('The phone number entered is not valid.')
-            
-    #         # Format the number based on its detected country
-    #         formatted_number = phonenumbers.format_number(phone_number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
-            
-    #         return formatted_number
-    #     except phonenumbers.NumberParseException:
-    #         raise ValidationError('The phone number entered is still not valid.')
-        
-
 from django.contrib.auth.forms import PasswordChangeForm
 
 class PasswordResetForm(PasswordChangeForm):
@@ -101,3 +86,15 @@ class PasswordResetForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs['placeholder'] = ' votre nouveau mot de passe'
         self.fields['new_password2'].widget.attrs['placeholder'] = ' confirmer votre nouveau mot de passe'
 
+
+
+class VoyanceForm(forms.ModelForm):
+    class Meta:
+        model = Voyance
+        fields = ['nom', 'prenom', 'email', 'image', 'contenu_demande']
+
+    nom = forms.CharField(label='Nom', max_length=100, required=True, widget=forms.TextInput(attrs={'id': 'nom'}))
+    prenom = forms.CharField(label='Prénom', max_length=100, required=True, widget=forms.TextInput(attrs={'id': 'prenom'}))
+    email = forms.EmailField(label='Email', max_length=100, required=True, widget=forms.EmailInput(attrs={'id': 'email'}))
+    image = forms.ImageField(label='Photo', required=True, widget=forms.FileInput(attrs={'id': 'image', 'class': 'form__image', 'accept': 'image/*', 'onchange': 'previewImage(event)'}))
+    contenu_demande = forms.CharField(label='Contenu de la demande', widget=forms.Textarea(attrs={'id': 'contenu', 'rows': '8'}), required=True)

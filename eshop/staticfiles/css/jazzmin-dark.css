@@ -27,5 +27,41 @@ color: #ffffff !important;
 } */
 
 #jazzy-logo{
-    background-color: rgb(164, 180, 189) !important;
+    background-color: rgb(131, 132, 133) !important;
+}
+
+option {
+    color: black;
+}
+
+.select2-selection__choice__display{
+    color:black;
+}
+
+.login-logo img{
+    width: 100%;
+}
+
+.input-group input{
+    height: 48.5px;
+}
+
+.brand-image{
+    box-shadow: none !important;
+}
+
+.brand-link:hover{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+}
+
+.dark-mode a:not(.btn):hover {
+    color: #dddddd;
+}
+
+.col-lg-9{
+    max-width: 70%;
+}
+
+.col-lg-2{
+    max-width: 30%;
 }

@@ -12,13 +12,13 @@
             <div class="top__bar">
 
                    <div class="search__container">
-                    <a href="{% url 'panier' %}" style="width: 50px;"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'favoris' %}" style="width: 50px;"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a href="#" id="searchIcon"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
-                    <img id="logo" src="{% static 'img/logo.png' %}">
+                    <img id="logo" src="{% static 'img/logo.webp' %}">
                    </a>
 
                    {% if utilisateur_connecte %}
@@ -48,11 +48,11 @@
             </div>
 
             <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
-                <img src="{% static 'img/Vector.png' %}" alt="separation" style="width: auto; padding: 2rem;">
+                <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
             </div>
 
             <!--==================== NAVIGATION BAR ====================-->
-            <nav class="nav container" id="nav_bar">
+            <nav class="nav container" id="nav-bar">
                 <div class="nav__menu" id="nav-menu">
                     <ul class="nav__list grid">
                         <li class="nav__item">
@@ -78,7 +78,7 @@
 
                         <li class="nav__item">
                             <a href="{% url 'articles' %}" class="nav__link">
-                                <i class="ri-store-2-line"></i>
+                                <i class="fa-solid fa-store"></i>
                                  Articles
                             </a>
                         </li>
@@ -101,23 +101,23 @@
 
                     <!--Close button-->
                     <div class="nav__close" id="nav-close">
-                        <i class="ri-close-line"></i>
+                        <i class="fa-solid fa-xmark"></i>
                     </div>
                 </div>
 
                 <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.png' %}" style="width: auto; height: 2rem;">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
                    </a>
                    
                 <div class="nav__buttons">
 
                     <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#" id="searchIcon"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
-                        <i class="ri-menu-4-line"></i>
+                        <i class="fa-solid fa-bars-staggered"></i>
                     </div>
                 </div>
             </nav>
