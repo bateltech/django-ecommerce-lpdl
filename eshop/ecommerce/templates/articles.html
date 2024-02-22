@@ -167,7 +167,7 @@
             <div class="article__main">
 
                 <!-- Sidebar categories -->
-                <aside>
+                <aside style="height:    106vh; border-bottom: 1px solid #cccccc;">
                     <p> </p>
                     {% for category in categories %}
                     <a href="#" class = "category" category-id="{{ category.libelle }}">
@@ -191,7 +191,7 @@
 
                     <div class="product-cards" id="productCardsContainer">
                         {% for article in articles %}
-                        <div class="product-card" article-sub-category="{{ article.fk_sous_categorie_id }}"  style="background-image: url('/media/{{ article.image}}');">
+                        <div class="product-card" article-sub-category="{{ article.fk_sous_categorie_id }}"  style="background: center / cover no-repeat url('/media/{{ article.image}}');">
 
                             <!-- <div class="product-image">
                                 <img src="{{ article.image.url }}" alt="{{ article.libelle }}">
@@ -207,7 +207,11 @@
                     
                             <div class="product-info">
                                 <h3>{{ article.libelle }}</h3>
-                                <p>{{ article.fk_prix_article }}</p>
+                                {% if article.fk_prix_article.first.type_prix == "fixed" %}
+                                <p>{{ article.fk_prix_article.first}}</p>
+                                {% else %}
+                                <p>{{ article.fk_prix_article.first}} à {{ article.fk_prix_article.last.prix }} €</p>
+                                {% endif %}
                             </div>
 
                         </div>

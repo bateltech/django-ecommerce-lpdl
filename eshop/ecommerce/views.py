@@ -94,7 +94,9 @@ def articles_view(request):
     articles = Article.objects.filter(fk_sous_categorie__in=sub_categories)
     print("Categories:", categories)
     print("Subcategories:", sub_categories)
-    return render(request, 'articles.html', {'sub_categories': sub_categories, 'articles': articles, 'categories': categories})
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    return render(request, 'articles.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur,'sub_categories': sub_categories, 'articles': articles, 'categories': categories})
 
 def details_view(request, article_id):
     article = Article.objects.get(pk=article_id)

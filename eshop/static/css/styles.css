@@ -1216,12 +1216,13 @@ aside {
     position: absolute;
     z-index: var(--z-fixed);
     color: white;
-    width: 20em;
+    width: 18em;
     padding-left: 1.25rem;
     height:    120vh;
     background-image: linear-gradient(30deg , #494949, gray);
     border-top-right-radius: 5rem;
     left: 0;
+    margin-top: 30px;
 }
     
 aside a {
@@ -1250,7 +1251,7 @@ aside a:hover::after {
     bottom: 100%;
     right: 0;
     height: 35px;
-    width: 20px;
+    width: 35px;
     border-bottom-right-radius: 18px;
     box-shadow: 0 20px 0 0 white;
 }
@@ -1262,7 +1263,7 @@ aside a:hover::before {
     top: 100%;
     right: 0;
     height: 35px;
-    width: 20px;
+    width: 35px;
     border-top-right-radius: 18px;
     box-shadow: 0 -20px 0 0 white;
 }
@@ -1311,69 +1312,143 @@ aside p {
 /* Styles for article__main and aside (your existing styles) */
 .article__main {
     display: flex;
+    height: 110vh;
 }
 
 /* Styles for section__header */
 .section__header {
     text-align: left;
+    margin-bottom: 20px;
+    padding-left: 0.625rem;
 }
 
 .section__header h2 {
-    font-size: 24px;
+    font-size: 1.6rem;
 }
 
 /* Styles for horizontal-scroll */
 
 .horizontal-scroll {
     white-space: nowrap; /* Prevent content from wrapping */
-    overflow-x: scroll; /* Enable horizontal scrolling */
-    padding: 10px; /* Optional: Add padding to the scrollable area */
+    overflow: hidden; /* Enable horizontal scrolling */
+    padding-left: 0.625rem; /* Optional: Add padding to the scrollable area */
     
 }
 
 .rounded-button {
     display: inline-block;
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: white;
+    padding: 0.625rem 1.25rem;
+    margin-right: 0.625rem;
+    background-color: #2c2e2f;
     color: gray;
     border: none;
-    border-radius: 25px;
+    border: 2px solid darkgray;
+    border-radius: 1rem;
     cursor: pointer;
-    font-size: 16px;
+    color: white;
+    font-size: 1rem;
+}
+  
+.rounded-button.clicked{
+    background-color: #717171;;
 }
 
 /* Styles for product-cards */
+
 .product-cards {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 20px;
-}
-
+    gap: 2em;
+    margin-top: 1.25rem;
+    overflow-y: auto; /* Vertical scrollbar will appear if content overflows */
+    max-height: 90vh;
+    padding-left: 0.625rem;
+    padding-left: 3rem;
+} 
+  
 .product-card {
-    width: calc(33.33% - 20px); /* Three cards per row with spacing */
-    margin-right: 20px;
-    margin-bottom: 20px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 200px; /* Adjust the height as needed */
-    border-radius: 15px;
-    /* Additional card styling here... */
+    display: grid;
+    grid-template-columns: 6.25rem 6.25rem 6.25rem;
+    grid-template-rows: 6.25rem 6.25rem 6.25rem 6.25rem;
+    margin-bottom: 0.938rem;
+    border-radius: 1.25rem;
 }
-
+  
+  /* .product-image {
+    grid-column:  1 / 4;
+    grid-row: 1 / 5;
+    width: 300px;
+    height: 350px;
+  } */
+  
+.product-image img {
+    height: 100% !important;
+    width: auto !important;
+}
+  
+.heart-icon {
+    position: relative;
+    display: grid;
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+    z-index: 1;
+    justify-items: end; /* horizontally */
+    align-items: start; /* vertically */
+    margin: 0.938rem;
+}
+  
+.heart-icon img{
+    height: 1.563rem;
+    width: 1.563rem ;
+    position: absolute;
+}
+  
+.heart-outline.hidden {
+    display: none !important; /* Use !important to increase specificity if needed */
+}
+  
+.heart-red.hidden {
+    display: none;
+}
+  
+.product-info {
+    display: grid;
+    grid-row: 4 / 5;
+    grid-column: 1 / 4;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    justify-items: center; /* horizontally */
+    align-items: center; /* vertically */
+    border-radius: 0 0 1.25rem 1.25rem;
+}
+  
+.product-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bolder;
+    color: #352c31;
+}
+  
+.product-info p {
+    margin: 0.313rem 0;
+    font-size: 0.938rem;
+}
+  
 .article__section {
-    height: 115vh;
     padding-block: 2rem;
     padding: 2rem;
-    width: 100%;
+    width: 80%;
     margin-left: 16rem;
+    border-bottom: 1px solid #cccccc;
 }
-
-
+  
 /* ---- LIVRAISON & PROMO ----*/
 /* Style de la barre */
-
+  
+.livraison__section{
+    margin-bottom: 4rem;
+}
+  
 .livraison__container {
     position: relative;
     display: flex;
@@ -1382,18 +1457,19 @@ aside p {
     background: linear-gradient(to right, #352c31, gray); /* Dégradé gris */
     padding: 0.5rem;
     margin-bottom: 2rem;
+    margin-top: 2rem;
 }
-
-/* Style de l'image SVG à gauche */
+  
+  /* Style de l'image SVG à gauche */
 .livraison__image {
     width: 7rem; /* Ajustez la largeur selon vos besoins */
     margin-right: 6rem; /* Espace entre l'image et les paragraphes */
 }
-
-/* Style des paragraphes à droite */
-/*.livraison__paragraphes {
-
-}*/
+  
+  /* Style des paragraphes à droite */
+  /*.livraison__paragraphes {
+  
+  }*/
 
 .right__line::before {
     content: "";

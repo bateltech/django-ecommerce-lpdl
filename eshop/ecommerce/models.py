@@ -95,7 +95,8 @@ class PrixArticle(models.Model):
     taille = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.get_type_prix_display()} - ${self.prix}"
+        return f"{self.get_type_prix_display()} - {self.prix} €"
+    
 
 
 

@@ -169,21 +169,6 @@ if (scrollContainer) {
 /* ########## Fonctions Backend ########## */
 /* ####################################### */
 
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript is running."); // Vérifiez si ce message s'affiche dans la console.
-    const passwordInput = document.getElementById("password");
-    const confirmPasswordInput = document.getElementById("confirm_password");
-    const errorMessage = document.getElementById("error-message");
-    
-    const signupForm = document.querySelector(".login__form");
-    signupForm.addEventListener("submit", function (event) {
-        if (passwordInput.value !== confirmPasswordInput.value) {
-            event.preventDefault(); // Empêche l'envoi du formulaire et la recharge de la page
-            errorMessage.textContent = "Les mots de passe ne correspondent pas";
-            errorMessage.style.display = "block"; // Rendre la div visible
-        }
-    });
-});
 
 
 /* Barre de recherche */
@@ -310,6 +295,8 @@ function updateItemPrice(itemId) {
     });
 }
 
+
+
 function deleteCartItem(itemId) {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
@@ -351,6 +338,7 @@ function openForm() {
 function closeForm() {
     document.getElementById("popupOverlay").style.display = "none";
     console.log('Closing the form');
+
 }
 
 function submitFeedback() {
@@ -358,7 +346,25 @@ function submitFeedback() {
     form.submit();  // This will submit the form using the traditional approach
 }
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript is running."); // Vérifiez si ce message s'affiche dans la console.
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm_password");
+    const errorMessage = document.getElementById("error-message");
+    
+    const signupForm = document.querySelector(".login__form");
+    signupForm.addEventListener("submit", function (event) {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            event.preventDefault(); // Empêche l'envoi du formulaire et la recharge de la page
+            errorMessage.textContent = "Les mots de passe ne correspondent pas";
+            errorMessage.style.display = "block"; // Rendre la div visible
+        }
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("dihia javascript is running");
     const accordionHeaders = document.querySelectorAll(".accordion-header");
     
     accordionHeaders.forEach(header => {
@@ -371,4 +377,106 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+/*-----------------------------------*\
+* ARTICLES.HTML
+\*-----------------------------------*/
 
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("articles javascript is running");
+    const categoryLinks = document.querySelectorAll('.category');
+    const subcategoryButtons = document.querySelectorAll('.rounded-button');
+    const productCards = document.querySelectorAll('.product-card');
+
+    // Function to filter product cards based on subcategory ID
+    function filterProductCards(subcategoryId) {
+        productCards.forEach(card => {
+            console.log("inside product card loop");
+            const articleSubcategory = card.getAttribute('article-sub-category');
+            if (articleSubcategory === subcategoryId || subcategoryId === 'all') {
+                card.style.display = 'grid';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    // Event listener for category buttons
+    categoryLinks.forEach(link => {
+        console.log("inside category links loop");
+        link.addEventListener('click', function(event) {
+            console.log("link clicked");
+            event.preventDefault();
+            const categoryId = this.getAttribute('category-id');
+
+            // Update the selected category text
+            const selectedCategoryText = document.getElementById('selected-category');
+            const selectedCategoryTitle = document.getElementById('title-category');
+            selectedCategoryText.textContent = categoryId;
+            selectedCategoryTitle.textContent = categoryId;
+
+            // Hide all subcategory buttons
+            subcategoryButtons.forEach(button => {
+                console.log("inside sub category loop");
+                const subcategoryId = button.getAttribute('sub-category-id');
+                if (subcategoryId.startsWith(categoryId)) {
+                    button.style.display = 'inline-block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            // Filter and hide articles of the previous category
+            productCards.forEach(card => {
+                console.log("inside product card loop not function");
+                const articleSubcategory = card.getAttribute('article-sub-category');
+                if (!articleSubcategory.startsWith(categoryId)) {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Trigger click event on the first subcategory button associated with the clicked category
+            const firstSubcategoryButton = document.querySelector('.rounded-button[sub-category-id^="' + categoryId + '"]');
+            if (firstSubcategoryButton) {
+                firstSubcategoryButton.click(); // Trigger click event
+            }
+        });
+        
+    });
+
+    // Event listener for subcategory buttons
+    subcategoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            console.log("sub category button clicked");
+            // Remove 'clicked' class from all buttons
+            subcategoryButtons.forEach(btn => {
+                btn.classList.remove('clicked');
+            });
+            // Add 'clicked' class to the clicked button
+            this.classList.add('clicked');
+            const subcategoryarticleId = this.getAttribute('sub-category-article-id');
+            filterProductCards(subcategoryarticleId);
+        });
+    });
+
+    // Trigger click event on the first category link when the page is loaded
+    const firstCategoryLink = categoryLinks[0];
+    if (firstCategoryLink) {
+        firstCategoryLink.click();
+    }
+
+    // Get the heart icon container
+    const heartIcons = document.querySelectorAll('.heart-icon');
+    
+    // Trigger click event on the heart icon is clicked
+    heartIcons.forEach(icon => {
+        icon.addEventListener('click', function(){
+            console.log("heart clicked");
+            const outlineHeart = this.querySelector('.heart-outline');
+            const redHeart = this.querySelector('.heart-red');
+            outlineHeart.classList.toggle('hidden');
+            redHeart.classList.toggle('hidden');
+            
+            // add to favorite code.
+        });
+    });
+});
