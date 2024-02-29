@@ -17,6 +17,8 @@
         <meta property="og:image" content="https://raw.githubusercontent.com/bateltech/django-ecommerce-lpdl/main/eshop/static/img/logo.webp" />
         <meta property="og:url" content="https://www.lapierredelune.fr/" />
 
+        <title>{% block title %}La pierre de lune{% endblock %}</title>
+
         <script type="application/ld+json">
         {
         "@context": "https://schema.org",
@@ -57,7 +59,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         
         <!--=============== BOOTSTRAP ==============-->
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"> -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
         <!--=============== SWIPER CSS ===============-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
@@ -79,7 +81,7 @@
         {% endblock %}
 
                 <!--==================== FOOTER ====================-->
-                <footer class="footer" style="background-color:#414141;">
+        <footer class="footer" style="background-color:#414141;">
                     <div class="row">
                         <div class="column" style="background-color:#414141;">
                             <h2 style="color: white;">Menu Principal</h2>
@@ -144,28 +146,34 @@
                         &#169; Créé par Batel Tech 2023 | Copyright La Pierre De Lune. Tous droits réservés
                     </span>
                     
-                </footer>
+        </footer>
         
                 
-                <!--========== SCROLL UP ==========-->
-                <a href="#" class="scrollup" id="scroll-up" aria-label="barre de scroll"> 
+        <!--========== SCROLL UP ==========-->
+        <a href="#" class="scrollup" id="scroll-up" aria-label="barre de scroll"> 
                     <i class="fa-solid fa-arrow-up"></i>
-                </a>
+        </a>
 
-                <!--=============== SCROLLREVEAL ===============-->
-                <script src="https://unpkg.com/scrollreveal"></script>
+        <!--=============== SCROLLREVEAL ===============-->
+        <script src="https://unpkg.com/scrollreveal"></script>
 
-                <!--=============== MAIN JS ===============-->
-                <script src="{% static 'js/main.js' %}"></script>
+        <!--=============== MAIN JS ===============-->
+        <script src="{% static 'js/main.js' %}"></script>
         
-                <!-- Swiper JS -->
-                <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+        <!-- Swiper JS -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
-                <!--=============== MAIN JS ===============-->
-                <script src="{% static 'js/main.js' %}"></script>
         
-                <!-- Initialize Swiper -->
-                <script>
+        <!-- Toastify CSS -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <!-- Toastify JS-->
+        <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+        <!--=============== MAIN JS ===============-->
+        <script src="{% static 'js/main.js' %}"></script>
+        
+        <!-- Initialize Swiper -->
+        <script>
                    var swiper = new Swiper(".accueilSwiper", {
                                     effect: "coverflow",
                                     initialSlide:2,          
@@ -187,6 +195,6 @@
                                         el: ".swiper-pagination",
                                     },
                                     });
-</script>                
+        </script>                
     </body>
 </html>

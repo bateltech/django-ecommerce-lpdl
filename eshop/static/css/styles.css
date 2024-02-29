@@ -1381,7 +1381,8 @@ aside p {
     height: 350px;
   } */
   
-.product-image img {
+.product-image {
+    cursor: pointer;
     height: 100% !important;
     width: auto !important;
 }
@@ -1412,6 +1413,7 @@ aside p {
 }
   
 .product-info {
+    cursor: pointer;
     display: grid;
     grid-row: 4 / 5;
     grid-column: 1 / 4;

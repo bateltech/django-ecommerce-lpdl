@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout  # Importez les fonctions authenticate et login
 
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
@@ -90,21 +91,52 @@ def accueil_view(request):
 
 def articles_view(request):
     categories = Categorie.objects.all()
-    sub_categories = SousCategorie.objects.filter(fk_categorie__in=categories)
-    articles = Article.objects.filter(fk_sous_categorie__in=sub_categories)
+    sub_categories = SousCategorie.objects.filter(categorie__in=categories)
+    articles = Article.objects.filter(sous_categorie__in=sub_categories)
     print("Categories:", categories)
     print("Subcategories:", sub_categories)
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    return render(request, 'articles.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur,'sub_categories': sub_categories, 'articles': articles, 'categories': categories})
+
+    wishlist_article_ids = []  # Liste pour stocker les IDs des articles dans la wishlist de l'utilisateur connecté
+    
+    if utilisateur_connecte:
+
+        # Récupérer la wishlist de l'utilisateur connecté s'il est connecté
+        wishlist = Wishlist.objects.filter(client=request.user.id)
+        if wishlist.exists():  # Vérifier si la wishlist existe pour cet utilisateur
+            # Extraire les IDs des articles dans la wishlist
+            wishlist_article_ids = list(wishlist.values_list('articles', flat=True))
+
+    context = {'utilisateur_connecte': utilisateur_connecte,
+                'prenom_utilisateur': prenom_utilisateur,
+                'sub_categories': sub_categories,
+                'articles': articles,
+                'categories': categories,
+                'wishlist_article_ids': wishlist_article_ids }
+    return render(request, 'articles.html', context)
 
 def details_view(request, article_id):
     article = Article.objects.get(pk=article_id)
-    price = article.fk_prix_article.all()
+    price = article.prix_article.all()
+    categories = Categorie.objects.all()
+    similar_articles = Article.objects.filter(categorie=article.categorie, sous_categorie=article.sous_categorie)
+
+    paginator = Paginator(similar_articles, 4)  # Display 4 articles per page
+    page_number = request.GET.get('page')
+    page_articles = paginator.get_page(page_number)
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
     context = {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur': prenom_utilisateur,
         'article': article,
         'prices': price,
-        'price': price.first() }
+        'price': price.first(),
+        'categories': categories,
+        'similar_articles': page_articles }
     return render(request, 'details.html', context)
 
 def mentions_view(request):
@@ -121,7 +153,6 @@ def conditions_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
     return render(request, 'conditions.html', context)
-
 
 
 def paiement_voyance_view(request):
@@ -155,7 +186,6 @@ def pierres_view(request):
     context = {'pierres': pierres, 'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'selected_pierre': selected_pierre}
     return render(request, 'pierres.html', context)
 
-
 def erreur_view(request, exception=None):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -168,7 +198,6 @@ def resetpwrd_view(request):
     utilisateur = request.user if utilisateur_connecte else None
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
     return render(request, 'resetpwrd.html', context)
-
 
 @login_required()
 def panier_view(request):
@@ -228,7 +257,6 @@ def checkout_view(request):
     }
     return render(request, 'checkout.html', context)
 
-
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def profil_view(request):
     utilisateur_connecte = request.user.is_authenticated
@@ -239,7 +267,6 @@ def profil_view(request):
 
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur, 'form': form}
     return render(request, 'profil.html', context)
-
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def securite_view(request):
@@ -252,14 +279,28 @@ def securite_view(request):
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur, 'form': form}
     return render(request, 'securite.html', context)
 
-
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def favoris_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
     
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    if utilisateur_connecte:
+        # Récupérer la wishlist de l'utilisateur connecté s'il est connecté
+        try:
+            wishlist = Wishlist.objects.get(client=request.user)
+            articles_wishlist = wishlist.articles.all()
+        except Wishlist.DoesNotExist:
+            # Si l'utilisateur n'a pas de wishlist, initialiser une liste vide
+            articles_wishlist = []
+    else:
+        articles_wishlist = []
+
+    context = {'utilisateur_connecte': utilisateur_connecte,
+               'prenom_utilisateur': prenom_utilisateur,
+               'user': utilisateur,
+                'articles': articles_wishlist }
+    
     return render(request, 'favoris.html', context)
 
 
@@ -269,7 +310,11 @@ def commentaires_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
     
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    context = {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur': prenom_utilisateur,
+        'user': utilisateur }
+    
     return render(request, 'commentaires.html', context)
 
 
@@ -279,7 +324,11 @@ def historique_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
     
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'user': utilisateur}
+    context = {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur': prenom_utilisateur,
+        'user': utilisateur }
+    
     return render(request, 'historique.html', context)
 
 from django.db import IntegrityError
@@ -396,14 +445,26 @@ def add_to_wishlist(request):
         
         # get article
         article = Article.objects.get(pk=article_id)
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+        # # Add the article to the wishlist
+        # if wishlist.articles.contains(article):
+        #     wishlist.articles.remove(article)
+        # else:
+        #     wishlist.articles.add(article)
+        
+        # # Redirect to the desired page
+        # return redirect('details', article_id = article_id)
+        # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
         # Add the article to the wishlist
-        if wishlist.articles.contains(article):
+        if wishlist.articles.filter(pk=article_id).exists():
             wishlist.articles.remove(article)
+            added = False
         else:
             wishlist.articles.add(article)
+            added = True
         
-        # Redirect to the desired page
-        return redirect('details', article_id = article_id)
+        # Return JSON response
+        return JsonResponse({'added': added})
     
 
 @login_required
@@ -571,7 +632,7 @@ def submit_feedback(request):
         feedback = Feedback(
             contenu=contenu,
             date_envoi=timezone.now(),
-            fk_user_id=user_id,
+            utilisateur_id=user_id,
             etat=0 
         )
         feedback.save()

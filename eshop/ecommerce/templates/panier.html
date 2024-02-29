@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Mon panier - La pierre de lune{% endblock %}
+
 {% block content %}
 
 
@@ -161,7 +163,7 @@
             <div class="div2" id="cartItem{{ item.id }}">
                     
                 <div class="produit-info">
-                    <h2>{{ feedback_item.fk_user.first_name }}.{{ feedback_item.fk_user.last_name|first|default:'' }}</h2>
+                    <h2>{{ feedback_item.utilisateur.first_name }}.{{ feedback_item.utilisateur.last_name|first|default:'' }}</h2>
                     <p>{{feedback_item.contenu}}</p>
                 </div>
             </div>

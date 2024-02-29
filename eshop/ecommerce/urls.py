@@ -39,7 +39,7 @@ urlpatterns = [
 
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
-    path('addtowishlist/', add_to_wishlist, name='add_to_wishlist'),
+    path('add_to_wishlist/', add_to_wishlist, name='add_to_wishlist'),
     path('add_to_cart/', add_to_card, name='add_to_cart'),
     path('search/', search_results, name='search'),
     path('formulaire-de-voyance/', formulaire_voyance, name='formulaire_voyance'),

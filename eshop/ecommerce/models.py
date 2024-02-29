@@ -55,7 +55,7 @@ class Categorie(models.Model):
 # Table Sous Catégorie
 class SousCategorie(models.Model):
     libelle = models.CharField(max_length=255, null=False)
-    fk_categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.libelle
@@ -64,14 +64,14 @@ class SousCategorie(models.Model):
 # Table Commentaire
 class Commentaire(models.Model):
     contenu = models.TextField(null=False)
-    fk_user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    fk_article = models.ForeignKey('Article', on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    article = models.ForeignKey('Article', on_delete=models.CASCADE)
     etat = models.IntegerField(null=False,default=0)
     date_envoi = models.DateField(null=False)
 
 
     def __str__(self):
-        return f"Commentaire #{self.id} par {self.fk_user.username}"
+        return f"Commentaire #{self.id} par {self.utilisateur.username}"
 
 
 # Table Tag par besoin
@@ -95,7 +95,10 @@ class PrixArticle(models.Model):
     taille = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.get_type_prix_display()} - {self.prix} €"
+        if self.type_prix == 'size_based':
+            return f"{self.taille}cm - {self.prix} €"
+        else:
+            return f"{self.get_type_prix_display()} - {self.prix} €"
     
 
 
@@ -106,12 +109,9 @@ class Article(models.Model):
     description = models.TextField(null=False)
     image = models.ImageField(upload_to="articles/", blank=True, null=True)
     stock = models.IntegerField(default=0, null=False)
-    # fk_prix_article = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
-    fk_prix_article = models.ManyToManyField(PrixArticle, related_name='articles')  # Many-to-Many relationship with PrixArticle
-    fk_categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
-    fk_sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE)
-    # fk_tag = models.ForeignKey(TagBesoin, on_delete=models.CASCADE)
-    # fk_pierre = models.ForeignKey('Pierre', on_delete=models.CASCADE, blank=True, null=True)
+    prix_article = models.ManyToManyField(PrixArticle, related_name='articles')  # Many-to-Many relationship with PrixArticle
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE)
     tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)  # Many-to-Many relationship with Tag
     pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)  # Many-to-Many relationship with Pierre
     #  when I want to access all the articles related to an instance of a tag or pierre,
@@ -199,11 +199,11 @@ class DetailCommande(models.Model):
 class Feedback(models.Model):
     contenu = models.TextField(null=False)
     date_envoi = models.DateField(null=False)
-    fk_user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     etat = models.IntegerField(null=False,default=0)
 
     def __str__(self):
-        return f"Feedback #{self.id} de {self.fk_user.last_name} {self.fk_user.first_name}"
+        return f"Feedback #{self.id} de {self.utilisateur.last_name} {self.utilisateur.first_name}"
 
 
 

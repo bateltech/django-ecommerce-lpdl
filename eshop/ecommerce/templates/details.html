@@ -1,7 +1,59 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %} {{article.libelle}} - La pierre de lune{% endblock %}
+
 {% block content %}
+
+<style>
+    .card-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+        padding: 5px;
+    }
+
+    .card {
+        position: relative;
+        flex: 0 0 calc(20% - 5px); /* Display 4 cards per row */
+        width: 338px;
+        height: 442px; /* Adjust as needed */
+        background-size: cover;
+        background-position: center;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+    }
+
+    .overlay h3, .overlay p {
+        margin: 0;
+        font-size: 15px;
+        color: black;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
 
 <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
         <!--==================== HEADER ====================-->
@@ -11,22 +63,47 @@
             <div class="top__bar">
 
                    <div class="search__container">
-                    <i class="bi bi-cart3 fa-2x"></i>
-                    <i class="bi bi-suit-heart fa-2x"></i>
-                    <i class="bi bi-search fa-2x"></i>
+                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
                     <img id="logo" src="{% static 'img/logo.webp' %}">
                    </a>
 
+                   {% if utilisateur_connecte %}
+
+
+                   <!-- Desktop version -->
                    <div class="shop__container">
-                    <button class="log__button">S'inscrire</button>
-                    <button class="log__button">Se connecter</button>
+                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                        <i class="fa fa-sign-out"></i>
+                    </button></a>
+                    <a href="{% url 'profil' %}"><button class="log__button" >
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        {{ prenom_utilisateur }}
+                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                    </button></a>
                    </div>
+                
+
+                   {% else %}
+
+                   <div class="shop__container">
+                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                        <i class="fa fa-user-plus"></i>
+                    </button></a>
+                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                        <i class="fa fa-sign-in"></i>
+                    </button></a>
+                   </div>
+
+                   {% endif %}
+                   
             </div>
 
-            <div style="display: flex; justify-content: space-around; align-items: center;">
+            <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
                 <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
             </div>
 
@@ -77,11 +154,16 @@
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                 </div>
-
+                
+                <a href="{% url 'accueil' %}" class="nav__logo">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+                   </a>
+                   
                 <div class="nav__buttons">
 
-                    <!-- Theme change button -->
-                    <!-- moon-clear-line change-theme" id="theme-button"></i> -->
+                    <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -91,51 +173,65 @@
             </nav>
 
         
-        </header>
+                </header>
+
+
+        <!--=============== LOG HEADER BUTTONS ==================-->
+
+        <!-- Mobile version -->
+
+        {% if utilisateur_connecte %}
+
+        <div class="log__container">
+            <a href="{% url 'profil' %}"><button class="log__button" >
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                {{ prenom_utilisateur }}
+                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+            </button></a>
+
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
+
+        </div>
+
+        {% else %}
+
+        <div class="log__container">
+            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                <i class="fa fa-user-plus"></i>
+            </button></a>
+            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                <i class="fa fa-sign-in"></i>
+            </button></a>
+        </div>
+
+        {% endif %}
 
         <!--==================== MAIN ====================-->
         <main class="main">
             <div style="margin: 54px;">
-                <p style="color: white; font-size: 15sp; ">Articles / Bracelets / Bracelets Femmes / Bracelets Hématite</p>
+                <p style="color: white; font-size: 15sp; ">Articles / {{article.categorie.libelle}} / {{article.sous_categorie.libelle}} / {{article.libelle}}</p>
             </div>
 
             <!--==================== ARTICLES ====================-->
             <div class="article__main">
 
-                <!-- Sidebar Menu -->
-                <aside>
+                <!-- Sidebar categories -->
+                <aside style="height:    106vh; border-bottom: 1px solid #cccccc;">
                     <p> </p>
-                    <a href="">
-                      Bracelets
+                    {% for category in categories %}
+                    <a href="#" class = "category" category-id="{{ category.libelle }}">
+                      {{ category.libelle }}
                     </a>
-                    <a href="">
-                      Boucles d'oreilles
-                    </a>
-                    <a href="">
-                      Malas
-                    </a>
-                    <a href="">
-                      Orgonites
-                    </a>
-                    <a href="">
-                      Plaques de rechargement
-                    </a>
-                    <a href="">
-                        Bolas pour grossesse
-                      </a>
-                      <a href="">
-                        Bougeoirs
-                      </a>
-                      <a href="">
-                        Bouddha
-                      </a>
+                    {% endfor %}
                 </aside>
 
                 <section class="article__section">
 
                     <div class="flex-container" style="display: -webkit-flex; display: flex;">
                         <div class="card__image" style="-webkit-box-flex: 2; -ms-flex: 2; flex: 2; padding: 20px;">
-                            <img src="{% static 'img/produits/bracelets.png' %}" alt="card image">
+                            <img src="{{ article.image.url }}" alt="{{ article.libelle }}"  style="height: inherit; max-height: 700px;">
                         </div>
 
                         <div id="products-container"></div>
@@ -145,13 +241,13 @@
                             <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
                             <div style="display: -webkit-flex;">
                                 {% if price.type_prix == "size_based" %}
-                                <div>
+                                <div style="margin: 10px;">
                                     <label style="color: white; font-size: 20px; ">Taille<br></label>
-                                    <select name="size" id="size" style ="width: 80px; height: 32px; border-radius: 40px; border: 0.50px white solid; background-color: black; color: white; padding: 5px; font-size:   18px;" >
+                                    <select name="size" id="size"  style ="width: 110px; height: 32px; margin-top: 5px; border-radius: 40px; border: 0.50px white solid; background-color: black; color: white; padding: 5px; font-size:   18px;" >
                                         {% for p in prices %}
 
                                         <option value={{p.prix}} id={{p.id}} style="color: white; font-size: 20px;"> 
-                                            {{p.taille}}
+                                            {{p.taille}} cm
                                         </option>
 
                                         {% endfor %}
@@ -159,19 +255,19 @@
                                     </select>
                     
                                 </div>
-                                <div>
-                                    <label style="color: white; font-size: 20px;">Prix</label>
+                                <div style="margin: 10px;">
+                                    <label style="margin-top: 5px; color: white; font-size: 20px;">Prix</label>
                                     <p id="prixparTaille" style="color: white; font-size: 20px;">{{price.prix}} €</p>
                                 </div>
                                 {% else %}
-                                <div>
+                                <div  style="margin: 10px;">
                                     <label style="color: white; font-size: 20px;">Prix</label>
-                                    <p style="color: white; font-size: 20px;">{{price.prix}} €</p>
+                                    <p style="margin-top: 5px; color: white; font-size: 20px;">{{price.prix}} €</p>
                                 </div>
                                 {% endif %}
                             </div>
 
-                            <div style="display: -webkit-flex;">
+                            <div style="display: -webkit-flex; margin: 10px;">
                                 
                                 <!-- 
                                 <div class="StarReview" style="width: 161.32px; height: 24.38px; position: relative">
@@ -186,32 +282,30 @@
                             <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
 
                             {% if article.stock > 0 %}
-                            <div style="width: 325.58px; height: 42px; background: #D9D9D9; border-radius: 20px; padding: 10px 10px;">
+                            <div style="width: 325.58px; height: 42px; background: #D9D9D9; border-radius: 20px; padding: 10px 10px; margin: 10px;">
                                 <img src="{% static 'img/icon_detail_valider.svg' %}" alt="icon valider" style="width: 19.55px; height: 17.14px;"/>
                                 <span style="width: 152.52px; height: 19.30px; color: #555555; font-size: 15px; margin-left: 10px;"> en stock</span>
                                 
                             </div>
                             {% else %}
-                            <div style="width: 325.58px; height: 42px; background: #d8bbbb; border-radius: 20px; padding: 10px 10px;">
+                            <div style="width: 325.58px; height: 42px; background: #d8bbbb; border-radius: 20px; padding: 10px 10px; margin: 10px;">
                                 <img src="{% static 'img/icon_detail_close.svg' %}" alt="icon valider" style="width: 20.55px; height: 17.14px;"/>
                                 <span style="width: 152.52px; height: 19.30px; color: #811414; font-size: 15px; margin-left: 10px;"> repture de stock</span>
                                 
                             </div>
                             {% endif %}
-                            <div style="display: -webkit-flex;">
+                            <div style="display: -webkit-flex; margin: 10px;">
                                 <form method="POST" action="{% url 'add_to_cart' %}">
                                     {% csrf_token %}
                                     <input id="price_Taille" type="hidden" name="price_id" value="{{ price.id }}">
                                     <input type="hidden" name="article_id" value="{{ article.id }}">
-                                    <button type="submit" class="login__button" >Ajouter au panier </button>
+                                    <button type="submit" class="login__button" style="width: 250px;">Ajouter au panier </button>
                                 </form>
-                                <form method="POST" action="{% url 'add_to_wishlist' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="article_id" value="{{ article.id }}">
-                                    <button id="favorie" type="submit" style="width: 40.09px; height: 41px; background: rgba(255, 255, 255, 0.50); border-radius: 50px; border: 1px white solid" >
-                                        <img src="{% static 'img/icon_detail_favorie.svg' %}" style="padding-top: 5px;"/>
-                                       </button>
-                                </form>
+                                
+                                <button class="add-to-wishlist-btn" data-article-id="{{ article.id }}" style="cursor:pointer; width: 40.09px; height: 41px; background: rgba(255, 255, 255, 0.50); border-radius: 50px; border: 1px white solid">
+                                    <img src="{% static 'img/icon_detail_favorie.svg' %}" style="padding-top: 5px;"/>
+                                </button>
+                                
                             </div>
 
                             <div style="display: -webkit-flex; padding: 10px 10px;">
@@ -224,17 +318,17 @@
                             <div>
                                 <h2>Description</h2>
                                 
-                                <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description|linebreaks|truncatechars:200 }}</div>
+                                {% if article.description|length >= 500 %}
+                                    <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description|truncatechars:200 }}</div>
+                                    <a id="readMore" style="color: white; font-weight: bold;  cursor: pointer;"><ins>Lire plus...</ins></a>
+
+                                    <p id="fullDesc" style="display:none; color: white; font-weight: lighter;">{{ article.description }}</p>
                                 
-                                <a id="readMore" style="color: white; font-weight: bold;">
-                                  <ins>Lire plus...</ins>
-                                </a>
+                                    <a id="readLess" style="display: none; color: white; font-weight: bold; cursor: pointer;"><ins>Lire moins</ins></a>
+                                {% else %}
+                                    <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description }}</div>
+                                {% endif %}
                                 
-                                <p id="fullDesc" style="display:none; color: white; font-weight: lighter;">{{ article.description }}</p>
-                                
-                                <a id="readLess" style="display: none; color: white; font-weight: bold;">
-                                    <ins>Lire moins...</ins>
-                                  </a>
                             </div>
 
                               
@@ -247,6 +341,38 @@
                 </section>
 
             </div>
+
+
+            <!--==================== AUTRES ARTICLES ====================-->
+            <section class="autres_article">
+                <h1  class="collection__title">VOUS AIMEREZ AUSSI</h1>
+                
+                <div class="pagination">
+                    {% if similar_articles.has_previous %}
+                    <a href="?page={{ similar_articles.previous_page_number }}"><i><img src="{% static 'img/icon_detail_previous.svg' %}"/></i></a>
+                    {% else %}
+                    <i><img src="{% static 'img/icon_detail_previous.svg' %}"/></i>
+                    {% endif %}
+
+                    <div class="card-container">
+                        {% for article in similar_articles %}
+                        <div class="card" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
+                            <div class="overlay">
+                                <h3 style="font-weight: 900;">{{ article.libelle }}</h3>
+                                <p>prix {{ article.prix_article.prix }} €</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if similar_articles.has_next %}
+                    <a href="?page={{ similar_articles.next_page_number }}"><i><img src="{% static 'img/icon_detail_next.svg' %}"/></i></a>
+                    {% else %}
+                    <i><img src="{% static 'img/icon_detail_next.svg' %}"/></i>
+                    {% endif %}
+                </div>
+            </section>
+
 
             <!--==================== LIVRAISON ====================-->
             <section class="livraison__section">
@@ -295,6 +421,11 @@
                 console.log('input : ', inputElement.value);
                 console.log('selected value', selectedValue);
 
+                function redirectToArticle(articleId) {
+                    // Redirect to the article detail page or perform any other action based on the article ID
+                    window.location.href = '/lapierredelune/details/' + articleId; // Change the URL as needed
+                }
+
                 /* réduire/afficher la description complète */
                 const shortDesc = document.getElementById('shortDesc');
                 const fullDesc = document.getElementById('fullDesc');
@@ -315,6 +446,64 @@
                 readLess.style.display = 'none';
                 });
             </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
+    
+        addToWishlistButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const articleId = this.getAttribute('data-article-id');
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+                fetch('/add_to_wishlist/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: new URLSearchParams({
+                        'article_id': articleId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.added) {
+                        Toastify({
+                            text: 'Article ajouté à votre wishlist !',
+                            duration: 3000,
+                            gravity: 'top',
+                            position: 'right',
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: 'Article retiré de votre wishlist !',
+                            duration: 3000,
+                            gravity: 'top',
+                            position: 'right',
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                            }
+                        }).showToast();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+    </script>
+
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <!-- Toastify JS-->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
         </main>

@@ -13,3 +13,4 @@ db.sqlite3
 # Ignore local settings
 local_settings.py
 sitemapper.js
+pyvenv.cfg
