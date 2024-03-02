@@ -229,6 +229,15 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("link clicked");
             event.preventDefault();
             const categoryId = this.getAttribute('category-id');
+            // Remove 'active' class from all category links
+            categoryLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked category link
+            this.classList.add('active');
+
+
 
             // Update the selected category text
             const selectedCategoryText = document.getElementById('selected-category');

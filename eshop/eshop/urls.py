@@ -12,6 +12,9 @@ urlpatterns = [
     path ('delete_Cart_item_ajax/<int:item_id>/', views.delete_Cart_item_ajax, name = 'delete_Cart_item_ajax'),
     path('get_item_price/<int:item_id>/', views.get_item_price, name='get_item_price'),
 
+
+    path ('delete_Voyance_ajax/<int:item_id>/', views.delete_Voyance_ajax, name = 'delete_Voyance_ajax'),
+
 ]
 
 from django.conf import settings

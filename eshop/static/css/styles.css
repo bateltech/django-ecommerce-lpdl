@@ -528,7 +528,7 @@ img {
     margin: 0 2em;
 }
 
-.swiper-slide:not(.swiper-slide-active){
+.mon-slider:not(.swiper-slide-active){
     filter: blur(2px);
 }
 
@@ -1330,7 +1330,8 @@ aside p {
 
 .horizontal-scroll {
     white-space: nowrap; /* Prevent content from wrapping */
-    overflow: hidden; /* Enable horizontal scrolling */
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    overflow: hidden;
     padding-left: 0.625rem; /* Optional: Add padding to the scrollable area */
     
 }
@@ -1364,8 +1365,25 @@ aside p {
     max-height: 90vh;
     padding-left: 0.625rem;
     padding-left: 3rem;
-} 
-  
+    scrollbar-width: thin;
+}
+
+/* Style personnalisé de la scrollbar */
+.product-cards::-webkit-scrollbar {
+    width: 0.5rem; /* Largeur de la scrollbar */
+}
+
+/* Track */
+.product-cards::-webkit-scrollbar-track {
+    background-color: #555555; /* Couleur du fond du track */
+}
+
+/* Handle */
+.product-cards::-webkit-scrollbar-thumb {
+    background-color: hsl(207, 4%, 75%); /* Couleur de la poignée */
+    border-radius: 0.5rem; /* Rayon de bordure de la poignée */
+}
+
 .product-card {
     display: grid;
     grid-template-columns: 6.25rem 6.25rem 6.25rem;
@@ -1373,13 +1391,6 @@ aside p {
     margin-bottom: 0.938rem;
     border-radius: 1.25rem;
 }
-  
-  /* .product-image {
-    grid-column:  1 / 4;
-    grid-row: 1 / 5;
-    width: 300px;
-    height: 350px;
-  } */
   
 .product-image {
     cursor: pointer;

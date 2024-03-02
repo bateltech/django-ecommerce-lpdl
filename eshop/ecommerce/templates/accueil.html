@@ -208,9 +208,7 @@
                     </div>
                 </div>
             </nav>
-
-        
-                </header>
+        </header>
 
 
         <!--=============== LOG HEADER BUTTONS ==================-->
@@ -285,7 +283,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/bracelets.webp' %}" alt="card image">
                         </div>
@@ -297,8 +295,7 @@
                     </div>
 
 
-
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/boucle.webp' %}" alt="card image">
                         </div>
@@ -312,7 +309,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/orgonites.webp' %}" alt="card image">
                         </div>
@@ -326,7 +323,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/bouddhas.webp' %}" alt="card image">
                         </div>
@@ -339,7 +336,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/malas.webp' %}" alt="card image">
                         </div>
@@ -351,7 +348,7 @@
                     </div>
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/bolas.webp' %}" alt="card image">
                         </div>
@@ -365,7 +362,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/plaques.webp' %}" alt="card image">
                         </div>
@@ -378,7 +375,7 @@
 
 
 
-                    <div class="card swiper-slide">
+                    <div class="card swiper-slide mon-slider">
                         <div class="card__image">
                         <img src="{% static 'img/produits/deco.webp' %}" alt="card image">
                         </div>
@@ -558,7 +555,7 @@
                     {{ form.prenom }}
 
                     <label for="{{ form.email.id_for_label }}">Email:</label>
-                    {{ form.email }}
+                    <input type="email" id="email" name="email" value="{{ request.user.email }}" readonly>
                     
                     <label for="{{ form.image.id_for_label }}">Photo:</label>
                     {{ form.image }}
@@ -572,5 +569,7 @@
                 </form>
             </div>
         </div>
+
+        
 
 {% endblock %}

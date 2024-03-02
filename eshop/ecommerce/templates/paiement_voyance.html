@@ -13,7 +13,7 @@
             <div class="top__bar">
 
                    <div class="search__container">
-                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
@@ -154,14 +154,14 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="#collection" class="nav__link anchor__link">
+                            <a href="#collection" class="nav__link">
                                 <i class="fa-solid fa-shapes"></i>
                                  Collection
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="#artist" class="nav__link anchor__link">
+                            <a href="#artist" class="nav__link">
                                 <i class="fa-solid fa-person-rays"></i>
                                  Artiste
                             </a>
@@ -182,7 +182,7 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="#voyance" class="nav__link anchor__link">
+                            <a href="#voyance" class="nav__link">
                                 <i class="fa-solid fa-hand-sparkles"></i>
                                  Voyance
                             </a>
@@ -214,7 +214,7 @@
             </nav>
 
         
-                </header>
+        </header>
 
 
         <!--=============== LOG HEADER BUTTONS ==================-->
@@ -230,9 +230,10 @@
                 <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
             </button></a>
 
-            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
-                <i class="fa fa-sign-out"></i>
-            </button></a>
+            <a href="{% url 'deconnexion' %}">
+                <button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i></button>
+            </a>
 
         </div>
 
@@ -242,6 +243,7 @@
             <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
                 <i class="fa fa-user-plus"></i>
             </button></a>
+
             <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
                 <i class="fa fa-sign-in"></i>
             </button></a>
@@ -250,25 +252,118 @@
         {% endif %}
         
 
+<!--==================== MAIN ====================-->
+<main class="main">
 
-        <!--==================== MAIN ====================-->
-        <main class="main">
-
-            <section class="section__payment">
-                <h1>Paiement de Voyance</h1>
-                <div class="payment__form">
-                    
-                    <form method="POST">
-                        {% csrf_token %}
-                        <label for="card_number">Numéro de carte</label>
-                        <input type="text" id="card_number" name="card_number" required>
-                        <label for="expiry_date">Date d'expiration</label>
-                        <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/AA" required>
-                        <label for="cvv">CVV</label>
-                        <input type="text" id="cvv" name="cvv" required>
-                        <button type="submit">Payer</button>
-                    </form>
+    <!--===================== CHECKOUT ================-->
+    <section class="checkout__section">
+        <!--===================== Section Panier ================-->
+        <section class="panier_section">
+            <div class="div1">
+                <h2>PANIER</h2>
+                <!-- <a href = "{% url 'articles' %}">
+                    <button class="panier__button">
+                        Continuer mes achats
+                    </button>
+                </a> -->
+                
+            </div>
+            <hr>
+            {% for item in cart_items %}
+            <div class="div2" id="cartItem{{ item.id }}">
+                
+                <div class="produit-info">
+                    <img src="{{ item.article.image.url }}" alt="{{ item.article.libelle }}" style="max-width: 100px; max-height: 100px;">
+                <h2>Voyance N°{{ item.id }}</h2>
                 </div>
-            </section>
-        </main>
+                <h2>{{ item.created_at|date:"F j, Y" }}</h2>
+                <h2 id="itemPrice_{{ item.id }}">{{ item.tarif }} €</h2>
+
+                <div class="white-container" style="justify-content: center; flex-direction: column;">
+                    
+                    <span class="counter-value" id="counter{{ item.id }}">1</span>
+                    
+                </div>
+                <button><img src="{% static 'img/ic_delete.svg'%}" alt="Delete button"    onclick="deleteVoyance({{item.id}})"></button>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            </div>
+            {% endfor %}
+        </section>
+
+        <!--===================== Section total ================-->
+        <section class="section_total">
+            <div class="total_header">
+                <i class='fas fa-shipping-fast'></i>
+                <p>Vous receverez une réponse une semaine au plus tard après paiement.</p>
+            </div>
+            <hr>
+
+            {% for item in cart_items %}
+            <div class="cart_item">
+                <div class="produit-info">
+                    <p>Voyance N°{{ item.id }}</p>
+                    <p>{{ item.created_at|date:"F j, Y" }}</p>
+                </div>
+                <p id="seconditemPrice_{{ item.id }}">{{item.tarif}} €</p>
+            </div>
+            
+            {% endfor %}
+            <hr>
+
+            <div class="total_price">
+                <p>Total </p>
+                <p id="totalPriceElement">{{ total_price }} €</p>
+            </div>
+            <hr>
+
+            <a href="{% url 'checkout' %}">
+                <button class="panier__button">
+                    Procéder au paiement
+                </button>
+            </a>
+            
+
+        </section>
+
+    </section>
+
+</main>
+
+<script>
+    function deleteVoyance(itemId) {
+    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+    console.log('Delete voyance on the server');
+
+    fetch(`/delete_Voyance_ajax/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken,
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Supprimer', data);
+
+        // Check for success and remove the HTML element
+        if (data.success) {
+            const itemElement = document.getElementById(`cartItem${itemId}`);
+            if (itemElement) {
+                itemElement.remove();
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error supp item:', error);
+    });
+}
+
+</script>
 {% endblock %}

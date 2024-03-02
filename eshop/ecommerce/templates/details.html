@@ -8,19 +8,35 @@
 <style>
     .card-container {
         display: flex;
-        overflow-x: auto;
+        /*overflow-x: auto;*/
         gap: 5px;
         padding: 5px;
+        margin: 0 2rem;
     }
+
+
+    .articles_similaires {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-between !important;
+        align-items:center !important;
+        overflow: hidden !important;
+    
+    }
+    .swiper-wrapper {
+        margin: 0 2rem !important;
+        justify-content: center;
+    }
+
 
     .card {
         position: relative;
         flex: 0 0 calc(20% - 5px); /* Display 4 cards per row */
         width: 338px;
         height: 442px; /* Adjust as needed */
-        background-size: cover;
-        background-position: center;
-        border-radius: 5px;
+        background-size: cover !important;
+        background-position: center !important;
+        border-radius: 1rem !important;
         overflow: hidden;
     }
 
@@ -53,6 +69,49 @@
         border-radius: 5px;
         cursor: pointer;
     }
+
+    .swiper-container {
+    position: relative;
+    
+}
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        /* Autres styles de positionnement selon vos besoins */
+        text-align: center;
+        height: 50% !important;
+        padding: 3rem 1.5rem !important;
+        background-color: rgba(50, 50, 50, 0.6);
+    }
+
+
+    .next__article {
+        color: white !important;
+        box-shadow: none !important;
+        float: right !important;
+        margin-right: 0.5rem !important;
+    }
+
+    .prev__article {
+        color: white !important;
+        box-shadow: none !important;
+        float: left !important;
+        margin-left: 0.5rem !important;
+    }
+
+    .swiper-pagination {
+        display: none;
+    }
+
+    .autres_article {
+        position: relative;
+        
+        margin-bottom: 7rem !important;
+    }
+
 </style>
 
 <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
@@ -67,6 +126,91 @@
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
+
+                    <!-- Barre de recherche -->
+                    
+                    <div id="searchBar" class="search-bar">
+                        <form id="search-form" method="post" autocomplete="off">
+                            {% csrf_token %}
+                        <input type="text" id="searchInput" placeholder="Rechercher...">
+                        </form>
+                        <div id="results-box" class="results-card" style="display:none"></div>
+                    </div>
+                
+                    <!-- Script to log search input to console -->
+
+                    <script>
+                        $(document).ready(function() {
+
+                            const searchForm = document.getElementById('search-form');
+                            const searchInput = document.getElementById('searchInput');
+                            const resultsBox = document.getElementById('results-box');
+                            const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    
+                            function sendSearchData(article) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{% url "search" %}',  // Change this to the correct URL if needed
+                                    data: {
+                                        'csrfmiddlewaretoken': csrf,
+                                        'article': article,
+                                    },
+                                    success: function(res) {
+                                        let data = res.data;
+                                        if (Array.isArray(data)) {
+                                            // Clear previous results
+                                            resultsBox.innerHTML = '';
+                                            data.forEach(article => {
+                                                // Create container for each article
+                                                let articleContainer = document.createElement('a');
+                                                articleContainer.href ="details/"+ article.id;
+                                                articleContainer.classList.add('link', 'article-container');
+                                    
+                                                // Create image element
+                                                let imgElement = document.createElement('img');
+                                                imgElement.src = article.image;
+                                                imgElement.alt = article.name;
+                                                imgElement.classList.add('article-img');
+                                                imgElement.style.marginRight = '10px';
+                                    
+                                                // Create name element
+                                                let nameElement = document.createElement('h5');
+                                                nameElement.textContent = article.name;
+                                                nameElement.style.color = 'black'; // Set text color to black
+                                                // Append image and name to the article container
+                                                articleContainer.appendChild(imgElement);
+                                                articleContainer.appendChild(nameElement);
+                                    
+                                                // Append article container to the results box
+                                                resultsBox.appendChild(articleContainer);
+                                            });
+                                        } else {
+                                            if (searchInput.value.length > 0) {
+                                                resultsBox.innerHTML = `<b>${data}</b>`;
+                                            } else {
+                                                resultsBox.innerHTML = '';
+                                                resultsBox.style.display = 'none';
+                                            }
+                                        }
+                                    },
+                                    
+                                    error: function(err) {
+                                        console.log(err);
+                                    },
+                                });
+                            }
+                        
+                            searchInput.addEventListener('input', function(e) {
+                                const searchQuery = e.target.value.trim();
+                                if (searchQuery.length > 0) {
+                                    resultsBox.style.display = 'block';
+                                } else {
+                                    resultsBox.style.display = 'none';
+                                }
+                                sendSearchData(searchQuery);
+                            });
+                        });
+                    </script>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
                     <img id="logo" src="{% static 'img/logo.webp' %}">
@@ -118,13 +262,13 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="#collection" class="nav__link anchor__link">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link">
                                  Collection
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link">
                                  Artiste
                             </a>
                         </li>
@@ -142,7 +286,7 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="{% url 'accueil' %}#voyance" class="nav__link anchor__link">
+                            <a href="{% url 'accueil' %}#voyance" class="nav__link">
                                  Voyance
                             </a>
                         </li>
@@ -344,62 +488,36 @@
 
 
             <!--==================== AUTRES ARTICLES ====================-->
-            <section class="autres_article">
-                <h1  class="collection__title">VOUS AIMEREZ AUSSI</h1>
-                
-                <div class="pagination">
-                    {% if similar_articles.has_previous %}
-                    <a href="?page={{ similar_articles.previous_page_number }}"><i><img src="{% static 'img/icon_detail_previous.svg' %}"/></i></a>
-                    {% else %}
-                    <i><img src="{% static 'img/icon_detail_previous.svg' %}"/></i>
-                    {% endif %}
 
-                    <div class="card-container">
+
+            <section class="autres_article">
+                <h1 class="collection__title" style="margin-bottom: 4rem;">VOUS AIMEREZ AUSSI</h1>
+            
+                <div class="swiper-container articles_similaires" style="height: 400px;"> <!-- Définir une hauteur -->
+                    
+                    
+                    <div class="swiper-wrapper">
                         {% for article in similar_articles %}
-                        <div class="card" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
+                        <div class="swiper-slide card" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
                             <div class="overlay">
                                 <h3 style="font-weight: 900;">{{ article.libelle }}</h3>
-                                <p>prix {{ article.prix_article.prix }} €</p>
+                                <p>{{ article.prix_article.first.prix }} €</p>
                             </div>
                         </div>
                         {% endfor %}
+
                     </div>
-                    
-                    {% if similar_articles.has_next %}
-                    <a href="?page={{ similar_articles.next_page_number }}"><i><img src="{% static 'img/icon_detail_next.svg' %}"/></i></a>
-                    {% else %}
-                    <i><img src="{% static 'img/icon_detail_next.svg' %}"/></i>
-                    {% endif %}
+            
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                    <!-- Add Navigation -->
+                    <div class="swiper-button-next next__article"></div>
+                    <div class="swiper-button-prev prev__article"></div>
+
                 </div>
             </section>
-
-
-            <!--==================== LIVRAISON ====================-->
-            <section class="livraison__section">
-
-                <div class="right__line"> </div>
-
-                <div class="livraison__container">
-                    <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="Image SVG">
-                    <div class="livraison__paragraphes">
-                        <b><p>Livraison à domicile</p></b>
-                        <p>5,00 €</p>
-                        <p>2 à 3 jours ouvrables (France)</p>
-                    </div>
-                </div>
-                
-                <div class="left__line"> </div>
-
-                <div class="right__line"> </div>
-
-                <div class="livraison__container">
-                    <div class="livraison__paragraphes">
-                        <p>Livraison gratuite pour tous les achats à partir de 65,00 €</p>
-                    </div>
-                </div>
-                
-                <div class="left__line"> </div>
-            </section>
+            
+        
 
             <script>
                 console.log('Test');
@@ -423,7 +541,7 @@
 
                 function redirectToArticle(articleId) {
                     // Redirect to the article detail page or perform any other action based on the article ID
-                    window.location.href = '/lapierredelune/details/' + articleId; // Change the URL as needed
+                    window.location.href = '/details/' + articleId; // Change the URL as needed
                 }
 
                 /* réduire/afficher la description complète */
@@ -499,6 +617,28 @@
         });
     });
     </script>
+
+
+        <!-- Inclure Swiper -->
+        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+        <script>
+            // Initialiser Swiper
+            var swiper = new Swiper('.articles_similaires', {
+                slidesPerView: 4,
+                spaceBetween: 20,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        </script>
+
 
     <!-- Toastify CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">

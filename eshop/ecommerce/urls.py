@@ -40,7 +40,7 @@ urlpatterns = [
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
     path('add_to_wishlist/', add_to_wishlist, name='add_to_wishlist'),
-    path('add_to_cart/', add_to_card, name='add_to_cart'),
+    path('add_to_cart/', add_to_cart, name='add_to_cart'),
     path('search/', search_results, name='search'),
     path('formulaire-de-voyance/', formulaire_voyance, name='formulaire_voyance'),
 
@@ -51,5 +51,6 @@ urlpatterns = [
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     path('robots.txt/', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
+    
 
 ]

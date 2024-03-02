@@ -93,7 +93,7 @@ def articles_view(request):
     categories = Categorie.objects.all()
     sub_categories = SousCategorie.objects.filter(categorie__in=categories)
     articles = Article.objects.filter(sous_categorie__in=sub_categories)
-    print("Categories:", categories)
+    # print("Categories:", categories)
     print("Subcategories:", sub_categories)
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -120,12 +120,8 @@ def details_view(request, article_id):
     article = Article.objects.get(pk=article_id)
     price = article.prix_article.all()
     categories = Categorie.objects.all()
-    similar_articles = Article.objects.filter(categorie=article.categorie, sous_categorie=article.sous_categorie)
-
-    paginator = Paginator(similar_articles, 4)  # Display 4 articles per page
-    page_number = request.GET.get('page')
-    page_articles = paginator.get_page(page_number)
-
+    similar_articles = Article.objects.filter(categorie=article.categorie, sous_categorie=article.sous_categorie).exclude(pk=article_id)
+    
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
 
@@ -136,8 +132,9 @@ def details_view(request, article_id):
         'prices': price,
         'price': price.first(),
         'categories': categories,
-        'similar_articles': page_articles }
+        'similar_articles': similar_articles }
     return render(request, 'details.html', context)
+
 
 def mentions_view(request):
     utilisateur_connecte = request.user.is_authenticated
@@ -160,6 +157,29 @@ def paiement_voyance_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
     return render(request, 'paiement_voyance.html', context)
+
+@login_required()
+def paiement_voyance_view(request):
+    # Retrieve the current user
+    user_v = request.user
+    
+    cart_items = Voyance.objects.filter(email=user_v.email, etat="en attente")
+    
+
+    total_price = sum(item.tarif for item in cart_items)
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    context = {
+            'utilisateur_connecte': utilisateur_connecte,
+            'prenom_utilisateur': prenom_utilisateur,
+            'cart_items': cart_items,
+            'total_price' : total_price
+        }
+    
+    return render(request, 'paiement_voyance.html', context)
+
 
 
 from django.shortcuts import get_object_or_404
@@ -226,6 +246,7 @@ def panier_view(request):
             'feedback_items': feedback_items,
             'total_price' : total_price
         }
+    
     return render(request, 'panier.html', context)
 
 @login_required() 
@@ -445,16 +466,7 @@ def add_to_wishlist(request):
         
         # get article
         article = Article.objects.get(pk=article_id)
-        # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-        # # Add the article to the wishlist
-        # if wishlist.articles.contains(article):
-        #     wishlist.articles.remove(article)
-        # else:
-        #     wishlist.articles.add(article)
-        
-        # # Redirect to the desired page
-        # return redirect('details', article_id = article_id)
-        # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
         # Add the article to the wishlist
         if wishlist.articles.filter(pk=article_id).exists():
             wishlist.articles.remove(article)
@@ -468,7 +480,7 @@ def add_to_wishlist(request):
     
 
 @login_required
-def add_to_card(request):
+def add_to_cart(request):
     if request.method == 'POST':
         article_id = request.POST.get('article_id')
         price_id = request.POST.get('price_id')
@@ -621,6 +633,24 @@ def delete_Cart_item_ajax (request, item_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
     
+
+@require_POST
+@csrf_protect
+def delete_Voyance_ajax (request, item_id):
+    try:
+        # Retrieve the Voyance instance
+        voyance = Voyance.objects.get(pk=item_id)
+
+        # Delete the Item
+        voyance.delete()
+
+        return JsonResponse({'success': True, 'message': 'Item successfully deleted'})
+    except Voyance.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Cart item not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+
+
 
 def submit_feedback(request):
     if request.method == 'POST':

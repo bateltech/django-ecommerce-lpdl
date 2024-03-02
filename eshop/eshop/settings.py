@@ -52,10 +52,10 @@ JAZZMIN_SETTINGS = {
     "site_header": "La Pierre de Lune",
     "site_brand": "La Pierre de Lune",
     
-    "site_icon": "img/admin_logo.png",
+    "site_icon": "img/admin_logo.webp",
     "custom_css": "css/jazzmin-dark.css",
     # Add your own branding here
-    "site_logo": "img/admin_logo.png",
+    "site_logo": "img/admin_logo.webp",
     "welcome_sign": "Bienvenue sur La Pierre de Lune",
     # Copyright on the footer
     "copyright": "Batel Technology",

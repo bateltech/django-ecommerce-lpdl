@@ -101,8 +101,6 @@ class PrixArticle(models.Model):
             return f"{self.get_type_prix_display()} - {self.prix} €"
     
 
-
-
 # Table Article
 class Article(models.Model):
     libelle = models.CharField(max_length=128, null=False)
@@ -144,6 +142,7 @@ class Cart(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     articles = models.ManyToManyField(Article, through='CartItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    tarif_livraison = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
     def calculate_total_price(self):
         total_price = sum(item.item_price for item in self.cartitem_set.all())
@@ -206,7 +205,7 @@ class Feedback(models.Model):
         return f"Feedback #{self.id} de {self.utilisateur.last_name} {self.utilisateur.first_name}"
 
 
-
+from datetime import timedelta
 # Table Voyance
 class Voyance(models.Model):
     nom = models.CharField(max_length=100)
@@ -217,3 +216,6 @@ class Voyance(models.Model):
     tarif = models.FloatField(default=30.00)
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_created_at_plus_six_days(self):
+        return self.created_at + timedelta(days=6)

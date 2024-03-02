@@ -19,6 +19,91 @@
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
+                    <!-- Barre de recherche -->
+                    
+                    <div id="searchBar" class="search-bar">
+                        <form id="search-form" method="post" autocomplete="off">
+                            {% csrf_token %}
+                        <input type="text" id="searchInput" placeholder="Rechercher...">
+                        </form>
+                        <div id="results-box" class="results-card" style="display:none"></div>
+                    </div>
+                
+                    <!-- Script to log search input to console -->
+
+                    <script>
+                        $(document).ready(function() {
+
+                            const searchForm = document.getElementById('search-form');
+                            const searchInput = document.getElementById('searchInput');
+                            const resultsBox = document.getElementById('results-box');
+                            const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+                    
+                            function sendSearchData(article) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '{% url "search" %}',  // Change this to the correct URL if needed
+                                    data: {
+                                        'csrfmiddlewaretoken': csrf,
+                                        'article': article,
+                                    },
+                                    success: function(res) {
+                                        let data = res.data;
+                                        if (Array.isArray(data)) {
+                                            // Clear previous results
+                                            resultsBox.innerHTML = '';
+                                            data.forEach(article => {
+                                                // Create container for each article
+                                                let articleContainer = document.createElement('a');
+                                                articleContainer.href ="details/"+ article.id;
+                                                articleContainer.classList.add('link', 'article-container');
+                                    
+                                                // Create image element
+                                                let imgElement = document.createElement('img');
+                                                imgElement.src = article.image;
+                                                imgElement.alt = article.name;
+                                                imgElement.classList.add('article-img');
+                                                imgElement.style.marginRight = '10px';
+                                    
+                                                // Create name element
+                                                let nameElement = document.createElement('h5');
+                                                nameElement.textContent = article.name;
+                                                nameElement.style.color = 'black'; // Set text color to black
+                                                // Append image and name to the article container
+                                                articleContainer.appendChild(imgElement);
+                                                articleContainer.appendChild(nameElement);
+                                    
+                                                // Append article container to the results box
+                                                resultsBox.appendChild(articleContainer);
+                                            });
+                                        } else {
+                                            if (searchInput.value.length > 0) {
+                                                resultsBox.innerHTML = `<b>${data}</b>`;
+                                            } else {
+                                                resultsBox.innerHTML = '';
+                                                resultsBox.style.display = 'none';
+                                            }
+                                        }
+                                    },
+                                    
+                                    error: function(err) {
+                                        console.log(err);
+                                    },
+                                });
+                            }
+                        
+                            searchInput.addEventListener('input', function(e) {
+                                const searchQuery = e.target.value.trim();
+                                if (searchQuery.length > 0) {
+                                    resultsBox.style.display = 'block';
+                                } else {
+                                    resultsBox.style.display = 'none';
+                                }
+                                sendSearchData(searchQuery);
+                            });
+                        });
+                    </script>
+
                    <a href="{% url 'accueil' %}" class="logo__prin">
                     <img id="logo" src="{% static 'img/logo.webp'%}">
                    </a>
@@ -69,14 +154,14 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="{% url 'accueil' %}#collection" class="nav__link anchor__link">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link">
                                 <i class="fa-solid fa-shapes"></i>
                                  Collection
                             </a>
                         </li>
 
                         <li class="nav__item">
-                            <a href="{% url 'accueil' %}#artist" class="nav__link anchor__link">
+                            <a href="{% url 'accueil' %}#artist" class="nav__link">
                                 <i class="fa-solid fa-store"></i>
                                  Artiste
                             </a>

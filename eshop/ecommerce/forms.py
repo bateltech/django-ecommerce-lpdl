@@ -95,6 +95,6 @@ class VoyanceForm(forms.ModelForm):
 
     nom = forms.CharField(label='Nom', max_length=100, required=True, widget=forms.TextInput(attrs={'id': 'nom'}))
     prenom = forms.CharField(label='Prénom', max_length=100, required=True, widget=forms.TextInput(attrs={'id': 'prenom'}))
-    email = forms.EmailField(label='Email', max_length=100, required=True, widget=forms.EmailInput(attrs={'id': 'email'}))
+    email = forms.EmailField(label='Email', max_length=100, required=True, widget=forms.EmailInput(attrs={'id': 'email','readonly': 'readonly'}))
     image = forms.ImageField(label='Photo', required=True, widget=forms.FileInput(attrs={'id': 'image', 'class': 'form__image', 'accept': 'image/*', 'onchange': 'previewImage(event)'}))
     contenu_demande = forms.CharField(label='Contenu de la demande', widget=forms.Textarea(attrs={'id': 'contenu', 'rows': '8'}), required=True)
