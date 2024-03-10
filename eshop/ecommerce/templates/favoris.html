@@ -307,10 +307,7 @@
                         {% for article in articles %}
                         <div class="product-card" article-id="{{ article.id }}" style="background: center / cover no-repeat url('/media/{{ article.image}}');">
 
-                            <div class="product-image" article-id="{{ article.id }}">
-                                <!-- <img src="{{ article.image.url }}" alt="{{ article.libelle }}"> -->
-                            </div>
-
+                            <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
@@ -319,9 +316,6 @@
                             <div class="product-image" article-id="{{ article.id }}"></div>
 
                             <div class="heart-icon" >
-                                <img src="{% static 'img/empty_heart.svg' %}" 
-                                    alt="Heart Icon"  class="heart-outline hidden">
-
                                 <img src="{% static 'img/filled_heart.svg' %}" alt="Red Heart Icon" 
                                     class="heart-red">
                             </div>
@@ -345,5 +339,36 @@
 
 
 </main>
+
+<script>
+    // Sélectionnez tous les éléments avec la classe product-image
+    const productCards = document.querySelectorAll('.product-image');
+
+    // Parcourez chaque élément et ajoutez un gestionnaire d'événements pour le clic
+    productCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Récupérez l'ID de l'article en utilisant l'attribut article-id
+            const articleId = card.getAttribute('article-id');
+
+            // Effectuez une redirection vers la vue details_view avec l'ID de l'article en tant que paramètre
+            window.location.href = `/details/${articleId}/`;
+        });
+    });
+
+    // Sélectionnez tous les éléments avec la classe product-info
+    const productInfos = document.querySelectorAll('.product-info');
+
+    // Parcourez chaque élément et ajoutez un gestionnaire d'événements pour le clic
+    productInfos.forEach(info => {
+        info.addEventListener('click', () => {
+            // Récupérez l'ID de l'article en utilisant l'attribut article-id
+            const articleId = info.getAttribute('article-id');
+
+            // Effectuez une redirection vers la vue details_view avec l'ID de l'article en tant que paramètre
+            window.location.href = `/details/${articleId}/`;
+        });
+    });
+
+</script>
 
 {% endblock %}

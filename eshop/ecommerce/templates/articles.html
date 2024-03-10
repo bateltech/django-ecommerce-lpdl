@@ -281,10 +281,7 @@
                         {% for article in articles %}
                         <div class="product-card" article-id="{{ article.id }}" article-sub-category="{{ article.sous_categorie_id }}"  style="background: center / cover no-repeat url('/media/{{ article.image}}');">
 
-                            <div class="product-image" article-id="{{ article.id }}">
-                                <!-- <img src="{{ article.image.url }}" alt="{{ article.libelle }}"> -->
-                            </div>
-
+                            <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>
@@ -295,16 +292,16 @@
                             <div class="heart-icon" >
                                 {% if article.id in wishlist_article_ids %}
                                 <img src="{% static 'img/empty_heart.svg' %}" 
-                                    alt="Heart Icon"  class="heart-outline hidden">
+                                    alt="Heart Icon"  class="heart-outline hidden add-to-wishlist-btn" data-article-id="{{ article.id }}">
 
                                 <img src="{% static 'img/filled_heart.svg' %}" alt="Red Heart Icon" 
-                                    class="heart-red">
+                                    class="heart-red add-to-wishlist-btn" data-article-id="{{ article.id }}">
                                 {% else %}
                                 <img src="{% static 'img/empty_heart.svg' %}" 
-                                    alt="Heart Icon"  class="heart-outline">
+                                    alt="Heart Icon"  class="heart-outline add-to-wishlist-btn" data-article-id="{{ article.id }}">
 
                                 <img src="{% static 'img/filled_heart.svg' %}" alt="Red Heart Icon" 
-                                    class="heart-red hidden">
+                                    class="heart-red hidden add-to-wishlist-btn" data-article-id="{{ article.id }}">
                                 {% endif %}
                             </div>
                     
@@ -385,4 +382,58 @@
 
         </script>
         
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
+            
+                addToWishlistButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const articleId = this.getAttribute('data-article-id');
+                        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+                        fetch('/add_to_wishlist/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: new URLSearchParams({
+                                'article_id': articleId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.added) {
+                                Toastify({
+                                    text: 'Article ajouté à votre wishlist !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                    }
+                                }).showToast();
+                            } else {
+                                Toastify({
+                                    text: 'Article retiré de votre wishlist !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                                    }
+                                }).showToast();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    });
+                });
+            });
+        </script>
+    
 {% endblock %}

@@ -121,9 +121,19 @@ def details_view(request, article_id):
     price = article.prix_article.all()
     categories = Categorie.objects.all()
     similar_articles = Article.objects.filter(categorie=article.categorie, sous_categorie=article.sous_categorie).exclude(pk=article_id)
-    
+
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    if utilisateur_connecte:
+        favoris = Wishlist.objects.filter(client=request.user).exists()
+        if favoris:
+            wishlist_articles = Wishlist.objects.get(client=request.user).articles.all()
+            favoris = article in wishlist_articles
+        else:
+            favoris = False
+    else:
+        favoris = False
 
     context = {
         'utilisateur_connecte': utilisateur_connecte,
@@ -132,7 +142,8 @@ def details_view(request, article_id):
         'prices': price,
         'price': price.first(),
         'categories': categories,
-        'similar_articles': similar_articles }
+        'similar_articles': similar_articles,
+        'favoris': favoris }
     return render(request, 'details.html', context)
 
 
@@ -484,40 +495,50 @@ def add_to_cart(request):
     if request.method == 'POST':
         article_id = request.POST.get('article_id')
         price_id = request.POST.get('price_id')
-         # get article
+        # get article
         article = Article.objects.get(pk=article_id)
         price = PrixArticle.objects.get(pk=price_id)
 
-        # Check if the user has a cart
-        try:
-            cart = Cart.objects.get(user=request.user)
-        except Cart.DoesNotExist:
-            # If the user doesn't have a cart, create one
-            cart = Cart.objects.create(user=request.user)
+        # Vérifier le stock de l'article
+        if article.stock > 0:
+            # Check if the user has a cart
+            try:
+                cart = Cart.objects.get(user=request.user)
+            except Cart.DoesNotExist:
+                # If the user doesn't have a cart, create one
+                cart = Cart.objects.create(user=request.user)
 
-        cart.save()
+            cart.save()
 
-        # Create cart item
-        try:
-            item = CartItem.objects.get(cart=cart, article=article, article_price=price)
-            item.quantity = item.quantity + 1
-        except CartItem.DoesNotExist:
-            item = CartItem.objects.create(
-            cart=cart, 
-            article=article,
-            article_price=price)
-        
-        item.save()
+            # Create cart item
+            try:
+                item = CartItem.objects.get(cart=cart, article=article, article_price=price)
+                item.quantity = item.quantity + 1
+            except CartItem.DoesNotExist:
+                item = CartItem.objects.create(
+                cart=cart,
+                article=article,
+                article_price=price)
 
-        cart.total_price = cart.total_price + price.prix
-        cart.save()
-        
-        # Redirect to the desired page
-        return redirect('details', article_id = article_id)
-    
+            item.save()
+
+            cart.total_price = cart.total_price + price.prix
+            cart.save()
+
+            # Décrémenter le stock de l'article
+            article.stock -= 1
+            article.save()
+
+            added_p = True
+        else:
+            added_p = False
+
+        # Return JSON response
+        return JsonResponse({'added_p': added_p})
+   
+
 
 from django.core.serializers.json import DjangoJSONEncoder
-
 def search_results(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         article =request.POST.get('article')

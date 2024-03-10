@@ -112,6 +112,30 @@
         margin-bottom: 7rem !important;
     }
 
+
+    .details__favoris {
+        cursor: pointer;
+        width: 41px;
+        height: 41px;
+        border-radius: 50px;
+        border: none;
+    }
+
+    .favoris__icon--inactive {
+        background-image: url('/static/img/icon_detail_favoris.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        /* Autres styles */
+    }
+
+    .favoris__icon--active {
+        background-image: url('/static/img/favoris_active.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        /* Autres styles */
+    }
+
+
 </style>
 
 <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
@@ -439,16 +463,17 @@
                             </div>
                             {% endif %}
                             <div style="display: -webkit-flex; margin: 10px;">
-                                <form method="POST" action="{% url 'add_to_cart' %}">
+                                <form id="add-to-cart-form" method="POST" action="{% url 'add_to_cart' %}">
                                     {% csrf_token %}
                                     <input id="price_Taille" type="hidden" name="price_id" value="{{ price.id }}">
                                     <input type="hidden" name="article_id" value="{{ article.id }}">
                                     <button type="submit" class="login__button" style="width: 250px;">Ajouter au panier </button>
                                 </form>
                                 
-                                <button class="add-to-wishlist-btn" data-article-id="{{ article.id }}" style="cursor:pointer; width: 40.09px; height: 41px; background: rgba(255, 255, 255, 0.50); border-radius: 50px; border: 1px white solid">
-                                    <img src="{% static 'img/icon_detail_favorie.svg' %}" style="padding-top: 5px;"/>
+
+                                <button class="details__favoris add-to-wishlist-btn {% if favoris %}favoris__icon--active{% else %}favoris__icon--inactive{% endif %}" data-article-id="{{ article.id }}">
                                 </button>
+                                
                                 
                             </div>
 
@@ -565,8 +590,10 @@
                 });
             </script>
 
-<script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
+
+        /* Bouton ajouter aux favoris */
         const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
     
         addToWishlistButtons.forEach(button => {
@@ -586,9 +613,14 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    // const imgElements = document.querySelectorAll('.favoris__icon'); // Sélectionnez tous les éléments avec la classe
+                    // const imgElement = imgElements[0]; 
+
+                    const btnElement = document.querySelector('.add-to-wishlist-btn'); // Sélectionnez le bouton
+
                     if (data.added) {
                         Toastify({
-                            text: 'Article ajouté à votre wishlist !',
+                            text: 'Article ajouté à votre liste de souhaits !',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
@@ -597,9 +629,15 @@
                                 background: "linear-gradient(to right, #00b09b, #96c93d)",
                             }
                         }).showToast();
+                        // imgElement.src = "/static/img/favoris_active.svg";
+                        // Changez le background du bouton ici
+                        btnElement.classList.add('favoris__icon--active');
+                        btnElement.classList.remove('favoris__icon--inactive');
+
                     } else {
+
                         Toastify({
-                            text: 'Article retiré de votre wishlist !',
+                            text: 'Article retiré de votre liste de souhaits !',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
@@ -608,6 +646,11 @@
                                 background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
                             }
                         }).showToast();
+                        // imgElement.src = "/static/img/icon_detail_favorie.svg";
+
+                        // Changez le background du bouton ici
+                        btnElement.classList.add('favoris__icon--inactive');
+                        btnElement.classList.remove('favoris__icon--active');
                     }
                 })
                 .catch(error => {
@@ -615,7 +658,61 @@
                 });
             });
         });
+        
+        /* Bouton ajouter au panier */
+        document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêcher le formulaire d'être soumis normalement
+
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const articleId = document.querySelector('input[name="article_id"]').value;
+        const priceId = document.querySelector('input[name="price_id"]').value;
+
+        fetch('/add_to_cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: new URLSearchParams({
+                'article_id': articleId,
+                'price_id': priceId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.added_p) {
+                Toastify({
+                    text: 'Article ajouté au panier !',
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            }
+            else {
+                Toastify({
+                    text: 'Cet article est en rupture de stock !',
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                    }
+                }).showToast();
+                console.log('Erreur lors de l\'ajout de l\'article au panier');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
+
+    });
+
     </script>
 
 
