@@ -516,6 +516,7 @@
 
 
             <section class="autres_article">
+                {% if similar_articles %}
                 <h1 class="collection__title" style="margin-bottom: 4rem;">VOUS AIMEREZ AUSSI</h1>
             
                 <div class="swiper-container articles_similaires" style="height: 400px;"> <!-- Définir une hauteur -->
@@ -540,6 +541,7 @@
                     <div class="swiper-button-prev prev__article"></div>
 
                 </div>
+                {% endif %}
             </section>
             
         

@@ -279,7 +279,7 @@
 
                     <div class="product-cards" id="productCardsContainer">
                         {% for article in articles %}
-                        <div class="product-card" article-id="{{ article.id }}" article-sub-category="{{ article.sous_categorie_id }}"  style="background: center / cover no-repeat url('/media/{{ article.image}}');">
+                        <div class="product-card" article-id="{{ article.id }}" article-category="{{ article.categorie.libelle }}" article-sub-category="{{ article.sous_categorie_id }}"  style="background: center / cover no-repeat url('/media/{{ article.image}}');">
 
                             <div class="product-image" article-id="{{ article.id }}"></div>
                             <div class="product-image" article-id="{{ article.id }}"></div>

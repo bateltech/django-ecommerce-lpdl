@@ -222,6 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function filterProductCardsByCategory(categoryId) {
+        productCards.forEach(card => {
+            const articleCategory = card.getAttribute('article-category');
+            if (articleCategory === categoryId || categoryId === 'all') {
+                card.style.display = 'grid';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
     // Event listener for category buttons
     categoryLinks.forEach(link => {
         console.log("inside category links loop");
@@ -237,7 +248,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add 'active' class to the clicked category link
             this.classList.add('active');
 
-
+            filterProductCardsByCategory(categoryId);
+            subcategoryButtons.forEach(btn => {
+                btn.classList.remove('clicked');
+            });
 
             // Update the selected category text
             const selectedCategoryText = document.getElementById('selected-category');
@@ -249,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
             subcategoryButtons.forEach(button => {
                 console.log("inside sub category loop");
                 const subcategoryId = button.getAttribute('sub-category-id');
+                console.log("subcategory id : ", subcategoryId);
+                console.log("category id : ", categoryId);
                 if (subcategoryId.startsWith(categoryId)) {
                     button.style.display = 'inline-block';
                 } else {
@@ -259,17 +275,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // Filter and hide articles of the previous category
             productCards.forEach(card => {
                 console.log("inside product card loop not function");
-                const articleSubcategory = card.getAttribute('article-sub-category');
-                if (!articleSubcategory.startsWith(categoryId)) {
+                const articlecategory = card.getAttribute('article-category');
+                console.log(" WOOHOO articlecategory id : ", articlecategory);
+                console.log(" WOOHOO category id : ", categoryId);
+                if (!articlecategory.startsWith(categoryId)) {
                     card.style.display = 'none';
                 }
             });
 
-            // Trigger click event on the first subcategory button associated with the clicked category
-            const firstSubcategoryButton = document.querySelector('.rounded-button[sub-category-id^="' + categoryId + '"]');
-            if (firstSubcategoryButton) {
-                firstSubcategoryButton.click(); // Trigger click event
-            }
+            // // Trigger click event on the first subcategory button associated with the clicked category
+            // const firstSubcategoryButton = document.querySelector('.rounded-button[sub-category-id^="' + categoryId + '"]');
+            // if (firstSubcategoryButton) {
+            //     firstSubcategoryButton.click(); // Trigger click event
+            // }
         });
         
     });
@@ -289,12 +307,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // // Trigger click event on the first category link when the page is loaded
-    // const firstCategoryLink = categoryLinks[0];
-    // if (firstCategoryLink) {
-    //     firstCategoryLink.click();
-    // }
-
     // Get the heart icon container
     const heartIcons = document.querySelectorAll('.heart-icon');
     
@@ -311,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 
 /* ###################################### */
 /* ######## end of DOM functions ######## */
