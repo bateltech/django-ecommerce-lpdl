@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com','lpdl.local']
 
 
 # Application definition

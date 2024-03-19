@@ -8,17 +8,17 @@ from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, V
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-# Vues des fonctionnalités
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout  # Importez les fonctions authenticate et login
-
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
+
+
 # Vues des modèles
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -81,8 +81,24 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
 
+# Vues des erreurs
+
+def error_400(request, exception):
+    return render(request, 'erreur.html', status=400)
+
+def error_403(request, exception):
+    return render(request, 'erreur.html', status=403)
+
+def error_404(request, exception):
+    return render(request, 'erreur.html', status=404)
+
+def error_500(request):
+    return render(request, 'erreur.html', status=500)
 
 
+
+# Vues des fonctionnalités
+    
 def accueil_view(request):
     form = VoyanceForm()
     utilisateur_connecte = request.user.is_authenticated
@@ -645,10 +661,18 @@ def delete_Cart_item_ajax (request, item_id):
         # Retrieve the CartItem instance
         cart_item = CartItem.objects.get(pk=item_id)
 
+        # Get the associated Article instance
+        article = cart_item.article
+
+        # Increment the article's stock by the CartItem's quantity
+        article.stock += cart_item.quantity
+        article.save()
+
+        item_price = cart_item.item_price
         # Delete the Item
         cart_item.delete()
 
-        return JsonResponse({'success': True, 'message': 'Item successfully deleted'})
+        return JsonResponse({'success': True, 'message': 'Item successfully deleted', 'item_price': item_price})
     except CartItem.DoesNotExist:
         return JsonResponse({'success': False, 'message': 'Cart item not found'})
     except Exception as e:

@@ -53,7 +53,7 @@
                                             data.forEach(article => {
                                                 // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                articleContainer.href ="details/"+ article.id;
+                                                window.location.href ="/details/"+ article.id;
                                                 articleContainer.classList.add('link', 'article-container');
                                     
                                                 // Create image element

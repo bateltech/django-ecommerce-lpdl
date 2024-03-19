@@ -92,7 +92,7 @@ class PrixArticle(models.Model):
     type_prix = models.CharField(max_length=20, choices=PRICE_TYPE_CHOICES, default='fixed')
     prix = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
 
-    taille = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    taille = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
 
     def __str__(self):
         if self.type_prix == 'size_based':
@@ -122,7 +122,7 @@ class Article(models.Model):
 # Table Taille Article
 class TailleArticle(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    taille = models.CharField(max_length=10)
+    taille = models.IntegerField()
 
     def __str__(self):
         return f"{self.article.libelle} - {self.taille}"

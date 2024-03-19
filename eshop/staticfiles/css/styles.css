@@ -31,7 +31,8 @@
 
     /*========== Font and typography ==========*/
     /*.5rem = 8px | 1rem = 16px ...*/
-    --body-font: 'Roboto', sans-serif;
+    /* --body-font: 'Roboto', sans-serif; */
+    --body-font: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     --title-font: 'Lora', serif;
     --accueil-font:'Montserrat', sans-serif;
     --biggest-font-size: 1.5rem;
@@ -1365,7 +1366,8 @@ aside p {
     max-height: 90vh;
     padding-left: 0.625rem;
     padding-left: 3rem;
-} 
+    scrollbar-width: thin;
+}
 
 /* Style personnalisé de la scrollbar */
 .product-cards::-webkit-scrollbar {
@@ -1593,8 +1595,6 @@ aside p {
 
 }
 
-
-
 @media screen and (max-width: 767px) {
     
     main{
@@ -1627,6 +1627,20 @@ aside p {
 
     .nav__menu{
         background-color: #686662;
+    }
+
+    .nav__menu{
+        position: fixed;
+        width: 88%;
+        left: 0;
+        right: 0;
+        bottom: -60%;
+        margin: 0 auto;
+        /* background-color: var(--body-color); */
+        box-shadow: 0 4px 20px hsla(207, 24%, 35%, .1);
+        padding: 2rem 1.5rem 5rem;
+        border-radius: 2rem;
+        transition: bottom .3s;
     }
      
     .nav__buttons{
@@ -1886,8 +1900,6 @@ aside p {
         width: 25rem;
     }
 
-
-
     /*-----------------------------------*\
     * #PIERRES.HTML
     \*-----------------------------------*/
@@ -1895,6 +1907,7 @@ aside p {
     .pierre-card {
         margin: 0 1.5em !important;
     }
+
     .pierre-card,
     .card__image-pierre,
     .card__image-pierre img {
@@ -1948,7 +1961,6 @@ aside p {
     .prev_pierre {
         margin-left: 0;
     }
-
 
     /*-----------------------------------*\
     * PROFIL.HTML 
@@ -2038,7 +2050,6 @@ aside p {
         width: 100% !important;
     }
 
-
     /*-----------------------------------*\
     * SECURITE.HTML 
     \*-----------------------------------*/
@@ -2047,26 +2058,154 @@ aside p {
         width: 85% !important;
     }
     
+    /*-----------------------------------*\
+    * PANIER.HTML
+    \*-----------------------------------*/
+
+    .checkout__section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 !important;
+    }
+
+    .section_total {
+        width: 100% !important;
+    }
+
+    .panier_section {
+        width: 100% !important;
+    }
+
+    .panier_section .div2 {
+        display: grid !important;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid white;
+        align-items: stretch !important;
+        column-gap: 7px;
+        grid-template-columns: 38% 20% 38%;
+    }
+
+    .panier_section .div2 .produit-info {
+        flex-direction: column;
+        align-items: start !important;
+        border-right: solid 1px white;
+    }
+
+    .panier_section .div2 h2 {
+        font-size: 14px !important;
+    }
+
+
+    .button-item-delete,
+    .white-container,
+    .taille-prix {
+        display: none !important;
+    }
+
+    .taille-prix-mobile {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-evenly !important;
+    }
+
+    .white-container-mobile {
+        display: flex !important;
+        margin-bottom: 1rem !important;
+    }
+    .button-item-mobile {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-evenly;
+    }
 }
-
-
 
 /* For medium devices */
 
-@media screen and (max-width : 1023px){
-    .nav__menu{
-        position: fixed;
-        width: 88%;
+@media screen and (min-width: 768px) and (max-width : 1023px){
+    .nav__menu {
         left: 0;
         right: 0;
-        bottom: -60%;
         margin: 0 auto;
-        /* background-color: var(--body-color); */
         box-shadow: 0 4px 20px hsla(207, 24%, 35%, .1);
-        padding: 2rem 1.5rem 5rem;
         border-radius: 2rem;
         transition: bottom .3s;
     }
+
+    .nav__menu {
+        margin-left: auto;
+        transition: background .4s;
+    }
+
+    .header {
+        top: 0;
+        bottom: initial;
+        /* background-color: var(--body-color); */
+        transition:.4s;
+    }
+    
+    .nav {
+        width: initial;
+        height: calc(var(--header-height) + 1.5rem);
+        box-shadow: none;
+        border-radius: 0 0 2rem 2rem;
+        column-gap: 3rem;
+        margin-inline: 1.5rem;
+        padding: 0;
+        transition: .4s;
+    }
+
+    .fixed_nav {
+        align-items: center;
+        background-color:    hsla(200, 5%, 20%, 0.7);;
+        position: fixed;
+        /*width: 100%;*/
+        height: calc(var(--header-height) + 1.5rem);
+        top: 0;
+        left: 0;
+        right: 0;
+        padding-top: 1rem;
+        border-radius: 0 0 2rem 2rem;
+        z-index: var(--z-fixed);
+        transition: .4s;
+    }  
+
+    .nav__link i,
+    .nav__toggle,
+    .nav__close {
+        display: none;
+    }
+
+    .nav__list {
+        display: flex;
+        column-gap: 2rem;
+    }
+
+    .nav__link {
+        font-size: var(--h2-font-size);
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .column {
+        padding: 1rem 0rem 0rem 1rem;
+    }
+
+    .col1,
+    .col2 {
+        width: 15% !important;
+    }
+
+    .col3 {
+        width: 35% !important;
+    }
+
+    .show-scroll {
+        bottom: 6rem;
+        right: 2rem;
+    }
+
 }
 
 
@@ -2108,7 +2247,6 @@ aside p {
         transition: .4s;
     }
     
-
     .nav__link i,
     .nav__toggle,
     .nav__close{
@@ -2122,7 +2260,6 @@ aside p {
         transition: background .4s;
     }
 
-
     .nav__list{
         display: flex;
         column-gap: 3rem;
@@ -2132,14 +2269,6 @@ aside p {
         font-size: var(--h2-font-size);
         padding-left: 0.5rem;
         padding-right: 0.5rem;
-    }
-
-    .change-theme{
-        color: var(--text-color-light);
-    }
-
-    .change-theme:hover{
-        color: var(--title-color); 
     }
 
     .section{
@@ -2171,7 +2300,8 @@ aside p {
         margin-top: 5rem;
         text-align: center;
     }
-  }
+}
+
 
 
 
@@ -2259,6 +2389,7 @@ aside p {
     gap: 1rem; /* Adjust the gap as needed */
     align-items: center;
 }
+
   .panier_section .div2 img {
     max-width: 85px;
     max-height: 94px;
@@ -2266,6 +2397,7 @@ aside p {
     height: auto;
     border-radius: 10px;
 }
+
 .panier_section .div2 h2 {
   width: 99px;
   height: auto;
@@ -2307,9 +2439,14 @@ aside p {
 .panier_section .div2 button img {
   vertical-align: middle;
 }
+
   .counter-value {
     color: rgb(85, 85, 85);}
 
+.taille-prix {
+    display: flex;
+    justify-content: space-between;
+}
   /*---------------------------------SECTION PANIER END ---------------------------------------------------------*/
 
 
@@ -2325,7 +2462,7 @@ aside p {
     background: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1100;
   }
   
   /* Style du pop-up */
@@ -2524,6 +2661,7 @@ aside p {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
+
 .div_header p{
   color: white;
   font-family: 'Montserrat', sans-serif;
@@ -2543,6 +2681,7 @@ aside p {
   align-items: center; /* Center align items vertically */
   margin-top: 1rem; /* Adjust as needed for vertical spacing */
 }
+
 .section_panier_checkout .cart_item p {
   flex: 1; /* Make all <p> elements flexible */
   text-align: center;

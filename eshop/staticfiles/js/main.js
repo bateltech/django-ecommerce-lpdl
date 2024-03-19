@@ -222,6 +222,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function filterProductCardsByCategory(categoryId) {
+        productCards.forEach(card => {
+            const articleCategory = card.getAttribute('article-category');
+            if (articleCategory === categoryId || categoryId === 'all') {
+                card.style.display = 'grid';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
     // Event listener for category buttons
     categoryLinks.forEach(link => {
         console.log("inside category links loop");
@@ -229,17 +240,33 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("link clicked");
             event.preventDefault();
             const categoryId = this.getAttribute('category-id');
+            // Remove 'active' class from all category links
+            categoryLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked category link
+            this.classList.add('active');
+
+            filterProductCardsByCategory(categoryId);
+            subcategoryButtons.forEach(btn => {
+                btn.classList.remove('clicked');
+            });
 
             // Update the selected category text
             const selectedCategoryText = document.getElementById('selected-category');
             const selectedCategoryTitle = document.getElementById('title-category');
-            selectedCategoryText.textContent = categoryId;
+            const selectedSubCategoryText = document.getElementById('selected-subcategory');
+            selectedCategoryText.textContent = " / " + categoryId;
             selectedCategoryTitle.textContent = categoryId;
+            selectedSubCategoryText.textContent = "";
 
             // Hide all subcategory buttons
             subcategoryButtons.forEach(button => {
                 console.log("inside sub category loop");
                 const subcategoryId = button.getAttribute('sub-category-id');
+                console.log("subcategory id : ", subcategoryId);
+                console.log("category id : ", categoryId);
                 if (subcategoryId.startsWith(categoryId)) {
                     button.style.display = 'inline-block';
                 } else {
@@ -250,17 +277,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // Filter and hide articles of the previous category
             productCards.forEach(card => {
                 console.log("inside product card loop not function");
-                const articleSubcategory = card.getAttribute('article-sub-category');
-                if (!articleSubcategory.startsWith(categoryId)) {
+                const articlecategory = card.getAttribute('article-category');
+                console.log(" WOOHOO articlecategory id : ", articlecategory);
+                console.log(" WOOHOO category id : ", categoryId);
+                if (!articlecategory.startsWith(categoryId)) {
                     card.style.display = 'none';
                 }
             });
 
-            // Trigger click event on the first subcategory button associated with the clicked category
-            const firstSubcategoryButton = document.querySelector('.rounded-button[sub-category-id^="' + categoryId + '"]');
-            if (firstSubcategoryButton) {
-                firstSubcategoryButton.click(); // Trigger click event
-            }
         });
         
     });
@@ -276,15 +300,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add 'clicked' class to the clicked button
             this.classList.add('clicked');
             const subcategoryarticleId = this.getAttribute('sub-category-article-id');
+
+            const selectedSubCategoryText = document.getElementById('selected-subcategory');
+            selectedSubCategoryText.textContent = " / " + this.getAttribute('sub-category-libelle');
             filterProductCards(subcategoryarticleId);
         });
     });
-
-    // // Trigger click event on the first category link when the page is loaded
-    // const firstCategoryLink = categoryLinks[0];
-    // if (firstCategoryLink) {
-    //     firstCategoryLink.click();
-    // }
 
     // Get the heart icon container
     const heartIcons = document.querySelectorAll('.heart-icon');
@@ -302,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 
 /* ###################################### */
 /* ######## end of DOM functions ######## */
@@ -365,6 +387,13 @@ function changeCounter(itemId, value) {
     }
 }
 
+function updateMobileCounter(itemId, newQuantity) {
+    const mobileCounterElement = document.querySelector(`.button-item-mobile [id="counter${itemId}"]`);
+    if (mobileCounterElement) {
+        mobileCounterElement.textContent = newQuantity;
+    }
+}
+
 function updateQuantityOnServer(itemId, newQuantity) {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
     console.log('Updating quantity for itemId:', itemId);
@@ -387,6 +416,7 @@ function updateQuantityOnServer(itemId, newQuantity) {
     .then(data => {
         console.log('Quantity updated successfully:', data);
         updateItemPrice(itemId);
+        updateMobileCounter(itemId, newQuantity);
     })
     .catch(error => {
         console.error('Error updating quantity:', error);
@@ -419,6 +449,11 @@ function updateItemPrice(itemId) {
         itemPriceElement.textContent = data.item_price +" €";
         seconditemPriceElement.textContent = data.item_price +" €";
 
+        const mobileItemPriceElement = document.querySelector(`.taille-prix-mobile [id="itemPrice_${itemId}"]`);
+        if (mobileItemPriceElement) {
+            mobileItemPriceElement.textContent = data.item_price +" €";
+        }
+
         // Update the total price
         totalPriceElement.textContent = data.total_price +" €";
 
@@ -430,10 +465,43 @@ function updateItemPrice(itemId) {
     });
 }
 
+// function deleteCartItem(itemId) {
+//     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+//     console.log('Delete cart item on the server');
+
+//     fetch(`/delete_Cart_item_ajax/${itemId}/`, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': csrfToken,
+//         },
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! Status: ${response.status}`);
+//         }
+//         return response.json();
+//     })
+//     .then(data => {
+//         console.log('Supprimer', data);
+
+//         // Check for success and remove the HTML element
+//         if (data.success) {
+//             const itemElement = document.getElementById(`cartItem${itemId}`);
+//             if (itemElement) {
+//                 itemElement.remove();
+//             }
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error supp item:', error);
+//     });
+// }
+
+
 function deleteCartItem(itemId) {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-    console.log('Delete cart item on the server');
 
     fetch(`/delete_Cart_item_ajax/${itemId}/`, {
         method: 'POST',
@@ -451,13 +519,26 @@ function deleteCartItem(itemId) {
     .then(data => {
         console.log('Supprimer', data);
 
-        // Check for success and remove the HTML element
-        if (data.success) {
-            const itemElement = document.getElementById(`cartItem${itemId}`);
-            if (itemElement) {
-                itemElement.remove();
-            }
+        // Supprimer l'élément de la section panier_section
+        const itemElement = document.getElementById(`cartItem${itemId}`);
+        if (itemElement) {
+            itemElement.remove();
         }
+
+        // Supprimer l'élément de la section section_total
+        // const itemTotalElement = document.getElementById(`cartItemTotal${itemId}`);
+        const itemTotalElement = document.querySelector(`.cart_item[data-item-id="${itemId}"]`);
+
+        if (itemTotalElement) {
+            itemTotalElement.remove();
+        }
+
+        // Mettre à jour le prix total
+        const totalPriceElement = document.getElementById('totalPriceElement');
+        const currentTotalPrice = parseFloat(totalPriceElement.textContent.replace(' €', ''));
+        const itemPrice = parseFloat(data.item_price);
+        const newTotalPrice = currentTotalPrice - itemPrice;
+        totalPriceElement.textContent = newTotalPrice.toFixed(2) + ' €';
     })
     .catch(error => {
         console.error('Error supp item:', error);

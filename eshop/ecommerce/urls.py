@@ -3,17 +3,20 @@ from django.contrib.auth import views as auth_views
 from .views import *
 from django.views.generic.base import TemplateView  # new
 
+
+from django.conf.urls import handler400, handler403, handler404, handler500
+
+
+handler404 = 'ecommerce.views.error_404'
+handler500 = 'ecommerce.views.error_500'
+handler403 = 'ecommerce.views.error_403'
+handler400 = 'ecommerce.views.error_400'
 # router = routers.DefaultRouter()
 # router.register(r'articles', ArticleViewSet)
 
 # urlpatterns = [
 #     path('', include(router.urls)),
 # ]
-
-handler404 = 'ecommerce.views.erreur_view'
-handler500 = 'ecommerce.views.erreur_view'
-handler403 = 'ecommerce.views.erreur_view'
-handler400 = 'ecommerce.views.erreur_view'
 
 urlpatterns = [
     
@@ -23,7 +26,7 @@ urlpatterns = [
     path('mentions-legales/', mentions_view, name='mentions'),
     path('conditions-generales-de-vente/', conditions_view, name='conditions'),
     re_path(r'^pierres-en-lithotherapie/$', pierres_view, name='pierres'),
-    path('erreur-404/', erreur_view, name='erreur404'),
+    #path('erreur-404/', erreur_view, name='erreur404'),
     path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password_process'),
     path('mon-panier/', panier_view, name='panier'),
     path('confirmation-de-commande/', checkout_view, name='checkout'),

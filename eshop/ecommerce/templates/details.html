@@ -9,8 +9,8 @@
     .card-container {
         display: flex;
         /*overflow-x: auto;*/
-        gap: 5px;
-        padding: 5px;
+        gap: 0.5rem;
+        padding: 0.5rem;
         margin: 0 2rem;
     }
 
@@ -23,11 +23,11 @@
         overflow: hidden !important;
     
     }
+
     .swiper-wrapper {
         margin: 0 2rem !important;
         justify-content: center;
     }
-
 
     .card {
         position: relative;
@@ -45,7 +45,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        padding: 10px;
+        padding: 0.75rem;
         background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
     }
 
@@ -63,10 +63,10 @@
     }
 
     .pagination button {
-        padding: 5px 10px;
-        margin: 0 5px;
+        padding: 0.5rem 0.75rem;
+        margin: 0 0.5rem;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 0.5rem;
         cursor: pointer;
     }
 
@@ -86,7 +86,6 @@
         padding: 3rem 1.5rem !important;
         background-color: rgba(50, 50, 50, 0.6);
     }
-
 
     .next__article {
         color: white !important;
@@ -112,7 +111,6 @@
         margin-bottom: 7rem !important;
     }
 
-
     .details__favoris {
         cursor: pointer;
         width: 41px;
@@ -135,6 +133,95 @@
         /* Autres styles */
     }
 
+    #breadcrumb {
+        color: white;
+        font-size: 15px; 
+        padding-left: 8rem;
+        margin-bottom: 1rem;
+    }
+
+    #category-sidebar {
+        height: 106vh;
+        border-bottom: 1px solid #cccccc;
+    }
+
+    .details__section {
+        padding-block: 2rem;
+        margin: 2rem;
+        border-bottom: 1px solid #cccccc;
+    }
+
+    .flex-container {
+        display: grid;
+        grid-template-columns: 35% auto;
+        grid-auto-flow: column;
+        align-items: start;
+        justify-content: space-evenly;
+    }
+
+    .card_image {
+        display: flex;
+        padding: 20px;
+        justify-content: center;
+        border-radius: 2em;
+    }
+
+    #article__image {
+        width: 26rem;
+        height: 39rem;
+        object-fit: cover;
+        padding: 5px;
+        border: solid 1px rgba(255, 255, 255, 0.5);
+        border-radius: 2em;
+    }
+
+    .card_content {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        padding-left: 2rem;
+        width: 44rem;
+        border-left: 1px solid #cccccc;
+    }
+
+    .accueil__line {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        width: 30rem;
+    }
+
+    #size {
+        border-radius: 40px;
+        border: 0.50px white solid;
+        background-color: black;
+        color: white;
+        padding: 0.5rem;
+        font-size: 18px;
+    }
+
+    #in-stock,
+    #out-stock {
+        width: 20.2rem;
+        height: 40px;
+        border-radius: 20px;
+        padding: 0.75rem 0.75rem;
+        margin: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    #in-stock {
+        background: #D9D9D9;
+    }
+
+    #out-stock {
+        background: #d8bbbb;
+    }
+
+    #shortDesc,
+    #fullDesc {
+        width: 30rem;
+        text-align: justify;
+    }
 
 </style>
 
@@ -146,8 +233,14 @@
             <div class="top__bar">
 
                    <div class="search__container">
+                    {% if utilisateur_connecte %}
                     <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    {% else %}
+                    <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    {% endif %}
+
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
@@ -187,7 +280,7 @@
                                             data.forEach(article => {
                                                 // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                articleContainer.href ="details/"+ article.id;
+                                                window.location.href ="/details/"+ article.id;
                                                 articleContainer.classList.add('link', 'article-container');
                                     
                                                 // Create image element
@@ -195,7 +288,7 @@
                                                 imgElement.src = article.image;
                                                 imgElement.alt = article.name;
                                                 imgElement.classList.add('article-img');
-                                                imgElement.style.marginRight = '10px';
+                                                imgElement.style.marginRight = '0.75rem';
                                     
                                                 // Create name element
                                                 let nameElement = document.createElement('h5');
@@ -249,7 +342,7 @@
                         <i class="fa fa-sign-out"></i>
                     </button></a>
                     <a href="{% url 'profil' %}"><button class="log__button" >
-                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 0.5rem; "></i>
                         {{ prenom_utilisateur }}
                         <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
                     </button></a>
@@ -329,8 +422,14 @@
                    
                 <div class="nav__buttons">
 
+                    {% if utilisateur_connecte %}
                     <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    {% else %}
+                    <a id="not_connected_cart"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a id="not_connected_favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    {% endif %}
+
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
@@ -341,8 +440,7 @@
             </nav>
 
         
-                </header>
-
+        </header>
 
         <!--=============== LOG HEADER BUTTONS ==================-->
 
@@ -352,7 +450,7 @@
 
         <div class="log__container">
             <a href="{% url 'profil' %}"><button class="log__button" >
-                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 0.5rem; "></i>
                 {{ prenom_utilisateur }}
                 <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
             </button></a>
@@ -378,40 +476,38 @@
 
         <!--==================== MAIN ====================-->
         <main class="main">
-            <div style="margin: 54px;">
-                <p style="color: white; font-size: 15sp; ">Articles / {{article.categorie.libelle}} / {{article.sous_categorie.libelle}} / {{article.libelle}}</p>
+            <div style="margin: 2rem; border-bottom: solid 1px white;">
+                <p id="breadcrumb" >Articles / {{article.categorie.libelle}} / {{article.sous_categorie.libelle}} / {{article.libelle}}</p>
             </div>
 
             <!--==================== ARTICLES ====================-->
-            <div class="article__main">
+            <div class="details__main">
 
                 <!-- Sidebar categories -->
-                <aside style="height:    106vh; border-bottom: 1px solid #cccccc;">
+                <!-- <aside id="category-sidebar">
                     <p> </p>
                     {% for category in categories %}
                     <a href="#" class = "category" category-id="{{ category.libelle }}">
                       {{ category.libelle }}
                     </a>
                     {% endfor %}
-                </aside>
+                </aside> -->
 
-                <section class="article__section">
+                <section class="details__section">
 
-                    <div class="flex-container" style="display: -webkit-flex; display: flex;">
-                        <div class="card__image" style="-webkit-box-flex: 2; -ms-flex: 2; flex: 2; padding: 20px;">
-                            <img src="{{ article.image.url }}" alt="{{ article.libelle }}"  style="height: inherit; max-height: 700px;">
+                    <div class="flex-container">
+                        <div class="card_image">
+                            <img id="article__image" src="{{ article.image.url }}" alt="{{ article.libelle }}">
                         </div>
 
-                        <div id="products-container"></div>
-
-                        <div class="card_content" style="-webkit-box-flex: 1; -ms-flex: 1; flex: 1; padding: 10px;">
+                        <div class="card_content">
                             <h1>{{article.libelle}}</h1>
-                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+                            <div class="accueil__line"></div>
                             <div style="display: -webkit-flex;">
                                 {% if price.type_prix == "size_based" %}
-                                <div style="margin: 10px;">
-                                    <label style="color: white; font-size: 20px; ">Taille<br></label>
-                                    <select name="size" id="size"  style ="width: 110px; height: 32px; margin-top: 5px; border-radius: 40px; border: 0.50px white solid; background-color: black; color: white; padding: 5px; font-size:   18px;" >
+                                <div style="margin: 0.75rem; display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <label style="margin-top: 0.5rem; color: white; font-size: 20px; margin-bottom: 0.75rem; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;">Taille<br></label>
+                                    <select name="size" id="size">
                                         {% for p in prices %}
 
                                         <option value={{p.prix}} id={{p.id}} style="color: white; font-size: 20px;"> 
@@ -423,46 +519,50 @@
                                     </select>
                     
                                 </div>
-                                <div style="margin: 10px;">
-                                    <label style="margin-top: 5px; color: white; font-size: 20px;">Prix</label>
-                                    <p id="prixparTaille" style="color: white; font-size: 20px;">{{price.prix}} €</p>
+
+                                <div style="margin: 0.75rem; display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <label style="margin-top: 0.5rem; color: white; font-size: 20px; margin-bottom: 0.75rem; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;">Prix</label>
+                                    <p id="prixparTaille" style="margin-top: 0.5rem; color: white; font-size: 20px;">{{price.prix}} €</p>
                                 </div>
+
                                 {% else %}
-                                <div  style="margin: 10px;">
-                                    <label style="color: white; font-size: 20px;">Prix</label>
-                                    <p style="margin-top: 5px; color: white; font-size: 20px;">{{price.prix}} €</p>
+
+                                <div style="margin: 0.75rem; display: flex; flex-direction: column; justify-content: flex-start;">
+                                    <label style="margin-top: 0.5rem; color: white; font-size: 20px; margin-bottom: 0.75rem; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;">Prix</label>
+                                    <p style="margin-top: 0.5rem; color: white; font-size: 20px;">{{price.prix}} €</p>
                                 </div>
+                                
                                 {% endif %}
                             </div>
 
-                            <div style="display: -webkit-flex; margin: 10px;">
+                            <div style="display: -webkit-flex; margin: 0.75rem;">
                                 
                                 <!-- 
                                 <div class="StarReview" style="width: 161.32px; height: 24.38px; position: relative">
 
                                 </div>
                                 <span style="color: white;"> 4.5</span>
-                                <div class="Line10" style="width: 19.30px; height: 0px; transform: rotate(90.42deg); transform-origin: 0 0; border: 1px #D9D9D9 solid; margin: 10px;"></div>
+                                <div class="Line10" style="width: 19.30px; height: 0px; transform: rotate(90.42deg); transform-origin: 0 0; border: 1px #D9D9D9 solid; margin: 0.75rem;"></div>
                              -->
                                 <a href="http://127.0.0.1:8000/" style="color: white; font-size: 15px;"> Voir les avis </a>
                             </div>
 
-                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+                            <div class="accueil__line"></div>
 
                             {% if article.stock > 0 %}
-                            <div style="width: 325.58px; height: 42px; background: #D9D9D9; border-radius: 20px; padding: 10px 10px; margin: 10px;">
+                            <div id="in-stock">
                                 <img src="{% static 'img/icon_detail_valider.svg' %}" alt="icon valider" style="width: 19.55px; height: 17.14px;"/>
-                                <span style="width: 152.52px; height: 19.30px; color: #555555; font-size: 15px; margin-left: 10px;"> en stock</span>
+                                <span style="color: #555555; font-size: large; margin-left: 0.75rem;"> en stock</span>
                                 
                             </div>
                             {% else %}
-                            <div style="width: 325.58px; height: 42px; background: #d8bbbb; border-radius: 20px; padding: 10px 10px; margin: 10px;">
+                            <div id="out-stock">
                                 <img src="{% static 'img/icon_detail_close.svg' %}" alt="icon valider" style="width: 20.55px; height: 17.14px;"/>
-                                <span style="width: 152.52px; height: 19.30px; color: #811414; font-size: 15px; margin-left: 10px;"> repture de stock</span>
+                                <span style="color: #811414; font-size: large; margin-left: 0.75rem;"> repture de stock</span>
                                 
                             </div>
                             {% endif %}
-                            <div style="display: -webkit-flex; margin: 10px;">
+                            <div style="display: -webkit-flex; margin: 0.75rem;">
                                 <form id="add-to-cart-form" method="POST" action="{% url 'add_to_cart' %}">
                                     {% csrf_token %}
                                     <input id="price_Taille" type="hidden" name="price_id" value="{{ price.id }}">
@@ -477,18 +577,18 @@
                                 
                             </div>
 
-                            <div style="display: -webkit-flex; padding: 10px 10px;">
+                            <div style="display: -webkit-flex; padding: 0.75rem 0.75rem;">
                                 <img src="{% static 'img/camion.svg' %}" style="width: 29.33px; height: 30.47px;"/>
-                                <span style="width: 280px; height: 26.41px; text-align: center; color: white; font-size: 16px; padding-top: 5px;"> La livraison gratuite à partir de 65 €.</span>
+                                <span style="width: 280px; height: 26.41px; text-align: center; color: white; font-size: 16px; padding-top: 0.5rem;"> La livraison gratuite à partir de 65 €.</span>
 
                             </div>
-                            <div class="accueil__line" style="margin-top: 15px; margin-bottom: 15px; width: 327.53px;"></div>
+                            <div class="accueil__line"></div>
                             
                             <div>
-                                <h2>Description</h2>
+                                <h2 style="margin-bottom: 0.75rem;">Description</h2>
                                 
-                                {% if article.description|length >= 500 %}
-                                    <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description|truncatechars:200 }}</div>
+                                {% if article.description|length >= 600 %}
+                                    <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description|truncatechars:400 }}</div>
                                     <a id="readMore" style="color: white; font-weight: bold;  cursor: pointer;"><ins>Lire plus...</ins></a>
 
                                     <p id="fullDesc" style="display:none; color: white; font-weight: lighter;">{{ article.description }}</p>
@@ -503,9 +603,6 @@
                               
                         </div>
                     </div>
-            
-
-                    
                     
                 </section>
 
@@ -517,7 +614,7 @@
 
             <section class="autres_article">
                 {% if similar_articles %}
-                <h1 class="collection__title" style="margin-bottom: 4rem;">VOUS AIMEREZ AUSSI</h1>
+                <h1 class="collection__title" style="padding-top: 4rem !important; margin-bottom: 4rem;">VOUS AIMEREZ AUSSI</h1>
             
                 <div class="swiper-container articles_similaires" style="height: 400px;"> <!-- Définir une hauteur -->
                     
@@ -544,10 +641,32 @@
                 {% endif %}
             </section>
             
-        
-
+    
             <script>
                 console.log('Test');
+
+                /* réduire/afficher la description complète */
+                const shortDesc = document.getElementById('shortDesc');
+                const fullDesc = document.getElementById('fullDesc');
+                const readMore = document.getElementById('readMore');
+                const readLess = document.getElementById('readLess');
+
+                readMore.addEventListener('click', () => {
+                console.log("read more clicked !");
+                shortDesc.style.display = 'none';
+                readMore.style.display = 'none';
+                fullDesc.style.display = 'block';
+                readLess.style.display = 'block';
+                });
+
+                readLess.addEventListener('click', () => {
+                console.log("read less clicked !");
+                shortDesc.style.display = 'block';
+                readMore.style.display = 'block';
+                fullDesc.style.display = 'none';
+                readLess.style.display = 'none';
+                });
+
                 const selectedElement = document.getElementById("size");
                 const selectedValue = selectedElement.value;
                 const inputElement = document.getElementById("price_Taille");
@@ -571,58 +690,122 @@
                     window.location.href = '/details/' + articleId; // Change the URL as needed
                 }
 
-                /* réduire/afficher la description complète */
-                const shortDesc = document.getElementById('shortDesc');
-                const fullDesc = document.getElementById('fullDesc');
-                const readMore = document.getElementById('readMore');
-                const readLess = document.getElementById('readLess');
-
-                readMore.addEventListener('click', () => {
-                shortDesc.style.display = 'none';
-                readMore.style.display = 'none';
-                fullDesc.style.display = 'block';
-                readLess.style.display = 'block';
-                });
-
-                readLess.addEventListener('click', () => {
-                shortDesc.style.display = 'block';
-                readMore.style.display = 'block';
-                fullDesc.style.display = 'none';
-                readLess.style.display = 'none';
-                });
             </script>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
 
-        /* Bouton ajouter aux favoris */
-        const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
-    
-        addToWishlistButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const articleId = this.getAttribute('data-article-id');
+                /* Bouton ajouter aux favoris */
+                const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
+                var utilisateurConnecte = {{ utilisateur_connecte|yesno:"true,false" }};
+            
+                addToWishlistButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+
+                    if (utilisateurConnecte) {
+
+                        const articleId = this.getAttribute('data-article-id');
+                        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+                        fetch('/add_to_wishlist/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: new URLSearchParams({
+                                'article_id': articleId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // const imgElements = document.querySelectorAll('.favoris__icon'); // Sélectionnez tous les éléments avec la classe
+                            // const imgElement = imgElements[0]; 
+
+                            const btnElement = document.querySelector('.add-to-wishlist-btn'); // Sélectionnez le bouton
+
+                            if (data.added) {
+                                Toastify({
+                                    text: 'Article ajouté à votre liste de souhaits !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                    }
+                                }).showToast();
+                                // imgElement.src = "/static/img/favoris_active.svg";
+                                // Changez le background du bouton ici
+                                btnElement.classList.add('favoris__icon--active');
+                                btnElement.classList.remove('favoris__icon--inactive');
+
+                            } else {
+
+                                Toastify({
+                                    text: 'Article retiré de votre liste de souhaits !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                                    }
+                                }).showToast();
+                                // imgElement.src = "/static/img/icon_detail_favorie.svg";
+
+                                // Changez le background du bouton ici
+                                btnElement.classList.add('favoris__icon--inactive');
+                                btnElement.classList.remove('favoris__icon--active');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    }
+                    
+                    else {
+
+                    Toastify({
+                        text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre liste de souhaits.',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+
+                    }
+                    });
+                });
+                
+                /* Bouton ajouter au panier */
+                document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Empêcher le formulaire d'être soumis normalement
+                
+            if (utilisateurConnecte) {
                 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
-                fetch('/add_to_wishlist/', {
+                const articleId = document.querySelector('input[name="article_id"]').value;
+                const priceId = document.querySelector('input[name="price_id"]').value;
+
+                fetch('/add_to_cart/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'X-CSRFToken': csrftoken
                     },
                     body: new URLSearchParams({
-                        'article_id': articleId
+                        'article_id': articleId,
+                        'price_id': priceId
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // const imgElements = document.querySelectorAll('.favoris__icon'); // Sélectionnez tous les éléments avec la classe
-                    // const imgElement = imgElements[0]; 
-
-                    const btnElement = document.querySelector('.add-to-wishlist-btn'); // Sélectionnez le bouton
-
-                    if (data.added) {
+                    if (data.added_p) {
                         Toastify({
-                            text: 'Article ajouté à votre liste de souhaits !',
+                            text: 'Article ajouté au panier !',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
@@ -631,15 +814,10 @@
                                 background: "linear-gradient(to right, #00b09b, #96c93d)",
                             }
                         }).showToast();
-                        // imgElement.src = "/static/img/favoris_active.svg";
-                        // Changez le background du bouton ici
-                        btnElement.classList.add('favoris__icon--active');
-                        btnElement.classList.remove('favoris__icon--inactive');
-
-                    } else {
-
+                    }
+                    else {
                         Toastify({
-                            text: 'Article retiré de votre liste de souhaits !',
+                            text: 'Cet article est en rupture de stock !',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
@@ -648,101 +826,85 @@
                                 background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
                             }
                         }).showToast();
-                        // imgElement.src = "/static/img/icon_detail_favorie.svg";
-
-                        // Changez le background du bouton ici
-                        btnElement.classList.add('favoris__icon--inactive');
-                        btnElement.classList.remove('favoris__icon--active');
+                        console.log('Erreur lors de l\'ajout de l\'article au panier');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
+
+            }                 
+                else {
+                    Toastify({
+                        text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre panier.',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+                }
             });
-        });
-        
-        /* Bouton ajouter au panier */
-        document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Empêcher le formulaire d'être soumis normalement
+            
+                // Sélectionner les icônes not_connected
+                var notConnectedCartIcon = document.querySelector('#not_connected_cart');
+                var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
 
-        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        const articleId = document.querySelector('input[name="article_id"]').value;
-        const priceId = document.querySelector('input[name="price_id"]').value;
+                // Ajouter un gestionnaire d'événements click à chaque icône
+                notConnectedCartIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
+                });
 
-        fetch('/add_to_cart/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': csrftoken
-            },
-            body: new URLSearchParams({
-                'article_id': articleId,
-                'price_id': priceId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.added_p) {
-                Toastify({
-                    text: 'Article ajouté au panier !',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    }
-                }).showToast();
-            }
-            else {
-                Toastify({
-                    text: 'Cet article est en rupture de stock !',
-                    duration: 3000,
-                    gravity: 'top',
-                    position: 'right',
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-                    }
-                }).showToast();
-                console.log('Erreur lors de l\'ajout de l\'article au panier');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
+                notConnectedFavorisIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
+                });
 
-    });
-
-    </script>
-
-
-        <!-- Inclure Swiper -->
-        <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-        <script>
-            // Initialiser Swiper
-            var swiper = new Swiper('.articles_similaires', {
-                slidesPerView: 4,
-                spaceBetween: 20,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
+                // Fonction pour afficher un toast
+                function showToast(message) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+                }
+            
             });
-        </script>
+
+            </script>
 
 
-    <!-- Toastify CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <!-- Toastify JS-->
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+            <!-- Inclure Swiper -->
+            <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+            <script>
+                // Initialiser Swiper
+                var swiper = new Swiper('.articles_similaires', {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            </script>
+
+
+            <!-- Toastify CSS -->
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+            <!-- Toastify JS-->
+            <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
         </main>

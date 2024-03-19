@@ -5,6 +5,15 @@
 
 {% block content %}
 
+<style>
+        #breadcrumb {
+        color: white;
+        font-size: 15px; 
+        padding-left: 8rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
 <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
         <!--==================== HEADER ====================-->
         <header role="banner" class="header" id="header">
@@ -12,9 +21,16 @@
             <!--==================== TOP BAR ====================-->
             <div class="top__bar">
 
+                    
                    <div class="search__container">
+                    {% if utilisateur_connecte %}
                     <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    {% else %}
+                    <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    {% endif %}
+
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
@@ -54,7 +70,7 @@
                                             data.forEach(article => {
                                                 // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                articleContainer.href ="details/"+ article.id;
+                                                window.location.href ="/details/"+ article.id;
                                                 articleContainer.classList.add('link', 'article-container');
                                     
                                                 // Create image element
@@ -197,8 +213,14 @@
                    
                 <div class="nav__buttons">
 
+                    {% if utilisateur_connecte %}
                     <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    {% else %}
+                    <a id="not_connected_cart"><i class="bi bi-cart3 fa-lg"></i></a>
+                    <a id="not_connected_favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                    {% endif %}
+
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
@@ -250,8 +272,10 @@
 
             <!--==================== ARTICLES ====================-->
 
-            <div style ="margin-bottom: 20px; margin-left: 40px; color: white">Articles / <span id="selected-category"></span></div>
-
+           
+            <div style="margin: 2rem; border-bottom: solid 1px white;">
+                <p id="breadcrumb" >Articles<span id="selected-category"></span><span id="selected-subcategory"></span> </p>
+            </div>
             <div class="article__main">
 
                 <!-- Sidebar categories -->
@@ -272,7 +296,7 @@
             
                     <div class="horizontal-scroll" id="scrollContainer">
                         {% for sub_category in sub_categories %}
-                        <button class="rounded-button" sub-category-id="{{ sub_category.categorie }}" sub-category-article-id="{{ sub_category.id }}">{{ sub_category.libelle }}</button>
+                        <button class="rounded-button" sub-category-id="{{ sub_category.categorie }}" sub-category-article-id="{{ sub_category.id }}" sub-category-libelle="{{ sub_category.libelle }}" >{{ sub_category.libelle }}</button>
                         {% endfor %}
                     </div>
                     
@@ -386,9 +410,15 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
-            
+                var utilisateurConnecte = {{ utilisateur_connecte|yesno:"true,false" }};
+                
                 addToWishlistButtons.forEach(button => {
                     button.addEventListener('click', function() {
+
+                        if (utilisateurConnecte) {
+
+                        
+
                         const articleId = this.getAttribute('data-article-id');
                         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             
@@ -431,8 +461,71 @@
                         .catch(error => {
                             console.error('Error:', error);
                         });
+                    }
+                    
+                    else {
+
+                    Toastify({
+                        text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre liste de souhaits.',
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+
+                    }
                     });
                 });
+            
+                if(!utilisateurConnecte) {
+                    // Get the heart icon container
+                    const heartIcons = document.querySelectorAll('.heart-icon');
+                    
+                    // Trigger click event on the heart icon is clicked
+                    heartIcons.forEach(icon => {
+                        icon.addEventListener('click', function(){
+                            console.log("heart clicked");
+                            const outlineHeart = this.querySelector('.heart-outline');
+                            const redHeart = this.querySelector('.heart-red');
+                            outlineHeart.classList.add('hidden');
+                            redHeart.classList.remove('hidden');
+                            
+                            // add to favorite code.
+                        });
+                    });
+                }
+            
+                // Sélectionner les icônes not_connected
+                var notConnectedCartIcon = document.querySelector('#not_connected_cart');
+                var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
+
+                // Ajouter un gestionnaire d'événements click à chaque icône
+                notConnectedCartIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
+                });
+
+                notConnectedFavorisIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
+                });
+
+                // Fonction pour afficher un toast
+                function showToast(message) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+                }
+            
+            
             });
         </script>
     

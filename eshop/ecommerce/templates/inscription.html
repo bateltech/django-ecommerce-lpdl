@@ -55,7 +55,7 @@
                                             data.forEach(article => {
                                                 // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                articleContainer.href ="details/"+ article.id;
+                                                window.location.href ="/details/"+ article.id;
                                                 articleContainer.classList.add('link', 'article-container');
                                     
                                                 // Create image element
@@ -312,5 +312,35 @@
 
 
         </main>
+
+        <script>
+            // Sélectionner les icônes not_connected
+            var notConnectedCartIcon = document.querySelector('#not_connected_cart');
+                var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
+
+                // Ajouter un gestionnaire d'événements click à chaque icône
+                notConnectedCartIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
+                });
+
+                notConnectedFavorisIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
+                });
+
+                // Fonction pour afficher un toast
+                function showToast(message) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+                }
+            
+        </script>
 
 {% endblock %}

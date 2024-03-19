@@ -14,6 +14,7 @@
            <div class="search__container">
             <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
             <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+        
             <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
 
@@ -53,7 +54,7 @@
                                             data.forEach(article => {
                                                 // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                articleContainer.href ="details/"+ article.id;
+                                                window.location.href ="/details/"+ article.id;
                                                 articleContainer.classList.add('link', 'article-container');
                                     
                                                 // Create image element
