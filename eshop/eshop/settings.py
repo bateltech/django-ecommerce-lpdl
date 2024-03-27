@@ -16,6 +16,8 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Replace YOUR_API_KEY with your api key
+SMTP_API_KEY = 'YOUR_API_KEY'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -24,8 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com','lpdl.local']
 
@@ -34,6 +36,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com','lp
 
 INSTALLED_APPS = [
     'ecommerce',
+    'django_ckeditor_5',
     'phonenumber_field',
     'jazzmin',
     #'admin_black.apps.AdminBlackConfig',
@@ -203,6 +206,7 @@ DATABASES = {
         'HOST': '127.0.0.1',  # Ou l'adresse de votre serveur MySQL
         'PORT': '3306',       # Port MySQL par défaut
         'OPTIONS': {
+            'charset': 'utf8mb4',
             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
         }
     }
@@ -276,7 +280,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Spécifiez l'emplacement où les fichiers statiques seront collectés lors du déploiement
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -288,3 +291,324 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ID = 1
+
+# CKEDITOR 5 SETTINGS
+
+customColorPalette = [
+        {
+            'color': 'hsl(4, 90%, 58%)',
+            'label': 'Red'
+        },
+        {
+            'color': 'hsl(340, 82%, 52%)',
+            'label': 'Pink'
+        },
+        {
+            'color': 'hsl(291, 64%, 42%)',
+            'label': 'Purple'
+        },
+        {
+            'color': 'hsl(262, 52%, 47%)',
+            'label': 'Deep Purple'
+        },
+        {
+            'color': 'hsl(231, 48%, 48%)',
+            'label': 'Indigo'
+        },
+        {
+            'color': 'hsl(207, 90%, 54%)',
+            'label': 'Blue'
+        },
+        {
+                    'color': 'hsl(0, 0%, 0%)',
+                    'label': 'Black'
+                },
+                {
+                    'color': 'hsl(0, 0%, 29%)',
+                    'label': 'Dim grey'
+                },
+                {
+                    'color': 'hsl(0, 0%, 60%)',
+                    'label': 'Grey'
+                },
+                {
+                    'color': 'hsl(0, 0%, 74%)',
+                    'label': 'Light grey'
+                },
+                {
+                    'color': 'hsl(0, 0%, 87%)',
+                    'label': 'Very light grey'
+                },
+                {
+                    'color': 'hsl(0, 0%, 100%)',
+                    'label': 'White'
+                },
+                {
+                    'color': 'hsl(0, 74%, 65%)',
+                    'label': 'Red'
+                },
+                {
+                    'color': 'hsl(348, 100%, 54%)',
+                    'label': 'Tomato'
+                },
+                {
+                    'color': 'hsl(6, 100%, 67%)',
+                    'label': 'Orange'
+                },
+                {
+                    'color': 'hsl(35, 100%, 58%)',
+                    'label': 'Orange red'
+                },
+                {
+                    'color': 'hsl(45, 71%, 61%)',
+                    'label': 'Gold'
+                },
+                {
+                    'color': 'hsl(48, 100%, 50%)',
+                    'label': 'Yellow'
+                },
+                {
+                    'color': 'hsl(75, 100%, 44%)',
+                    'label': 'Dark yellow'
+                },
+                {
+                    'color': 'hsl(105, 56%, 52%)',
+                    'label': 'Olive'
+                },
+                {
+                    'color': 'hsl(133, 100%, 42%)',
+                    'label': 'Lawn green'
+                },
+                {
+                    'color': 'hsl(160, 100%, 38%)',
+                    'label': 'Green'
+                },
+                {
+                    'color': 'hsl(186, 100%, 38%)',
+                    'label': 'Lime'
+                },
+                {
+                    'color': 'hsl(210, 89%, 43%)',
+                    'label': 'Aqua marine'
+                },
+                {
+                    'color': 'hsl(240, 100%, 40%)',
+                    'label': 'Turquoise'
+                },
+                {
+                    'color': 'hsl(270, 50%, 45%)',
+                    'label': 'Teal'
+                },
+                {
+                    'color': 'hsl(292, 62%, 43%)',
+                    'label': 'Light blue'
+                },
+                {
+                    'color': 'hsl(292, 100%, 43%)',
+                    'label': 'Dodger blue'
+                },
+                {
+                    'color': 'hsl(317, 100%, 42%)',
+                    'label': 'Blue'
+                },
+                {
+                    'color': 'hsl(240, 30%, 50%)',
+                    'label': 'Medium blue'
+                },
+                {
+                    'color': 'hsl(273, 53%, 44%)',
+                    'label': 'Purple'
+                },
+                {
+                    'color': 'hsl(300, 67%, 56%)',
+                    'label': 'Medium purple'
+                },
+                {
+                    'color': 'hsl(326, 56%, 52%)',
+                    'label': 'Violet'
+                },
+                {
+                    'color': 'hsl(348, 50%, 50%)',
+                    'label': 'Magenta'
+                },
+
+    ]
+
+# CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
+# CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage" # optional
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+        'language': 'fr',
+
+    },
+
+    'extends': {
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
+        ],
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+        'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable',],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+
+        },
+        'table': {
+            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
+            'tableProperties', 'tableCellProperties' ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'heading' : {
+            'options': [
+                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+            ]
+        }
+    },
+    
+    'list': {
+        'properties': {
+            'styles': 'true',
+            'startIndex': 'true',
+            'reversed': 'true',
+        }
+    },
+
+    'newsletter': {
+        'toolbar': {
+            'items': [
+                'heading', '|', 'bold', 'italic', '|', 'fontSize', 'fontFamily', 'fontColor', 'alignment', '|', 'imageUpload',  'mediaEmbed', 'link',
+                 '|', 'bulletedList', 'numberedList', '|','highlight', 'blockQuote', 'code', '|',
+                'fontBackgroundColor', 'indent', 'outdent', '|', 'codeBlock', 'insertTable','|','undo', 'redo'
+            ]
+        },
+        'language': 'fr',
+        'image': {
+            'toolbar': ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', 'linkImage'],
+            'styles': ['full', 'side', 'alignLeft', 'alignRight', 'alignCenter']
+        },
+
+
+        'heading': {
+            'options': [
+                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' },
+                { 'model': 'heading4', 'view': 'h4', 'title': 'Heading 4', 'class': 'ck-heading_heading4' },
+                { 'model': 'heading5', 'view': 'h5', 'title': 'Heading 5', 'class': 'ck-heading_heading5' },
+                { 'model': 'heading6', 'view': 'h6', 'title': 'Heading 6', 'class': 'ck-heading_heading6' }
+            ]
+        },
+
+        'fontSize': {
+            'options': [10, 12, 14, 'default', 18, 20, 22],
+            'supportAllValues': True
+        },
+
+        'fontFamily': {
+            'options': [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            'supportAllValues': True
+        },
+        
+        'fontColor': {
+            'colors': customColorPalette
+        },
+
+        'fontBackgroundColor': {
+            'colors': customColorPalette
+        },
+
+        'highlight': {
+            'options': [
+                { 'model': 'default', 'title': 'Default', 'class': 'ck-highlight_default' },
+                { 'model': 'yellowMarker', 'title': 'Yellow marker', 'class': 'ck-highlight_yellowMarker' }
+            ]
+        },
+
+        'codeBlock': {
+            'languages': [
+                { 'language': 'plaintext', 'label': 'Plain text' },
+                { 'language': 'html', 'label': 'HTML' },
+                { 'language': 'css', 'label': 'CSS' },
+                { 'language': 'javascript', 'label': 'JavaScript' },
+                { 'language': 'python', 'label': 'Python' }
+            ]
+        },
+
+        'alignment': {
+            'options': ['left', 'center', 'right', 'justify']
+        },
+
+        'indent': {
+            'options': ['indent', 'outdent']
+        },
+
+        'link': {
+            'addTargetToExternalLinks': True,
+            'defaultProtocol': 'https://'
+        },
+
+        'table': {
+            'contentToolbar': [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells',
+                'tableProperties',
+                'tableCellProperties'
+            ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        
+        'mediaEmbed': {
+            'previewsInData': True
+        },
+
+    },
+
+
+
+}

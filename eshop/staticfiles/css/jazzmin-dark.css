@@ -65,3 +65,7 @@ option {
 .col-lg-2{
     max-width: 30%;
 }
+
+.ck-editor__editable p {
+    color: black;
+}

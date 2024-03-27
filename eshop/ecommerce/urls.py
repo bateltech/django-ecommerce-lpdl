@@ -3,14 +3,6 @@ from django.contrib.auth import views as auth_views
 from .views import *
 from django.views.generic.base import TemplateView  # new
 
-
-from django.conf.urls import handler400, handler403, handler404, handler500
-
-
-handler404 = 'ecommerce.views.error_404'
-handler500 = 'ecommerce.views.error_500'
-handler403 = 'ecommerce.views.error_403'
-handler400 = 'ecommerce.views.error_400'
 # router = routers.DefaultRouter()
 # router.register(r'articles', ArticleViewSet)
 
@@ -52,6 +44,10 @@ urlpatterns = [
     path('reinitialisation-du-mot-de-passe/', auth_views.PasswordResetView.as_view(), name='reset_password'),
     path('reinitialiser/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    path('abonnement/', abonnement, name='abonnement'),
+    path("newsletter/", newsletter, name="newsletter"),
+    path("sendEmail/", sendEmail, name="sendEmail"),
 
     path('robots.txt/', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
     

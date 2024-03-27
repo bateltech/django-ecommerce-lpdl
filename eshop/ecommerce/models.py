@@ -193,7 +193,6 @@ class DetailCommande(models.Model):
         super().save(*args, **kwargs)
 
 
-
 # Table Feedback
 class Feedback(models.Model):
     contenu = models.TextField(null=False)
@@ -219,3 +218,15 @@ class Voyance(models.Model):
 
     def get_created_at_plus_six_days(self):
         return self.created_at + timedelta(days=6)
+
+
+from django_ckeditor_5.fields import CKEditor5Field
+
+# Table Newsletter
+class Newsletter(models.Model):
+    subject = models.TextField(max_length=128)
+    message = CKEditor5Field(config_name='newsletter')
+    image_urls = models.TextField(blank=True, editable=False)
+
+    def __str__(self) -> str:
+        return f"{self.subject}"

@@ -31,8 +31,8 @@
 
     /*========== Font and typography ==========*/
     /*.5rem = 8px | 1rem = 16px ...*/
-    /* --body-font: 'Roboto', sans-serif; */
-    --body-font: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    --body-font: 'Roboto', sans-serif;
+    /* --body-font: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
     --title-font: 'Lora', serif;
     --accueil-font:'Montserrat', sans-serif;
     --biggest-font-size: 1.5rem;
@@ -1273,9 +1273,7 @@ aside p {
     margin: 0;
     padding: 40px 0;
 }
-    
-    
-
+   
 .active {
     color: gray;
     outline: none;
@@ -1356,7 +1354,6 @@ aside p {
 }
 
 /* Styles for product-cards */
-
 .product-cards {
     display: flex;
     flex-wrap: wrap;
@@ -1474,16 +1471,16 @@ aside p {
     margin-top: 2rem;
 }
   
-  /* Style de l'image SVG à gauche */
+/* Style de l'image SVG à gauche */
 .livraison__image {
     width: 7rem; /* Ajustez la largeur selon vos besoins */
     margin-right: 6rem; /* Espace entre l'image et les paragraphes */
 }
   
-  /* Style des paragraphes à droite */
-  /*.livraison__paragraphes {
+/* Style des paragraphes à droite */
+/*.livraison__paragraphes {
   
-  }*/
+}*/
 
 .right__line::before {
     content: "";
@@ -1541,16 +1538,118 @@ aside p {
     padding-left: 2.75rem !important;
 }
 
-
-    /* Clear floats after the columns */
+/* Clear floats after the columns */
 .row:after {
     content: "";
     display: table;
     clear: both;
 }
 
+/*-----------------------------------*\
+* DETAILS.HTML
+\*-----------------------------------*/
 
+.wrapper_details {
+    width: 100%;
+    position: relative;
+    align-items: center;
+  }
+  .wrapper_details i {
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: absolute;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+  }
+  .wrapper_details i:active{
+    transform: translateY(-50%) scale(0.85);
+  }
+  .wrapper_details i:first-child{
+    z-index: var(--z-fixed);
+    left: -10px;
+  }
+  .wrapper_details i:last-child{
+    z-index: var(--z-fixed);
+    right: -10px;
+  }
+  .wrapper_details .carousel_details{
+    display: grid;
+    grid-auto-flow: column;
+    /* grid-auto-columns: calc((100% / 4) - 12px); */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  .carousel_details::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel_details.no-transition {
+    scroll-behavior: auto;
+  }
+  .carousel_details.dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+  }
+  .carousel_details.dragging .card_details {
+    cursor: grab;
+    user-select: none;
+  }
+  .carousel_details :where(.card_details, .img) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel_details .card_details {
 
+    background: #fff;
+    cursor: pointer;
+    padding-bottom: 15px;
+    flex-direction: column;
+    border-radius: 8px;
+  }
+  .carousel_details .card_details .img {
+    background: #8B53FF;
+    height: 148px;
+    width: 148px;
+    border-radius: 50%;
+  }
+  .card_details .img img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+  }
+  .carousel_details .card_details h2 {
+    font-weight: 500;
+    font-size: 1.56rem;
+    margin: 30px 0 5px;
+  }
+  .carousel_details .card_details span {
+    color: #6A6D78;
+    font-size: 1.31rem;
+  }
+  @media screen and (max-width: 900px) {
+    .wrapper_details .carousel_details {
+      grid-auto-columns: calc((100% / 2) - 9px);
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .wrapper_details .carousel_details {
+      grid-auto-columns: 100%;
+    }
+  }
 
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
@@ -1757,7 +1856,6 @@ aside p {
         width: 100%;
      }
 
-
     /*-----------------------------------*\
     * #ARTISTE
     \*-----------------------------------*/
@@ -1838,11 +1936,9 @@ aside p {
         transform: translate(-10%, -10%);
     }
 
-
     /*-----------------------------------*\
     * #VOYANCE
     \*-----------------------------------*/
-
 
     .voyance__section{
         height: 46rem;
@@ -2096,7 +2192,6 @@ aside p {
         font-size: 14px !important;
     }
 
-
     .button-item-delete,
     .white-container,
     .taille-prix {
@@ -2113,12 +2208,87 @@ aside p {
         display: flex !important;
         margin-bottom: 1rem !important;
     }
+
     .button-item-mobile {
         display: flex !important;
         flex-direction: column;
         align-items: flex-end;
         justify-content: space-evenly;
     }
+
+    /*-----------------------------------*\
+    * DETAILS.HTML
+    \*-----------------------------------*/
+
+    #breadcrumb {
+        padding-left: 1rem !important;
+    }
+
+    .flex-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .card_image {
+        padding: 0 !important;
+    }
+
+    #article__image {
+        height: auto !important;
+    }
+
+    .card_content {
+        margin: 0 !important;
+        padding: 0.75rem !important;
+        width: 100% !important;
+    }
+
+    .accueil__line {
+        width: 100% !important;
+    }
+
+    #in-stock, #out-stock {
+        width: 100% !important;
+        margin: 0.75rem 0 !important;
+    }
+
+    .ajout_favoris {
+        display: flex !important;
+        align-items: center;
+    }
+    .details__ajout {
+        width: 70% !important;
+    }
+
+    .ajout_panier {
+        width: 100% !important;
+    }
+
+    .details__favoris {
+        margin-left: 1rem !important;
+    }
+
+    .details__description {
+        width: 100% !important;
+    }
+
+    #shortDesc, #fullDesc {
+        width: 100% !important;
+    }
+
+    /* .articles_similaires{
+        padding-left: 6rem !important;
+    } */
+    
+    .proposed_article {
+        width: 20rem !important;
+        /* flex: 0 0 calc(60% - 5px) !important; */
+        flex: none !important;
+    }
+
+
+
 }
 
 /* For medium devices */

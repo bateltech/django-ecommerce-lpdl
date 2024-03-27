@@ -132,15 +132,67 @@
                                     Découvrez mes dernières créations et plein d'autres infos intéressantes!
                                 </p>
         
-                                <form>
-                                  <input id="newsletter-input" type='text' placeholder="  Entrez votre email"><br/>
-                                  <button class="btn" role="button">
-                                    Soumettre
-                                  </button>
+                                <form method="POST" id="newsletter-form" action="{% url 'abonnement' %}">
+                                    {% csrf_token %}
+
+                                    <input id="newsletter-input" type='email' name="email" placeholder="  Entrez votre email"><br/>
+                                    <button class="btn" role="button">
+                                        Soumettre
+                                    </button>
                                 </form>
+
                                 </section>
                         </div>
                     </div>
+
+                            
+        <!-- Newsletter Script -->
+        <script>
+            document.getElementById("newsletter-form").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the form from submitting normally
+        
+                var formData = new FormData(this);
+        
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest', // Add this header to identify AJAX request
+                        'X-CSRFToken': '{{ csrf_token }}' // Add CSRF token header
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                   // Parse the response string to a JSON object
+                   const response = JSON.parse(data);
+
+                    // Access the message property of the response object
+                    console.log(response.message);
+                 
+                        Toastify({
+                            text: response.message,
+                            duration: 3000,
+                            gravity: 'top',
+                            position: 'right',
+                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            style: {
+                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                            }
+                        }).showToast();
+
+                })
+                .catch(error => {
+                    // Handle errors (optional)
+                    console.error('There was an error!', error);
+                });
+            });
+
+        </script>
         
                     <span class="footer__copy">
                         &#169; Créé par Batel Tech 2023 | Copyright La Pierre De Lune. Tous droits réservés
@@ -171,6 +223,8 @@
 
         <!--=============== MAIN JS ===============-->
         <script src="{% static 'js/main.js' %}"></script>
+
+        <script src="{% static 'js/slider.js' %}"></script>
         
         <!-- Initialize Swiper -->
         <script>
@@ -195,6 +249,7 @@
                                         el: ".swiper-pagination",
                                     },
                                     });
-        </script>                
+        </script>  
+
     </body>
 </html>

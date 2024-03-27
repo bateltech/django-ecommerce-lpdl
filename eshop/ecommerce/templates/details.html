@@ -5,6 +5,8 @@
 
 {% block content %}
 
+<!-- Inclure Swiper -->
+
 <style>
     .card-container {
         display: flex;
@@ -29,10 +31,10 @@
         justify-content: center;
     }
 
-    .card {
+    /* .card { */
+    .proposed_article {
         position: relative;
         flex: 0 0 calc(20% - 5px); /* Display 4 cards per row */
-        width: 338px;
         height: 442px; /* Adjust as needed */
         background-size: cover !important;
         background-position: center !important;
@@ -562,12 +564,12 @@
                                 
                             </div>
                             {% endif %}
-                            <div style="display: -webkit-flex; margin: 0.75rem;">
-                                <form id="add-to-cart-form" method="POST" action="{% url 'add_to_cart' %}">
+                            <div class="ajout_favoris" style="display: -webkit-flex; margin: 0.75rem;">
+                                <form id="add-to-cart-form" method="POST" action="{% url 'add_to_cart' %}" class="details__ajout">
                                     {% csrf_token %}
                                     <input id="price_Taille" type="hidden" name="price_id" value="{{ price.id }}">
                                     <input type="hidden" name="article_id" value="{{ article.id }}">
-                                    <button type="submit" class="login__button" style="width: 250px;">Ajouter au panier </button>
+                                    <button type="submit" class="login__button ajout_panier" style="width: 250px;">Ajouter au panier </button>
                                 </form>
                                 
 
@@ -584,7 +586,7 @@
                             </div>
                             <div class="accueil__line"></div>
                             
-                            <div>
+                            <div class="details__description">
                                 <h2 style="margin-bottom: 0.75rem;">Description</h2>
                                 
                                 {% if article.description|length >= 600 %}
@@ -616,12 +618,14 @@
                 {% if similar_articles %}
                 <h1 class="collection__title" style="padding-top: 4rem !important; margin-bottom: 4rem;">VOUS AIMEREZ AUSSI</h1>
             
-                <div class="swiper-container articles_similaires" style="height: 400px;"> <!-- Définir une hauteur -->
+                <div class="wrapper_details" style="height: 400px;"> <!-- Définir une hauteur -->
                     
+                    <i id="left" class="fa-solid fa-angle-left"></i>
                     
-                    <div class="swiper-wrapper">
+                    <div class="carousel_details">
+
                         {% for article in similar_articles %}
-                        <div class="swiper-slide card" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
+                        <div class="card proposed_article card_details" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
                             <div class="overlay">
                                 <h3 style="font-weight: 900;">{{ article.libelle }}</h3>
                                 <p>{{ article.prix_article.first.prix }} €</p>
@@ -630,14 +634,17 @@
                         {% endfor %}
 
                     </div>
+
+                    <i id="right" class="fa-solid fa-angle-right"></i>
             
                     <!-- Add Pagination -->
-                    <div class="swiper-pagination"></div>
+                    <!-- <div class="swiper-pagination"></div> -->
                     <!-- Add Navigation -->
-                    <div class="swiper-button-next next__article"></div>
-                    <div class="swiper-button-prev prev__article"></div>
+                    <!-- <div class="swiper-button-next next__article"></div>
+                    <div class="swiper-button-prev prev__article"></div> -->
 
                 </div>
+
                 {% endif %}
             </section>
             
@@ -878,28 +885,6 @@
             });
 
             </script>
-
-
-            <!-- Inclure Swiper -->
-            <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-            <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
-            <script>
-                // Initialiser Swiper
-                var swiper = new Swiper('.articles_similaires', {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                });
-            </script>
-
 
             <!-- Toastify CSS -->
             <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">

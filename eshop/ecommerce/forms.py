@@ -87,7 +87,6 @@ class PasswordResetForm(PasswordChangeForm):
         self.fields['new_password2'].widget.attrs['placeholder'] = ' confirmer votre nouveau mot de passe'
 
 
-
 class VoyanceForm(forms.ModelForm):
     class Meta:
         model = Voyance
@@ -98,3 +97,11 @@ class VoyanceForm(forms.ModelForm):
     email = forms.EmailField(label='Email', max_length=100, required=True, widget=forms.EmailInput(attrs={'id': 'email','readonly': 'readonly'}))
     image = forms.ImageField(label='Photo', required=True, widget=forms.FileInput(attrs={'id': 'image', 'class': 'form__image', 'accept': 'image/*', 'onchange': 'previewImage(event)'}))
     contenu_demande = forms.CharField(label='Contenu de la demande', widget=forms.Textarea(attrs={'id': 'contenu', 'rows': '8'}), required=True)
+
+
+
+from django_ckeditor_5.fields import CKEditor5Field
+
+class NewsletterForm(forms.Form):
+    subject = forms.CharField()
+    message = CKEditor5Field()

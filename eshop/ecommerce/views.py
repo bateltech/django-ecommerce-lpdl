@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
-from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm
+from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
@@ -17,7 +17,15 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
+from django.conf import settings
 
+
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+from pprint import pprint
+from sib_api_v3_sdk.api.lists_api import ListsApi
+from datetime import datetime, timezone,timedelta
+import pytz
 
 # Vues des modèles
 
@@ -600,6 +608,96 @@ def formulaire_voyance(request):
         print("ARE YOU FUCKING KIDDING ME ???")
 
     return render(request, 'accueil', {'form': form})
+
+
+#@login_required
+def abonnement(request):
+    
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+
+        email = request.POST.get('email')
+        print(email)
+        if email:
+            configuration = sib_api_v3_sdk.Configuration()
+            configuration.api_key['api-key'] = settings.SMTP_API_KEY
+            print(configuration.api_key['api-key'])
+            api_instance = ListsApi(sib_api_v3_sdk.ApiClient(configuration))
+            api_instance2 = sib_api_v3_sdk.ContactsApi(sib_api_v3_sdk.ApiClient(configuration))
+            list_id = 2
+            api_response = api_instance.get_contacts_from_list(list_id)
+            pprint(api_response)
+
+            # check if the email already exists in the contact list
+            for contact in api_response.contacts:
+                if contact['email'] == email:
+                    return JsonResponse({'message': 'Déja abonné !'}, status=200)
+
+            create_contact = sib_api_v3_sdk.CreateContact(email=email, list_ids=[list_id])
+            api_response2 = api_instance2.create_contact(create_contact)
+            return JsonResponse({'message': 'Abonnement effectué !'}, status=200)
+    
+    return JsonResponse({'message': 'Bad request KHRA'}, status=400)
+
+
+def newsletter(request):
+    if request.method == 'POST':
+        form = NewsletterForm(request.POST)
+        if form.is_valid():
+
+            # Your email sending logic here
+            return redirect('newsletter')  # Redirect after successfully sending the email
+    else:
+        form = NewsletterForm()
+
+    return render(request, 'newsletter.html', {'form': form})
+
+
+# def sendEmail(request):
+#     if(request.method=='POST'):
+#        form = NewsletterForm(request.POST)
+#        if form.is_valid():
+#             subject = form.cleaned_data.get('subject')
+#             content= form.cleaned_data.get('message')
+#             #content= 'ROH TKHRA YA CKEDITOR TA3 LA MERDE REERJEORJEOFJEFJOFJEOFJZF FJERFOIJEROIJEROJERO FRJEIRFJEIROJ EZROI'
+#             configuration = sib_api_v3_sdk.Configuration()
+#             configuration.api_key['api-key'] =  settings.SMTP_API_KEY
+#             api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib_api_v3_sdk.ApiClient(configuration))
+#             sender = {"name": 'La pierre de lune', "email": 'medjaoui.imene@gmail.com'}
+#             name = subject
+#             subject = subject
+#             recipients = {"listIds": [2]}
+#             scheduled_at = (datetime.now(pytz.utc) + timedelta(minutes=1)).isoformat()
+#             email_campaigns = sib_api_v3_sdk.CreateEmailCampaign(scheduled_at =scheduled_at ,sender=sender, name=name,  subject=subject,  recipients=recipients,html_content=content) # CreateEmailCampaign | Values to create a campaign
+#             api_response = api_instance.create_email_campaign(email_campaigns)
+#             pprint(api_response)
+#             return redirect('newsletter')
+
+
+def sendEmail(sujet, contenu):
+
+    try:
+        subject = sujet
+        content= contenu
+        configuration = sib_api_v3_sdk.Configuration()
+        configuration.api_key['api-key'] =  settings.SMTP_API_KEY
+        api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib_api_v3_sdk.ApiClient(configuration))
+        sender = {"name": 'La pierre de lune', "email": 'medjaoui.imene@gmail.com'}
+        name = subject
+        subject = subject
+        recipients = {"listIds": [2]}
+        scheduled_at = (datetime.now(pytz.utc) + timedelta(minutes=1)).isoformat()
+        unsubscribe_id = '65fd9b792c61483dba7e8b8e'
+        email_campaigns = sib_api_v3_sdk.CreateEmailCampaign(scheduled_at =scheduled_at ,sender=sender, name=name,  subject=subject,  recipients=recipients,html_content=content, unsubscription_page_id=unsubscribe_id, inline_image_activation=True) # CreateEmailCampaign | Values to create a campaign
+
+        api_response = api_instance.create_email_campaign(email_campaigns)
+        pprint(api_response)
+        print('newsletter sent successfully !')
+        return JsonResponse({'success': True, 'message': 'Quantity updated successfully' })
+    except Exception as e:
+        # Log other exceptions
+        print(f'Error sending newsletter: {e}')
+        return JsonResponse({'success': False, 'message': 'An error occurred during newsletter sending'})
+
 
 
 
