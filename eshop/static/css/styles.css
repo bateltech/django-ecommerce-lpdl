@@ -252,16 +252,16 @@ img {
     background-color: white;
     overflow: hidden;
     transition: 0.5s; /* Ajoutez une transition pour une animation fluide */
-    z-index: 10; /* Assurez-vous que la barre de recherche est au-dessus des autres éléments */
+    z-index: var(--z-fixed); /* Assurez-vous que la barre de recherche est au-dessus des autres éléments */
     border-radius: 10px;
 }
 
 .search-bar input {
     width:95%;
     padding: 10px;
-    border: none;
-    outline: none;
-    float: left;
+    border: none !important;
+    outline: none !important;
+    float: left !important;
 }
 
 .search-bar button {
@@ -291,6 +291,7 @@ img {
     border-radius: 10%;
     margin-right: 10px; /* Add some margin for spacing */
 }
+
 .results-card {
     overflow-y: auto; /* Enable vertical scrolling */
     white-space: pre-wrap; /* Allow text wrapping */
@@ -1671,12 +1672,12 @@ aside p {
        padding: 0.5rem;
     }
 
-    .search-bar {
+    /* .search-bar {
        position: fixed;
        top: 6em;
        left: 7em;
        width: 0;
-    }
+    } */
 
     #logo {
        width: auto;
@@ -2288,6 +2289,46 @@ aside p {
     }
 
 
+    /*
+    *
+    *   Search Bar Mobile
+    *
+    */
+    .search-bar-mobile {
+        display: block !important;
+        position: fixed !important;
+        top: 5.5em;
+        margin: 0 1rem;
+        width: 0;
+        height: fit-content;
+        background-color: white;
+        overflow: hidden;
+        transition: 0.5s;
+        z-index: 1100 !important;
+        border-radius: 10px;
+    }
+
+    .search-bar-mobile input {
+        width:95%;
+        padding: 10px;
+        border: none !important;
+        outline: none !important;
+        float: left !important;
+    }
+
+    .results-card-mobile {
+        overflow-y: auto; /* Enable vertical scrolling */
+        white-space: pre-wrap; /* Allow text wrapping */
+        box-shadow: 0 8px 8px 0 rgba(0, 0, 0, .25);
+        transition: 0.5s;
+        border-radius: 7px;
+        padding:10px 10px;
+        background-color: white;
+    }
+    
+    .results-card-mobile a {
+        padding: 0.25rem 0;
+    }
 
 }
 
@@ -2489,16 +2530,16 @@ aside p {
     padding-right: 6rem;
     justify-content: space-between;
     flex-wrap: wrap;
-  }
+}
   
-  .panier_section,
-  .section_total,
-  .section_commentaire{
+.panier_section,
+.section_total,
+.section_commentaire{
     padding: 20px;
     box-sizing: border-box;
-  }
+}
   
-  .panier_section {
+.panier_section {
     width: calc(866 / (866 + 379) * 100% - 4rem); /* Adjust the ratio and spacing as needed */
     margin-bottom: 2rem; /* Adjust as needed for the vertical spacing */
     margin-right: 4rem; /* Adjust as needed for the horizontal spacing */
@@ -2510,24 +2551,24 @@ aside p {
 }
 
 
-  .section_commentaire {
+.section_commentaire {
     width: 100%;
-  }
+}
 
 
-  /*---------------------------------SECTION PANIER START ---------------------------------------------------------*/
-  .panier_section .div1{
+/*---------------------------------SECTION PANIER START ---------------------------------------------------------*/
+.panier_section .div1{
     display: flex;
     justify-content: space-between; 
-  }
+}
 
-  .panier_section .div1 h2 {
+.panier_section .div1 h2 {
     font-weight: bold;
     margin-top: 1rem;
 
-  }
+}
 
-  .panier__button{
+.panier__button{
     padding: 0.5rem;
     border-radius: 3rem;
     margin-top: 1rem;
@@ -2536,31 +2577,31 @@ aside p {
     color: white;
     background-color: hsl(220, 1%, 45%);
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  .panier__button:hover{
+.panier__button:hover{
     cursor: pointer;
-  }
+}
 
-  .panier_section hr {
+.panier_section hr {
     margin-top: 1rem;
-  }
+}
 
   
-  .panier_section .div2{
+.panier_section .div2{
     display: flex;
     justify-content: space-between;
     margin-top: 1rem;
     align-items: center;
-  }
+}
 
-  .panier_section .div2 .produit-info {
+.panier_section .div2 .produit-info {
     display: flex;
     gap: 1rem; /* Adjust the gap as needed */
     align-items: center;
 }
 
-  .panier_section .div2 img {
+.panier_section .div2 img {
     max-width: 85px;
     max-height: 94px;
     width: auto;
@@ -2569,36 +2610,37 @@ aside p {
 }
 
 .panier_section .div2 h2 {
-  width: 99px;
-  height: auto;
-  font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: normal; /* Set default font-weight to normal */
+    width: 99px;
+    height: auto;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal; /* Set default font-weight to normal */
 }
 
 .panier_section .div2 .produit-info h2 {
-  font-weight: bold; /* Set the font-weight to bold for the first h2 */
+    font-weight: bold; /* Set the font-weight to bold for the first h2 */
 }
 
  
 .panier_section .div2 .white-container {
-  background-color: rgb(217, 217, 217);
-  border-radius: 3rem;
-  width: 96px;
-  height: 34px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    background-color: rgb(217, 217, 217);
+    border-radius: 3rem;
+    width: 96px;
+    height: 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .panier_section .div2 .white-container button {
-  background-color: rgb(217, 217, 217);
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 3rem;
-  border: none;}
+    background-color: rgb(217, 217, 217);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 3rem;
+    border: none;
+}
 
 .panier_section .div2 button {
     background-color: transparent;
@@ -2606,23 +2648,26 @@ aside p {
     padding: 0; 
     cursor: pointer;
 }
+
 .panier_section .div2 button img {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
-  .counter-value {
-    color: rgb(85, 85, 85);}
+.counter-value {
+    color: rgb(85, 85, 85);
+}
 
 .taille-prix {
     display: flex;
     justify-content: space-between;
 }
-  /*---------------------------------SECTION PANIER END ---------------------------------------------------------*/
+  
+/*---------------------------------SECTION PANIER END ---------------------------------------------------------*/
 
 
-  /*---------------------------------SECTION COMMENTAIRE START ---------------------------------------------------------*/
-  /* Style du fond gris en arrière-plan */
-  .bg-modal {
+/*---------------------------------SECTION COMMENTAIRE START ---------------------------------------------------------*/
+/* Style du fond gris en arrière-plan */
+.bg-modal {
     display: none;
     position: fixed;
     top: 0;
@@ -2633,163 +2678,162 @@ aside p {
     justify-content: center;
     align-items: center;
     z-index: 1100;
-  }
+}
   
   /* Style du pop-up */
-  .popup {
+.popup {
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 40rem;
     height: auto;
-  }
+}
   
   
   /* Style des champs du formulaire */
-  .popup form {
+.popup form {
     display: grid;
     grid-gap: 10px;
-  }
+}
   
-  .popup label {
+.popup label {
     display: block;
     margin-bottom: 5px;
-  }
+}
   
-  .popup input {
+.popup input {
     width: 100%;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
-  }
+}
   
-  .popup textarea {
+.popup textarea {
     width: 100%;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     display: block;
-  }
+}
 
   
-  /* Style du bouton Envoyer */
-  .popup button {
+/* Style du bouton Envoyer */
+.popup button {
     padding: 10px;
     background-color: hsla(0, 1%, 55%, 0.6);
     border: 1px solid hsla(0, 0%, 90%, 0.7);
     color: white;
     border-radius: 3rem;
     cursor: pointer;
-  }
+}
   
-  .popup button:hover {
+.popup button:hover {
     background-color: hsla(0, 1%, 55%, 1);
-  }
+}
   
   /* Style pour fermer le pop-up */
-  .popup .close-btn {
+.popup .close-btn {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
     color: #333;
     font-size: 18px;
-  }
+}
   
-  .popup .close { 
-      position: absolute;
-      top: 0;
-      right: 10px;
-      font-size: 42px;
-      color: #333;
-      cursor: pointer;
-  }
+.popup .close { 
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 42px;
+    color: #333;
+    cursor: pointer;
+}
   
-  .popup .close:hover {
+.popup .close:hover {
     color: #666;
-  }
+}
 
-  .section_commentaire .div2 .produit-info {
-
+.section_commentaire .div2 .produit-info {
     padding-top: 1rem;
     padding-bottom: 1rem;
-  }
-  .section_commentaire .div2 .produit-info h2 {
+}
+
+.section_commentaire .div2 .produit-info h2 {
     font-weight: bold; /* Set the font-weight to bold for the first h2 */
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;
     padding-bottom: 10px;
+}
 
-  }
-  .section_commentaire .div2 .produit-info p {
+.section_commentaire .div2 .produit-info p {
     font-size: 20px;
     font-family: 'Montserrat', sans-serif;
     color: white;
 
-  }
-  /*---------------------------------SECTION COMMENTAIRE END ---------------------------------------------------------*/
-  
-  
-  /*---------------------------------SECTION TOTAL START ---------------------------------------------------------*/
+}
+/*----------------------------------------------- SECTION COMMENTAIRE END -----------------------------------------------*/
 
-  .total_header {
+
+/*----------------------------------------------- SECTION TOTAL START -----------------------------------------------*/
+
+.total_header {
     display: flex;
     justify-content: center;
     padding-bottom: 1rem;
-  }
+}
 
-  .total_header p{
+.total_header p{
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;
     color: white;
     padding-left: 10px;
-  }
+}
 
-  .total_header .fas {
+.total_header .fas {
     color: white;
     font-size: 16px;
-  }
+}
 
-  .cart_item {
+.cart_item {
     display: flex;
     justify-content: space-between;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
 
-  }
-
-  .cart_item .produit-info{
+.cart_item .produit-info{
     display: block;
-  }
+}
 
-  .cart_item p{
+.cart_item p{
     font-size: 15px;
     color: white;
     font-family: 'Montserrat', sans-serif;
-  }
+}
 
-  .total_price {
+.total_price {
     display: flex;
     justify-content: space-between;
     padding-top: 1rem;
-  }
+}
 
-  .total_price p{
+.total_price p{
     font-weight: bold;
     font-family: 'Montserrat',sans-serif;
     color: white;
     font-size: 20px;
-  }
+}
 
-  .centered-button {
+.centered-button {
     display: flex;
     justify-content: center; /* Horizontally center the button */
     margin-top: 20px; /* Adjust margin as needed */
 }
 
 .centered-button .panier__button{
-  width: 331px;
+    width: 331px;
 
 }
 

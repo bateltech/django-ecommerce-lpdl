@@ -331,14 +331,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 /* Barre de recherche */
-document.querySelector('.search__icon').addEventListener('click', function () {
-    document.getElementById('searchBar').style.width == '20%' ? document.getElementById('searchBar').style.width = '0'
-                                                             : document.getElementById('searchBar').style.width = '20%';
+let searchIcons = document.querySelectorAll('.search__icon');
+
+searchIcons.forEach(function(icon) {
+  icon.addEventListener('click', function() {
+    let searchBar = document.getElementById('searchBar');
+    searchBar.style.width == '20%' ? searchBar.style.width = '0' : searchBar.style.width = '20%';
+    let searchBarMobile = document.getElementById('searchBarMobile');
+    searchBarMobile.style.width == '80%' ? searchBarMobile.style.width = '0' : searchBarMobile.style.width = '90%';
+  });
 });
 
 
 window.addEventListener('scroll', function () {
     document.getElementById('searchBar').style.width = '0';
+    document.getElementById('searchBarMobile').style.width = '0';
 });
 
 

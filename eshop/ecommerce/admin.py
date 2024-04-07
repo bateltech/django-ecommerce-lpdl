@@ -23,4 +23,4 @@ admin.site.register(DetailCommande)
 # admin.site.register(Commentaire) # pour la version 2
 
 admin.site.register(Feedback)
-admin.site.register(Newsletter)
+# admin.site.register(Newsletter)

@@ -15,7 +15,7 @@
                    <div class="search__container">
                     <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                     <!-- Barre de recherche -->
@@ -35,61 +35,63 @@
                             const searchForm = document.getElementById('search-form');
                             const searchInput = document.getElementById('searchInput');
                             const resultsBox = document.getElementById('results-box');
+
+                            const searchFormMobile = document.getElementById('search-form-mobile');
+                            const searchInputMobile = document.getElementById('searchInputMobile');
+                            const resultsBoxMobile = document.getElementById('results-box-mobile');
+
                             const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-                    
-                            function sendSearchData(article) {
+
+                            function sendSearchData(form, input, results) {
                                 $.ajax({
                                     type: 'POST',
-                                    url: '{% url "search" %}',  // Change this to the correct URL if needed
+                                    url: '{% url "search" %}',
                                     data: {
                                         'csrfmiddlewaretoken': csrf,
-                                        'article': article,
+                                        'article': input.value,
                                     },
                                     success: function(res) {
                                         let data = res.data;
                                         if (Array.isArray(data)) {
-                                            // Clear previous results
-                                            resultsBox.innerHTML = '';
+                                            results.innerHTML = '';
                                             data.forEach(article => {
-                                                // Create container for each article
                                                 let articleContainer = document.createElement('a');
-                                                window.location.href ="/details/"+ article.id;
+                                                articleContainer.onclick = function() {
+                                                    window.location.href = "/details/" + article.id;
+                                                };
                                                 articleContainer.classList.add('link', 'article-container');
-                                    
-                                                // Create image element
+
                                                 let imgElement = document.createElement('img');
                                                 imgElement.src = article.image;
                                                 imgElement.alt = article.name;
                                                 imgElement.classList.add('article-img');
                                                 imgElement.style.marginRight = '10px';
-                                    
-                                                // Create name element
+
                                                 let nameElement = document.createElement('h5');
                                                 nameElement.textContent = article.name;
-                                                nameElement.style.color = 'black'; // Set text color to black
-                                                // Append image and name to the article container
+                                                nameElement.style.color = 'black';
+
                                                 articleContainer.appendChild(imgElement);
                                                 articleContainer.appendChild(nameElement);
-                                    
-                                                // Append article container to the results box
-                                                resultsBox.appendChild(articleContainer);
+
+                                                results.appendChild(articleContainer);
                                             });
                                         } else {
-                                            if (searchInput.value.length > 0) {
-                                                resultsBox.innerHTML = `<b>${data}</b>`;
+                                            if (input.value.length > 0) {
+                                                results.innerHTML = `<b>${data}</b>`;
                                             } else {
-                                                resultsBox.innerHTML = '';
-                                                resultsBox.style.display = 'none';
+                                                results.innerHTML = '';
+                                                results.style.display = 'none';
                                             }
                                         }
                                     },
-                                    
+
                                     error: function(err) {
                                         console.log(err);
                                     },
                                 });
                             }
-                        
+
                             searchInput.addEventListener('input', function(e) {
                                 const searchQuery = e.target.value.trim();
                                 if (searchQuery.length > 0) {
@@ -97,9 +99,19 @@
                                 } else {
                                     resultsBox.style.display = 'none';
                                 }
-                                sendSearchData(searchQuery);
+                                sendSearchData(searchForm, searchInput, resultsBox);
                             });
-                        });
+
+                            searchInputMobile.addEventListener('input', function(e) {
+                                const searchQuery = e.target.value.trim();
+                                if (searchQuery.length > 0) {
+                                    resultsBoxMobile.style.display = 'block';
+                                } else {
+                                    resultsBoxMobile.style.display = 'none';
+                                }
+                                sendSearchData(searchFormMobile, searchInputMobile, resultsBoxMobile);
+                            });
+                            });
                     </script>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
@@ -252,6 +264,15 @@
         {% endif %}
         
 
+            <!-- Barre de recherche Mobile -->
+    <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
+        <form id="search-form-mobile" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="text" id="searchInputMobile" placeholder="Rechercher...">
+        </form>
+        <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
+    </div>
+    
 <!--==================== MAIN ====================-->
 <main class="main">
 

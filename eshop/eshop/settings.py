@@ -17,6 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Replace YOUR_API_KEY with your api key
+
 SMTP_API_KEY = 'YOUR_API_KEY'
 
 # Quick-start development settings - unsuitable for production
@@ -503,7 +504,7 @@ CKEDITOR_5_CONFIGS = {
     'newsletter': {
         'toolbar': {
             'items': [
-                'heading', '|', 'bold', 'italic', '|', 'fontSize', 'fontFamily', 'fontColor', 'alignment', '|', 'imageUpload',  'mediaEmbed', 'link',
+                'heading', '|', 'bold', 'italic', '|', 'fontSize', 'fontFamily', 'fontColor', 'alignment', '|', 'insertImage',  'mediaEmbed', 'link',
                  '|', 'bulletedList', 'numberedList', '|','highlight', 'blockQuote', 'code', '|',
                 'fontBackgroundColor', 'indent', 'outdent', '|', 'codeBlock', 'insertTable','|','undo', 'redo'
             ]
@@ -511,7 +512,7 @@ CKEDITOR_5_CONFIGS = {
         'language': 'fr',
         'image': {
             'toolbar': ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side', 'linkImage'],
-            'styles': ['full', 'side', 'alignLeft', 'alignRight', 'alignCenter']
+            'styles': ['full', 'side', 'alignLeft', 'alignRight', 'alignCenter'],
         },
 
 

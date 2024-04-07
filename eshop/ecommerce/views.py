@@ -677,7 +677,9 @@ def sendEmail(sujet, contenu):
 
     try:
         subject = sujet
-        content= contenu
+        # content = {"params": {"content": contenu}}
+
+        content = contenu
         configuration = sib_api_v3_sdk.Configuration()
         configuration.api_key['api-key'] =  settings.SMTP_API_KEY
         api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib_api_v3_sdk.ApiClient(configuration))
@@ -687,10 +689,11 @@ def sendEmail(sujet, contenu):
         recipients = {"listIds": [2]}
         scheduled_at = (datetime.now(pytz.utc) + timedelta(minutes=1)).isoformat()
         unsubscribe_id = '65fd9b792c61483dba7e8b8e'
-        email_campaigns = sib_api_v3_sdk.CreateEmailCampaign(scheduled_at =scheduled_at ,sender=sender, name=name,  subject=subject,  recipients=recipients,html_content=content, unsubscription_page_id=unsubscribe_id, inline_image_activation=True) # CreateEmailCampaign | Values to create a campaign
+        email_campaigns = sib_api_v3_sdk.CreateEmailCampaign(scheduled_at =scheduled_at ,sender=sender, name=name,  subject=subject,  recipients=recipients, html_content=content, unsubscription_page_id=unsubscribe_id, inline_image_activation=True) # CreateEmailCampaign | Values to create a campaign
 
         api_response = api_instance.create_email_campaign(email_campaigns)
         pprint(api_response)
+        print(content)
         print('newsletter sent successfully !')
         return JsonResponse({'success': True, 'message': 'Quantity updated successfully' })
     except Exception as e:
