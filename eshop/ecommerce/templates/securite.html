@@ -269,6 +269,15 @@
         {% endif %}
         
 
+                <!-- Barre de recherche Mobile -->
+    <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
+        <form id="search-form-mobile" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="text" id="searchInputMobile" placeholder="Rechercher...">
+        </form>
+        <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
+    </div>
+    
 <!--==================== MAIN ====================-->
 <main class="main user-main">
 

@@ -230,3 +230,19 @@ class Newsletter(models.Model):
 
     def __str__(self) -> str:
         return f"{self.subject}"
+    
+
+# Table Livraison
+class Livraison(models.Model):
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    telephone = models.CharField(max_length=20)
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    numero_rue = models.CharField(max_length=100)
+    adresse = models.CharField(max_length=255)
+    ville = models.CharField(max_length=100)
+    code_postal = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Livraison pour {self.user.username}"
+

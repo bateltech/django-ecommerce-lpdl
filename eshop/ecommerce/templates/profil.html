@@ -239,7 +239,7 @@
 
             <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
             <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
-            <a href="" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+            <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
             
             <!-- Toggle button -->
             <div class="nav__toggle" id="nav-toggle">
@@ -284,7 +284,7 @@
         {% endif %}
         
 
-            <!-- Barre de recherche Mobile -->
+        <!-- Barre de recherche Mobile -->
     <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
         <form id="search-form-mobile" method="post" autocomplete="off">
             {% csrf_token %}

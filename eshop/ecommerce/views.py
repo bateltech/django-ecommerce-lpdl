@@ -1,7 +1,7 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem
+from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, Livraison
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
@@ -300,7 +300,7 @@ def checkout_view(request):
     if has_cart:
         cart = Cart.objects.get(user=user)
         cart_items = CartItem.objects.filter(cart__user=user)
-        total_price = cart.total_price
+        total_price = cart.total_price + 5
 
     context= {
         'utilisateur_connecte': utilisateur_connecte,
@@ -818,3 +818,36 @@ def submit_feedback(request):
     else:
         # Handle non-POST requests as needed
         return render(request, 'accueil.html')
+
+
+def finaliser_commande(request):
+    if request.method == 'POST':
+        # Récupérer les données du formulaire
+        telephone = request.POST.get('telephone')
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        numero_rue = request.POST.get('numero_rue')
+        adresse = request.POST.get('adresse')
+        ville = request.POST.get('ville')
+        code_postal = request.POST.get('code_postal')
+
+        # Créer une instance de Livraison avec les données du formulaire
+        livraison = Livraison(
+            user=request.user,
+            telephone=telephone,
+            nom=nom,
+            prenom=prenom,
+            numero_rue=numero_rue,
+            adresse=adresse,
+            ville=ville,
+            code_postal=code_postal
+        )
+
+        # Enregistrer l'instance dans la base de données
+        livraison.save()
+
+        # Rediriger vers une autre page ou afficher un message de confirmation
+        return redirect('panier')
+
+    # Si la méthode de la requête n'est pas POST, rediriger vers une autre page
+    return redirect('accueil')

@@ -184,7 +184,8 @@ button.login__button:hover {
 
 .profil__section {
     display: flex;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
     flex-wrap: wrap;
     flex-direction: row-reverse;
     justify-content: center;

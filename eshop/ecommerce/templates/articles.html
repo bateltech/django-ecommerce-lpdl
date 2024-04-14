@@ -294,13 +294,13 @@
             <!--==================== ARTICLES ====================-->
 
            
-            <div style="margin: 2rem; border-bottom: solid 1px white;">
+            <div class="breadcrumb-div" style="margin: 2rem; border-bottom: solid 1px white;">
                 <p id="breadcrumb" >Articles<span id="selected-category"></span><span id="selected-subcategory"></span> </p>
             </div>
             <div class="article__main">
 
                 <!-- Sidebar categories -->
-                <aside style="height:    106vh; border-bottom: 1px solid #cccccc;">
+                <aside class="cat-aside" style="height:    110vh;">
                     <p> </p>
                     {% for category in categories %}
                     <a href="#" class = "category" category-id="{{ category.libelle }}">
@@ -309,12 +309,20 @@
                     {% endfor %}
                 </aside>
 
+
                 <!-- sub categories and product cards -->
                 <section class="article__section">
                     <div class="section__header">
                         <h2 id="title-category"></h2>
                     </div>
-            
+
+
+                <div class="horizontal-scroll-mobile" id="scroll-container" style="display: none;">
+                    {% for category in categories %}
+                    <button class="rounded-button-mobile category-button" mob-category-id="{{ category.libelle }}">{{ category.libelle }}</button>
+                    {% endfor %}
+                </div>
+
                     <div class="horizontal-scroll" id="scrollContainer">
                         {% for sub_category in sub_categories %}
                         <button class="rounded-button" sub-category-id="{{ sub_category.categorie }}" sub-category-article-id="{{ sub_category.id }}" sub-category-libelle="{{ sub_category.libelle }}" >{{ sub_category.libelle }}</button>

@@ -38,6 +38,7 @@ urlpatterns = [
     path('add_to_cart/', add_to_cart, name='add_to_cart'),
     path('search/', search_results, name='search'),
     path('formulaire-de-voyance/', formulaire_voyance, name='formulaire_voyance'),
+    path('finaliser-commande/', finaliser_commande, name='finaliser_commande'),
 
     path('submit-feedback/', submit_feedback, name='submit_feedback'),
 
