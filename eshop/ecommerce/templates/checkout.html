@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %} Procédure de paiement - La pierre de lune {% endblock %}
+
 {% block content %}
 
 
@@ -265,15 +267,10 @@
     </div>
 
 <!--==================== MAIN ====================-->
-<!--==================== MAIN ====================-->
 
 <main class="main">
 
-
-
-    <!--==================== CHECKOUT ====================-->
-
-                    
+    <!--==================== CHECKOUT ====================-->           
 
     <section class="checkout__section">
 
@@ -297,8 +294,6 @@
 
             <hr>
 
-
-
             {% for item in cart_items %}
 
             <div class="cart_item">
@@ -316,8 +311,6 @@
                 <p>{{item.quantity}}</p>
 
             </div>
-
-            
 
             {% endfor %}
 
@@ -342,25 +335,13 @@
 
             </div>
 
-          
-
             </div>
-
-            
-
+        
         </section>
-
-
 
     <!--=====================Section Information et Paiement-================-->
 
         <section class="section_paiement">
-
-            <div class="div1">
-
-                
-
-            </div>
 
             <div class="accordion">
 
@@ -370,13 +351,9 @@
 
                         <h2>Informations</h2> 
 
-                        <span class="arrow">&#x25BC;</span>
-
                     </div>
 
                     <div class="accordion-content">
-
-                        {% if utilisateur_connecte %}
 
                         <em><p class="informative_text">Les champs marquer avec * sont obligatoire</p></em>
 
@@ -384,68 +361,36 @@
 
                             <span class="form-header-text1">Contact</span>
 
-                            <span class="informative_text">
-
-                                Vous avez déja un compte? 
-
-                                <a class="informative_text" href="{% url 'connexion' %}">
-
-                                    <u>
-
-                                        connexion
-
-                                    </u>
-
-                                </a>
-
-                            </span>
-
                         </div>
 
-                        {% endif %} 
+                        <form id="finaliser-commande-form" method="POST">
 
+                            {% csrf_token %}
+                            <div class="form-row">
 
+                                <div class="input-container">
 
-                        <form method="post" action="{% url 'finaliser_commande' %}">
+                                    <input name="email" type="email" class="form-input" placeholder="Entrez votre adresse email" required value="{{ request.user.email }}" >
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>            
 
                             <div class="form-row">
 
                                 <div class="input-container">
 
-                                    <input type="email" class="form-input" placeholder="Entrez votre adresse email" required>
+                                    <input type="tel" class="form-input" name="telephone" placeholder="Numéro de téléphone" required value="{{ request.user.phone_number }}" >
 
                                     <span class="required">*</span>
 
                                 </div>
 
                             </div>
-
-
-
-                            
-
-                            <div class="form-row">
-
-                                <div class="input-container">
-
-                                    <input type="tel" class="form-input" name="telephone" placeholder="Numéro de téléphone" required>
-
-                                    <span class="required">*</span>
-
-                                </div>
-
-                            </div>
-
-                            
 
                             <!-- Other input fields -->
-
-                            
-
-                            
-
-                            
-
 
 
                             <div class="form-header-container">
@@ -475,10 +420,7 @@
                                 </div>
 
                             </div>
-
-                            
-
-                            
+  
 
                             <div class="form-row">
 
@@ -526,7 +468,7 @@
 
                             <div class="form-row">
 
-                                <button type="submit" class="panier__button" style="float: right;">
+                                <button type="submit" onclick="buy(event)" class="panier__button" style="float: right;">
 
                                     Finaliser la commande
 
@@ -536,105 +478,133 @@
 
                             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-
-
                             
 
-                        </form>                        
+                        </form> 
+                        
+                        <div id="errors" style="color: red;"></div>
+
 
                     </div>
 
                 </div>
 
-                <div class="accordion-item">
-
-                    <div class="accordion-header">
-
-                        <h2>Paiement</h2> 
-
-                        <span class="arrow">&#x25BC;</span>
-
-                    </div>                    
-
-                    <!-- <div class="accordion-content"><button class="panier__button carte-bancaire" style="float: right;"> -->
-                    <div class="accordion-content">
-                        <button class="panier__button carte-bancaire">
-
-                        Carte Bancaire
-
-                    </button>
-
-                    </div>                    
-
-                </div>
-
             </div>
-
-            
-
-            
 
         </section>
 
-        
-
-
-
     </section>
 
-
-
-
-
 </main>
+
+<script>
+    let el = document.querySelector('#errors')
+
+    function validateForm(data) {
+        let errors = []
+
+        if (data.prenom === '') {
+            errors.push('Votre prénom est vide')
+        }
+        if (data.nom === '') {
+            errors.push('Votre nom est vide')
+        }
+        if (data.email === '') {
+            errors.push('Votre email est vide')
+        }
+        if (data.telephone === '') {
+            errors.push('Votre numéro de téléphone est vide')
+        }
+        if (data.adresse === '') {
+            errors.push('Votre adresse est vide')
+        }
+        if (data.numero_rue === '') {
+            errors.push('Votre numéro de rue est vide')
+        }
+        if (data.code_postal === '') {
+            errors.push('Votre code postal est vide')
+        }
+        if (data.ville === '') {
+            errors.push('Votre ville est vide')
+        }
+
+        if (errors.length > 0) {
+            let html = '<ul>';
+            errors.forEach((error) => {
+                html += '<li>' + error + '</li>';
+            })
+
+            el.innerHTML = html + '</ul>';
+        } else {
+            el.innerHTML = '';
+        }
+
+        return errors
+    }
+
+    function buy(event) {
+        event.preventDefault()
+
+        let data = {
+            'prenom': document.querySelector('input[name=prenom]').value,
+            'nom': document.querySelector('input[name=nom]').value,
+            'email': document.querySelector('input[name=email]').value,
+            'telephone': document.querySelector('input[name=telephone]').value,
+            'adresse': document.querySelector('input[name=adresse]').value,
+            'numero_rue': document.querySelector('input[name=numero_rue]').value,
+            'code_postal': document.querySelector('input[name=code_postal]').value,
+            'ville': document.querySelector('input[name=ville]').value,
+        }
+
+        let errors = validateForm(data)
+
+        if (errors.length) {
+            console.log('Errors', errors)
+        } else {
+            var stripe = Stripe('{{ pub_key }}')
+
+            fetch ('/start_order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            
+            .then(function(response) {
+                return response.json()
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.session.id })
+            })
+            .then(function(result) {
+                if (result.error) {
+                    alert(result.error.messsage)
+                }
+            })
+            .catch(function(error) {
+                console.log('Errors', error)
+            });
+        }
+        return false
+    }
+
+    document.querySelector('#finaliser-commande-form').addEventListener('submit', buy);
+</script>
 
 
 <script>
 
+    
+
     document.addEventListener("DOMContentLoaded", function() {
-
-        // Écouter l'événement de soumission du formulaire
-
-        document.querySelector('form').addEventListener('submit', function(e) {
-
-            e.preventDefault(); // Empêcher la soumission du formulaire
-
-
-
-            // Parcourir tous les champs d'entrée
-
-            document.querySelectorAll('input').forEach(function(input) {
-
-                // Créer un élément de texte avec la valeur du champ d'entrée
-
-                var textElement = document.createElement('span');
-
-                textElement.textContent = input.value;
-
-                
-
-                // Appliquer la classe CSS pour le style
-
-                textElement.classList.add('text-field');
-
-
-
-                // Remplacer l'élément d'entrée par l'élément de texte
-
-                input.parentNode.replaceChild(textElement, input);
-
-            });
-
-
-
-            // Cacher le bouton "Finaliser la commande"
-
-            document.querySelector('.panier__button').style.display = 'none';
-
-        });
-
+        
     });
 
 </script>
+
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
 
 {% endblock %}

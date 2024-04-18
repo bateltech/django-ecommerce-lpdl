@@ -1,24 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Paiement de voyance - La pierre de lune{% endblock %}
+{% block title %} Paiement de voyance - La pierre de lune {% endblock %}
 
 {% block content %}
 
-        <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
-        <!--==================== HEADER ====================-->
-        <header role="banner" class="header" id="header">
 
-            <!--==================== TOP BAR ====================-->
-            <div class="top__bar">
+<link rel="stylesheet" href="{%static 'css/log_style.css'%}">
+<!--==================== HEADER ====================-->
+<header role="banner" class="header" id="header">
 
-                   <div class="search__container">
-                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
-                   </div>
+    <!--==================== TOP BAR ====================-->
+    <div class="top__bar">
+
+           <div class="search__container">
+            <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+        
+            <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+           </div>
 
                     <!-- Barre de recherche -->
+                    
                     <div id="searchBar" class="search-bar">
                         <form id="search-form" method="post" autocomplete="off">
                             {% csrf_token %}
@@ -113,12 +116,12 @@
                             });
                             });
                     </script>
+                    
+           <a href="{% url 'accueil' %}" class="logo__prin">
+            <img id="logo" src="{% static 'img/logo.webp'%}">
+           </a>
 
-                   <a href="{% url 'accueil' %}" class="logo__prin">
-                    <img id="logo" src="{% static 'img/logo.webp' %}">
-                   </a>
-
-                   {% if utilisateur_connecte %}
+           {% if utilisateur_connecte %}
 
 
                    <!-- Desktop version -->
@@ -146,86 +149,79 @@
                    </div>
 
                    {% endif %} 
+                   
+    </div>
 
+    <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
+        <img src="{% static 'img/Vector.webp'%}" alt="separation" style="width: auto; padding: 2rem;">
+    </div>
+
+    <!--==================== NAVIGATION BAR ====================-->
+    <nav class="nav container" id="nav-bar">
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list grid">
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}" class="nav__link">
+                         Accueil
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#collection" class="nav__link">
+                         Collection
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#artist" class="nav__link">
+                         Artiste
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'articles' %}" class="nav__link">
+                         Articles
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'pierres' %}" class="nav__link">
+                         Pierres
+                    </a>
+                </li>
+
+                <li class="nav__item">
+                    <a href="{% url 'accueil' %}#voyance" class="nav__link">
+                         Voyance
+                    </a>
+                </li>
+
+            </ul>
+
+            <!--Close button-->
+            <div class="nav__close" id="nav-close">
+                <i class="fa-solid fa-xmark"></i>
             </div>
+        </div>
 
+        <a href="{% url 'accueil' %}" class="nav__logo">
+            <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+           </a>
+           
+        <div class="nav__buttons">
 
-            <div  class="separation_img"  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
-                <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
+            <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+            <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+            <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+            
+            <!-- Toggle button -->
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars-staggered"></i>
             </div>
+        </div>
+    </nav>
 
-            <!--==================== NAVIGATION BAR ====================-->
-            <nav class="nav container" id="nav-bar">
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list grid">
-                        <li class="nav__item">
-                            <a href="#" class="nav__link">
-                                <i class="fa-regular fa-moon"></i>
-                                 Accueil
-                            </a>
-                        </li>
 
-                        <li class="nav__item">
-                            <a href="#collection" class="nav__link">
-                                <i class="fa-solid fa-shapes"></i>
-                                 Collection
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="#artist" class="nav__link">
-                                <i class="fa-solid fa-person-rays"></i>
-                                 Artiste
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="{% url 'articles' %}" class="nav__link">
-                                <i class="fa-solid fa-store"></i>
-                                 Articles
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="{% url 'pierres' %}" class="nav__link">
-                                <i class="fa-regular fa-gem"></i>
-                                 Pierres
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="#voyance" class="nav__link">
-                                <i class="fa-solid fa-hand-sparkles"></i>
-                                 Voyance
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <!--Close button-->
-                <div class="nav__close" id="nav-close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
-                </div>
-
-                <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
-                </a>
-
-                <div class="nav__buttons">
-
-                    <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
-                    <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
-                    
-                    <!-- Toggle button -->
-                    <div class="nav__toggle" id="nav-toggle">
-                        <i class="fa-solid fa-bars-staggered"></i>
-                    </div>
-                </div>
-            </nav>
-
-        
         </header>
 
 
@@ -242,10 +238,9 @@
                 <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
             </button></a>
 
-            <a href="{% url 'deconnexion' %}">
-                <button class="log__button">Se déconnecter
-                <i class="fa fa-sign-out"></i></button>
-            </a>
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
 
         </div>
 
@@ -255,7 +250,6 @@
             <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
                 <i class="fa fa-user-plus"></i>
             </button></a>
-
             <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
                 <i class="fa fa-sign-in"></i>
             </button></a>
@@ -263,7 +257,6 @@
 
         {% endif %}
         
-
             <!-- Barre de recherche Mobile -->
     <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
         <form id="search-form-mobile" method="post" autocomplete="off">
@@ -272,78 +265,212 @@
         </form>
         <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
     </div>
-    
+
 <!--==================== MAIN ====================-->
+
 <main class="main">
 
-    <!--===================== CHECKOUT ================-->
+    <!--==================== CHECKOUT ====================-->           
+
     <section class="checkout__section">
-        <!--===================== Section Panier ================-->
-        <section class="panier_section">
-            <div class="div1">
-                <h2>PANIER</h2>
-                <!-- <a href = "{% url 'articles' %}">
-                    <button class="panier__button">
-                        Continuer mes achats
-                    </button>
-                </a> -->
-                
+
+        <!--=====================Section Panier-================-->
+
+        <section class="section_panier_checkout">
+
+            <h2>Panier</h2>
+
+            <div class="div_header">
+
+                <p>Article</p>
+
+                <p>Prix</p>
+
+                <p>Quantité</p>
+
             </div>
+
             <hr>
-            {% for item in cart_items %}
-            <div class="div2" id="cartItem{{ item.id }}">
-                
-                <div class="produit-info">
-                    <img src="{{ item.article.image.url }}" alt="{{ item.article.libelle }}" style="max-width: 100px; max-height: 100px;">
-                <h2>Voyance N°{{ item.id }}</h2>
-                </div>
-                <h2>{{ item.created_at|date:"F j, Y" }}</h2>
-                <h2 id="itemPrice_{{ item.id }}">{{ item.tarif }} €</h2>
 
-                <div class="white-container" style="justify-content: center; flex-direction: column;">
-                    
-                    <span class="counter-value" id="counter{{ item.id }}">1</span>
-                    
-                </div>
-                <button><img src="{% static 'img/ic_delete.svg'%}" alt="Delete button"    onclick="deleteVoyance({{item.id}})"></button>
-            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <div class="cart_item">
+
+                <h2>Demande de voyance</h2>
+
+                <p>30.00 €</p>
+
+                <p>1</p>
 
             </div>
-            {% endfor %}
+
+
+            <hr>
+
+            </div>
+
+            <div class="div_total_price">
+
+                <p>Total</p>
+
+                <p>30.00  €</p>
+
+            </div>
+
+            </div>
+        
         </section>
 
-        <!--===================== Section total ================-->
-        <section class="section_total">
-            <div class="total_header">
-                <i class='fas fa-shipping-fast'></i>
-                <p>Vous receverez une réponse une semaine au plus tard après paiement.</p>
-            </div>
-            <hr>
+    <!--=====================Section Information et Paiement-================-->
 
-            {% for item in cart_items %}
-            <div class="cart_item">
-                <div class="produit-info">
-                    <p>Voyance N°{{ item.id }}</p>
-                    <p>{{ item.created_at|date:"F j, Y" }}</p>
+        <section class="section_paiement">
+
+            <div class="accordion">
+
+                <div class="accordion-item">
+
+                    <div class="accordion-header">
+
+                        <h2>Informations</h2> 
+
+                    </div>
+
+                    <div class="accordion-content">
+
+                        <em><p class="informative_text">Les champs marquer avec * sont obligatoire</p></em>
+
+                        <div class="form-header-container">
+
+                            <span class="form-header-text1">Contact</span>
+
+                        </div>
+
+                        <form id="finaliser-commande-form" method="POST">
+
+                            {% csrf_token %}
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input name="email" type="email" class="form-input" placeholder="Entrez votre adresse email" required value="{{ request.user.email }}" >
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>            
+
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input type="tel" class="form-input" name="telephone" placeholder="Numéro de téléphone" required value="{{ request.user.phone_number }}" >
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>
+
+                            <!-- Other input fields -->
+
+
+                            <div class="form-header-container">
+
+                                <span class="form-header-text1">Adresse de Livraison (France)</span>                        
+
+                            </div>
+
+
+
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="nom" placeholder="Nom" required>
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="prenom" placeholder="Prénom" required>
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>
+  
+
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="numero_rue" placeholder="Numéro de rue" required>
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="adresse" placeholder="Adresse">
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="ville" placeholder="Ville" required>
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                                <div class="input-container">
+
+                                    <input type="text" class="form-input" name="code_postal" placeholder="Code postal" required>
+
+                                    <span class="required">*</span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="form-row">
+
+                                <button type="submit" onclick="buy(event)" class="panier__button" style="float: right;">
+
+                                    Finaliser la commande
+
+                                </button>                         
+
+                            </div>
+
+                            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                            
+
+                        </form> 
+                        
+                        <div id="errors" style="color: red;"></div>
+
+
+                    </div>
+
                 </div>
-                <p id="seconditemPrice_{{ item.id }}">{{item.tarif}} €</p>
-            </div>
-            
-            {% endfor %}
-            <hr>
 
-            <div class="total_price">
-                <p>Total </p>
-                <p id="totalPriceElement">{{ total_price }} €</p>
             </div>
-            <hr>
-
-            <a href="{% url 'checkout' %}">
-                <button class="panier__button">
-                    Procéder au paiement
-                </button>
-            </a>
-            
 
         </section>
 
@@ -351,41 +478,117 @@
 
 </main>
 
+<script>
+    let el = document.querySelector('#errors')
+
+    function validateForm(data) {
+        let errors = []
+
+        if (data.prenom === '') {
+            errors.push('Votre prénom est vide')
+        }
+        if (data.nom === '') {
+            errors.push('Votre nom est vide')
+        }
+        if (data.email === '') {
+            errors.push('Votre email est vide')
+        }
+        if (data.telephone === '') {
+            errors.push('Votre numéro de téléphone est vide')
+        }
+        if (data.adresse === '') {
+            errors.push('Votre adresse est vide')
+        }
+        if (data.numero_rue === '') {
+            errors.push('Votre numéro de rue est vide')
+        }
+        if (data.code_postal === '') {
+            errors.push('Votre code postal est vide')
+        }
+        if (data.ville === '') {
+            errors.push('Votre ville est vide')
+        }
+
+        if (errors.length > 0) {
+            let html = '<ul>';
+            errors.forEach((error) => {
+                html += '<li>' + error + '</li>';
+            })
+
+            el.innerHTML = html + '</ul>';
+        } else {
+            el.innerHTML = '';
+        }
+
+        return errors
+    }
+
+    function buy(event) {
+        event.preventDefault()
+
+        let data = {
+            'prenom': document.querySelector('input[name=prenom]').value,
+            'nom': document.querySelector('input[name=nom]').value,
+            'email': document.querySelector('input[name=email]').value,
+            'telephone': document.querySelector('input[name=telephone]').value,
+            'adresse': document.querySelector('input[name=adresse]').value,
+            'numero_rue': document.querySelector('input[name=numero_rue]').value,
+            'code_postal': document.querySelector('input[name=code_postal]').value,
+            'ville': document.querySelector('input[name=ville]').value,
+        }
+
+        let errors = validateForm(data)
+
+        if (errors.length) {
+            console.log('Errors', errors)
+        } else {
+            var stripe = Stripe('{{ pub_key }}')
+
+            fetch ('/voyance_order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            
+            .then(function(response) {
+                return response.json()
+            })
+
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.session.id })
+            })
+
+            .then(function(result) {
+                if (result.error) {
+                    alert(result.error.messsage)
+                }
+            })
+            
+            .catch(function(error) {
+                console.log('Errors', error)
+            });
+        }
+        return false
+    }
+
+    document.querySelector('#finaliser-commande-form').addEventListener('submit', buy);
+</script>
+
 
 <script>
-    function deleteVoyance(itemId) {
-    const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
-    console.log('Delete voyance on the server');
+    
 
-    fetch(`/delete_Voyance_ajax/${itemId}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken,
-        },
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Supprimer', data);
-
-        // Check for success and remove the HTML element
-        if (data.success) {
-            const itemElement = document.getElementById(`cartItem${itemId}`);
-            if (itemElement) {
-                itemElement.remove();
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error supp item:', error);
+    document.addEventListener("DOMContentLoaded", function() {
+        
     });
-}
 
 </script>
+
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+
 {% endblock %}

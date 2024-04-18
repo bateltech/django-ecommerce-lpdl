@@ -2053,14 +2053,13 @@ aside p {
 }
 
 .accordion-header {
-  cursor: pointer;
   padding: 10px;
   display: flex;
   justify-content: space-between;
 }
 
 .accordion-content {
-  display: none;
+  display: block;
   padding: 10px;
 }
 

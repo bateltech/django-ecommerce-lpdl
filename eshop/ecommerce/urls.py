@@ -18,10 +18,11 @@ urlpatterns = [
     path('mentions-legales/', mentions_view, name='mentions'),
     path('conditions-generales-de-vente/', conditions_view, name='conditions'),
     re_path(r'^pierres-en-lithotherapie/$', pierres_view, name='pierres'),
-    #path('erreur-404/', erreur_view, name='erreur404'),
+    path('erreur-404/', erreur_view, name='erreur404'),
     path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password_process'),
     path('mon-panier/', panier_view, name='panier'),
-    path('confirmation-de-commande/', checkout_view, name='checkout'),
+    path('confirmation-de-commande-par-carte-bancaire/', checkout_view, name='checkout'),
+    path('confirmation-de-commande-avec-paypal/', checkout_paypal_view, name='checkout_paypal'),
     path('mon-profil/', profil_view, name='profil'),
     path('securite/', securite_view, name='securite'),
     path('mes-favoris/', favoris_view, name='favoris'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
     path('details/<int:article_id>/', details_view, name="details"),
     path('paiement-de-voyance/', paiement_voyance_view, name='paiement_voyance'),
+    path('achat-effectué/', stripe_success, name='stripe_success'),
 
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
@@ -38,7 +40,10 @@ urlpatterns = [
     path('add_to_cart/', add_to_cart, name='add_to_cart'),
     path('search/', search_results, name='search'),
     path('formulaire-de-voyance/', formulaire_voyance, name='formulaire_voyance'),
-    path('finaliser-commande/', finaliser_commande, name='finaliser_commande'),
+    # path('finaliser_commande/', finaliser_commande, name='finaliser_commande'),
+
+    path('start_order/',start_order,name='start_order'),
+    path('voyance_order/', voyance_order, name='voyance_order'),
 
     path('submit-feedback/', submit_feedback, name='submit_feedback'),
 

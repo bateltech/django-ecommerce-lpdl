@@ -1,7 +1,7 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, Livraison
+from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
@@ -302,6 +302,7 @@ def checkout_view(request):
         cart_items = CartItem.objects.filter(cart__user=user)
         total_price = cart.total_price + 5
 
+    pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
     context= {
         'utilisateur_connecte': utilisateur_connecte,
         'prenom_utilisateur' : prenom_utilisateur,
@@ -309,9 +310,46 @@ def checkout_view(request):
         'email_utilisateur' : email_utilisateur,
         'cart_items': cart_items,
         'has_cart': has_cart,
-        'total_price' : total_price
+        'total_price' : total_price,
+        'pub_key' : pub_key
+
     }
+
     return render(request, 'checkout.html', context)
+
+@login_required() 
+def checkout_paypal_view(request):
+    user = request.user
+
+    utilisateur_connecte =  request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    nom_utilisateur = request.user.last_name if utilisateur_connecte else None
+    email_utilisateur = request.user.email if utilisateur_connecte else None
+
+    # Check if the user has a cart
+    has_cart = CartItem.objects.filter(cart__user=user).exists()
+
+    total_price =0
+    if has_cart:
+        cart = Cart.objects.get(user=user)
+        cart_items = CartItem.objects.filter(cart__user=user)
+        total_price = cart.total_price + 5
+
+    pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
+    context= {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur' : prenom_utilisateur,
+        'nom_utilisateur' : nom_utilisateur,
+        'email_utilisateur' : email_utilisateur,
+        'cart_items': cart_items,
+        'has_cart': has_cart,
+        'total_price' : total_price,
+        'pub_key' : pub_key
+
+    }
+
+    return render(request, 'checkout_paypal.html', context)
+
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def profil_view(request):
@@ -359,7 +397,6 @@ def favoris_view(request):
     
     return render(request, 'favoris.html', context)
 
-
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def commentaires_view(request):
     utilisateur_connecte = request.user.is_authenticated
@@ -372,7 +409,6 @@ def commentaires_view(request):
         'user': utilisateur }
     
     return render(request, 'commentaires.html', context)
-
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
 def historique_view(request):
@@ -417,7 +453,6 @@ def signup_view(response):
 
     return render(response, "inscription.html", {"form":form})
 
-
 def logout_view(request):
     logout(request)
     return redirect(reverse_lazy('connexion'))
@@ -429,7 +464,6 @@ class CustomLoginView(LoginView):
     template_name = 'connexion.html'  # Specify your login template
     form_class = LoginForm
     success_url = reverse_lazy('accueil')  # Replace 'home' with the actual name or path of your home page
-
 
 @login_required
 def update_personal_info(request):
@@ -460,7 +494,6 @@ def update_personal_info(request):
 
     return redirect('profil')
 
-
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
@@ -487,7 +520,6 @@ def update_password(request):
     
     return redirect('securite')
 
-
 @login_required
 def add_to_wishlist(request):
     if request.method == 'POST':
@@ -513,7 +545,6 @@ def add_to_wishlist(request):
         # Return JSON response
         return JsonResponse({'added': added})
     
-
 @login_required
 def add_to_cart(request):
     if request.method == 'POST':
@@ -549,9 +580,9 @@ def add_to_cart(request):
             cart.total_price = cart.total_price + price.prix
             cart.save()
 
-            # Décrémenter le stock de l'article
-            article.stock -= 1
-            article.save()
+            # Décrémenter le stock de l'article !! faut le faire dans le checkout !!
+            # article.stock -= 1
+            # article.save()
 
             added_p = True
         else:
@@ -559,8 +590,6 @@ def add_to_cart(request):
 
         # Return JSON response
         return JsonResponse({'added_p': added_p})
-   
-
 
 from django.core.serializers.json import DjangoJSONEncoder
 def search_results(request):
@@ -585,8 +614,6 @@ def search_results(request):
 
     return JsonResponse({})
 
-
-
 def formulaire_voyance(request):
     print(request.method)
     if request.method == 'POST':
@@ -608,7 +635,6 @@ def formulaire_voyance(request):
         print("ARE YOU FUCKING KIDDING ME ???")
 
     return render(request, 'accueil', {'form': form})
-
 
 #@login_required
 def abonnement(request):
@@ -638,7 +664,6 @@ def abonnement(request):
     
     return JsonResponse({'message': 'Bad request KHRA'}, status=400)
 
-
 def newsletter(request):
     if request.method == 'POST':
         form = NewsletterForm(request.POST)
@@ -650,7 +675,6 @@ def newsletter(request):
         form = NewsletterForm()
 
     return render(request, 'newsletter.html', {'form': form})
-
 
 # def sendEmail(request):
 #     if(request.method=='POST'):
@@ -671,7 +695,6 @@ def newsletter(request):
 #             api_response = api_instance.create_email_campaign(email_campaigns)
 #             pprint(api_response)
 #             return redirect('newsletter')
-
 
 def sendEmail(sujet, contenu):
 
@@ -701,9 +724,6 @@ def sendEmail(sujet, contenu):
         print(f'Error sending newsletter: {e}')
         return JsonResponse({'success': False, 'message': 'An error occurred during newsletter sending'})
 
-
-
-
 @require_POST
 @csrf_protect
 def update_quantity_ajax(request, item_id, new_quantity):
@@ -732,7 +752,6 @@ def update_quantity_ajax(request, item_id, new_quantity):
         print(f'Error updating quantity: {e}')
         return JsonResponse({'success': False, 'message': 'An error occurred during quantity update'})
 
-
 from django.db.models import Sum
 
 def get_item_price(request, item_id):
@@ -754,7 +773,6 @@ def get_item_price(request, item_id):
         # Handle any other exceptions
         return JsonResponse({'error': str(e)}, status=500)
 
-
 @require_POST
 @csrf_protect
 def delete_Cart_item_ajax (request, item_id):
@@ -763,11 +781,10 @@ def delete_Cart_item_ajax (request, item_id):
         cart_item = CartItem.objects.get(pk=item_id)
 
         # Get the associated Article instance
-        article = cart_item.article
-
-        # Increment the article's stock by the CartItem's quantity
-        article.stock += cart_item.quantity
-        article.save()
+        # article = cart_item.article
+        # Increment the article's stock by the CartItem's quantity || this should be done in checkout
+        # article.stock += cart_item.quantity
+        # article.save()
 
         item_price = cart_item.item_price
         # Delete the Item
@@ -779,7 +796,6 @@ def delete_Cart_item_ajax (request, item_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
     
-
 @require_POST
 @csrf_protect
 def delete_Voyance_ajax (request, item_id):
@@ -795,8 +811,6 @@ def delete_Voyance_ajax (request, item_id):
         return JsonResponse({'success': False, 'message': 'Cart item not found'})
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
-
-
 
 def submit_feedback(request):
     if request.method == 'POST':
@@ -819,35 +833,132 @@ def submit_feedback(request):
         # Handle non-POST requests as needed
         return render(request, 'accueil.html')
 
+import json
+import stripe
+from django.http import JsonResponse
+from .models import Cart, CartItem, Commande, DetailCommande
 
-def finaliser_commande(request):
-    if request.method == 'POST':
-        # Récupérer les données du formulaire
-        telephone = request.POST.get('telephone')
-        nom = request.POST.get('nom')
-        prenom = request.POST.get('prenom')
-        numero_rue = request.POST.get('numero_rue')
-        adresse = request.POST.get('adresse')
-        ville = request.POST.get('ville')
-        code_postal = request.POST.get('code_postal')
+@csrf_protect
+@login_required
+def start_order(request):
+    cart = Cart.objects.get(user=request.user)
+    data = json.loads(request.body)
 
-        # Créer une instance de Livraison avec les données du formulaire
-        livraison = Livraison(
-            user=request.user,
-            telephone=telephone,
-            nom=nom,
-            prenom=prenom,
-            numero_rue=numero_rue,
-            adresse=adresse,
-            ville=ville,
-            code_postal=code_postal
-        )
+    items = []
+    total_price = 0
 
-        # Enregistrer l'instance dans la base de données
-        livraison.save()
+    for item in cart.cartitem_set.all():
+        product = item.article
+        total_price += item.item_price * item.quantity
 
-        # Rediriger vers une autre page ou afficher un message de confirmation
-        return redirect('panier')
+        items.append({
+            'price_data': {
+                'currency': 'eur',
+                'product_data': {
+                    'name': product.libelle,
+                },
+                'unit_amount': int(item.item_price * 100),
+            },
+            'quantity': item.quantity
+        })
 
-    # Si la méthode de la requête n'est pas POST, rediriger vers une autre page
-    return redirect('accueil')
+    stripe.api_key = settings.STRIPE_API_SECRET_KEY
+    success_url = request.build_absolute_uri(reverse('stripe_success'))
+    cancel_url = request.build_absolute_uri(reverse('panier'))
+    
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card','paypal'],
+        line_items=items,
+        mode='payment',
+        success_url=success_url,
+        cancel_url=cancel_url
+    )
+
+    payment_intent = session.payment_intent
+    print(session.payment_intent)
+
+    commande = Commande.objects.create(
+        user=request.user,
+        prenom=data['prenom'],
+        nom=data['nom'],
+        email=data['email'],
+        telephone=data['telephone'],
+        adresse=data['adresse'],
+        numero_rue=data['numero_rue'],
+        code_postal=data['code_postal'],
+        ville=data['ville'],
+        etat='payee',
+        total_price=total_price,
+        payment_intent=payment_intent
+    )
+
+    for item in cart.cartitem_set.all():
+        product = item.article
+        quantity = item.quantity
+        price = item.item_price * quantity
+        product.stock -= quantity
+        product.save()
+
+        detail_commande = DetailCommande.objects.create(commande=commande, article=product, item_price=price, quantity=quantity)
+        detail_commande.save()
+
+    # Recalculate total price and save Commande instance
+    commande.total_price = sum(item.quantity * item.item_price for item in commande.detailcommande_set.all())
+    commande.save()
+
+    # Delete cart items only if the payment is successful
+    # if payment_intent.status == 'succeeded':
+    #     for item in cart.cartitem_set.all():
+    #         product = item.article
+    #         quantity = item.quantity
+    #         # Update the product quantity
+    #         product.stock -= quantity
+    #         product.save()
+        
+    #     # Empty the cart
+    #     cart.cartitem_set.all().delete()
+
+    return JsonResponse({'session': session, 'commande': payment_intent})
+
+@csrf_protect
+@login_required
+def voyance_order(request):
+    data = json.loads(request.body)
+
+    total_price = 30
+
+    stripe.api_key = settings.STRIPE_API_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card','paypal'],
+        line_items=[{"price": 30, "quantity": 1}],
+        mode='payment',
+        success_url=reverse('stripe_success'),
+        cancel_url=reverse('accueil')
+    )
+
+    payment_intent = session.payment_intent
+
+    voyance = Voyance.objects.create(
+        user=request.user,
+        prenom=data['prenom'],
+        nom=data['nom'],
+        email=data['email'],
+        telephone=data['telephone'],
+        adresse=data['adresse'],
+        numero_rue=data['numero_rue'],
+        code_postal=data['code_postal'],
+        ville=data['ville'],
+        etat='payee',
+        total_price=total_price,
+        payment_intent=payment_intent
+    )
+
+    # Recalculate total price and save Voyance instance
+    voyance.save()
+
+    return JsonResponse({'session': session, 'voyance': payment_intent})
+
+
+@login_required() 
+def stripe_success(request):
+    return render(request, 'stripe_success.html')

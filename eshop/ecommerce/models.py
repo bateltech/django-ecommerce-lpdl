@@ -166,19 +166,27 @@ class CartItem(models.Model):
         
         super().save(*args, **kwargs)
 
-
 # Table Commande
 class Commande(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     articles = models.ManyToManyField(Article, through='DetailCommande')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    created_at = models.DateTimeField(auto_now_add=True)  
-    etat = models.IntegerField(null=False,default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
+    telephone = models.CharField(max_length=20, null=False)
+    nom = models.CharField(max_length=100, null=False)
+    prenom = models.CharField(max_length=100, null=False)
+    numero_rue = models.CharField(max_length=100, null=False)
+    adresse = models.CharField(max_length=255, null=False)
+    ville = models.CharField(max_length=100, null=False)
+    code_postal = models.CharField(max_length=20, null=False)
+    email = models.EmailField(max_length=255, null=False)
+    payment_intent = models.CharField(max_length=250,blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        # Calculate total price based on DetailCommandes
-        self.total_price = sum(item.quantity * item.item_price for item in self.commandeitem_set.all())
-        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Commande pour {self.user.username}"
+
 
 # Table Détail Commande
 class DetailCommande(models.Model):
@@ -232,17 +240,22 @@ class Newsletter(models.Model):
         return f"{self.subject}"
     
 
-# Table Livraison
-class Livraison(models.Model):
+# Table Commande
+class DemandeVoyance(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    telephone = models.CharField(max_length=20)
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    numero_rue = models.CharField(max_length=100)
-    adresse = models.CharField(max_length=255)
-    ville = models.CharField(max_length=100)
-    code_postal = models.CharField(max_length=20)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
+    telephone = models.CharField(max_length=20, null=False)
+    nom = models.CharField(max_length=100, null=False)
+    prenom = models.CharField(max_length=100, null=False)
+    numero_rue = models.CharField(max_length=100, null=False)
+    adresse = models.CharField(max_length=255, null=False)
+    ville = models.CharField(max_length=100, null=False)
+    code_postal = models.CharField(max_length=20, null=False)
+    email = models.EmailField(max_length=255, null=False)
+    payment_intent = models.CharField(max_length=250,blank=True, null=True)
+
 
     def __str__(self):
-        return f"Livraison pour {self.user.username}"
-
+        return f"Voyance pour {self.user.username}"

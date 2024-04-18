@@ -221,19 +221,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("dihia javascript is running");
-    const accordionHeaders = document.querySelectorAll(".accordion-header");
+// document.addEventListener("DOMContentLoaded", function() {
+//     console.log("dihia javascript is running");
+//     const accordionHeaders = document.querySelectorAll(".accordion-header");
     
-    accordionHeaders.forEach(header => {
-        header.addEventListener("click", function() {
-            const accordionItem = this.parentElement;
-            const content = accordionItem.querySelector(".accordion-content");
-            content.style.display = (content.style.display === "block") ? "none" : "block";
-            accordionItem.classList.toggle("open");
-        });
-    });
-});
+//     accordionHeaders.forEach(header => {
+//         header.addEventListener("click", function() {
+//             const accordionItem = this.parentElement;
+//             const content = accordionItem.querySelector(".accordion-content");
+//             content.style.display = (content.style.display === "block") ? "none" : "block";
+//             accordionItem.classList.toggle("open");
+//         });
+//     });
+// });
 
 /*-----------------------------------*\
 * ARTICLES.HTML
@@ -445,15 +445,15 @@ window.addEventListener('scroll', function () {
 });
 
 
-/* Pop up Voyance */
+// /* Pop up Voyance */
 
-document.getElementById('voyance-button').addEventListener("click", function() {
-	document.querySelector('.bg-modal').style.display = "flex";
-});
+// document.getElementById('voyance-button').addEventListener("click", function() {
+// 	document.querySelector('.bg-modal').style.display = "flex";
+// });
 
-document.getElementById('voyance-close').addEventListener("click", function() {
-	document.querySelector('.bg-modal').style.display = "none";
-});
+// document.getElementById('voyance-close').addEventListener("click", function() {
+// 	document.querySelector('.bg-modal').style.display = "none";
+// });
 
 // document.querySelector('.close').addEventListener("click", function() {
 // 	document.querySelector('.bg-modal').style.display = "none";
