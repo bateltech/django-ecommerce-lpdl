@@ -5,7 +5,6 @@
 
 {% block content %}
 
-
 <!--==================== HEADER ====================-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -322,7 +321,7 @@
         <span class="side-openbtn" onclick="openNav()">&#9776;</span>
 
         <section class="profil__section" id="profil-1">
-            <div class="profile-info">
+            <div class="profile-info" style="width: 60%;">
 
 
             
@@ -336,8 +335,37 @@
                 {% endfor %}
 
 
-                <h2 style="margin: 2rem 0 2rem 0;">hISTORIQUE DES ACHATS</h2>
+                <h2 style="margin: 2rem 0 2rem 0;">HISTORIQUE DES ACHATS</h2>
 
+                <div class="historique__container">
+
+                    {% for commande in commandes %}
+                        <h2 class="historique__title"> Commande N°{{ commande.id }} - {{ commande.created_at|date:"d M Y" }}</h2>
+                        <div class="historique__commande">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Article</th>
+                                    <th>Taille</th>
+                                    <th>Quantité</th>
+                                    <th>Prix unitaire</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for detail in commande.detailcommande_set.all %}
+                                    <tr>
+                                    <td>{{ detail.article.libelle }}</td>
+                                    {% if detail.article.prix_article.first.type_prix == "size_based" %} <td>{{ detail.size }} cm </td> {% else %} <td> - </td> {% endif %}
+                                    <td>{{ detail.quantity }}</td>
+                                    <td>{{ detail.item_price }} €</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+
+                </div>
 
             </div>
 

@@ -16,16 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Replace YOUR_API_KEY with your api key
-
-SMTP_API_KEY = 'YOUR_API_KEY'
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 #DEBUG = False
@@ -172,7 +162,6 @@ MIDDLEWARE = [
 # CSP_REPORT_URI = '/csp-violation-report/'
 
 
-
 ROOT_URLCONF = 'eshop.urls'
 
 TEMPLATES = [
@@ -226,7 +215,6 @@ DATABASES = {
 }
 
 
-
 #AUTH_USER_MODEL = 'auth.User'  # Assurez-vous que le chemin est correct
 AUTH_USER_MODEL = 'ecommerce.ClientUser'  # Assurez-vous que le chemin est correct
 
@@ -255,8 +243,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -283,7 +269,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 
 # Default primary key field type
@@ -610,6 +595,36 @@ CKEDITOR_5_CONFIGS = {
 
     },
 
-
-
 }
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'lpdl.help@gmail.com'
+EMAIL_HOST_PASSWORD = 'fyre tmmb fxln kezl'
+EMAIL_USE_TLS = True
+EMAIL_RECIPIENT = 'medjaoui.imene@gmail.com'
+
+# Logo Base64 data
+LOGO_BASE64 = ''
+
+DOMAIN_NAME = 'http://127.0.0.1:8000/'
+
+# Replace YOUR_API_KEY with your api key
+SMTP_API_KEY = 'YOUR_API_KEY'
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp'
+
+# Stripe settings
+STRIPE_API_KEY_PUBLISHABLE = 'YOUR_API_KEY'
+STRIPE_API_SECRET_KEY = 'YOUR_SECRET_KEY'
+
+# STRIPE_WEBHOOK_SECRET = 'your_webhook_secret'
+# STRIPE_WEBHOOK_ENDPOINT = 'https://your-domain.com/webhooks/stripe/'
+STRIPE_ENDPOINT_SECRET = 'YOUR_WEBHOOK_KEY'

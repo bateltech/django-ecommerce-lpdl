@@ -1,7 +1,7 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem
+from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, DemandeVoyance
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
@@ -187,36 +187,6 @@ def conditions_view(request):
     return render(request, 'conditions.html', context)
 
 
-def paiement_voyance_view(request):
-    utilisateur_connecte = request.user.is_authenticated
-    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
-    return render(request, 'paiement_voyance.html', context)
-
-@login_required()
-def paiement_voyance_view(request):
-    # Retrieve the current user
-    user_v = request.user
-    
-    cart_items = Voyance.objects.filter(email=user_v.email, etat="en attente")
-    
-
-    total_price = sum(item.tarif for item in cart_items)
-
-    utilisateur_connecte = request.user.is_authenticated
-    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-
-    context = {
-            'utilisateur_connecte': utilisateur_connecte,
-            'prenom_utilisateur': prenom_utilisateur,
-            'cart_items': cart_items,
-            'total_price' : total_price
-        }
-    
-    return render(request, 'paiement_voyance.html', context)
-
-
-
 from django.shortcuts import get_object_or_404
 
 def pierres_view(request):
@@ -265,7 +235,8 @@ def panier_view(request):
     # Retrieve feedback data
     feedback_items = Feedback.objects.filter(etat=1)
 
-    total_price = sum(item.item_price for item in cart_items)
+    total_price = sum(item.item_price * item.quantity  for item in cart_items)
+    print("total price in panier : ", total_price)
 
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -296,10 +267,11 @@ def checkout_view(request):
     # Check if the user has a cart
     has_cart = CartItem.objects.filter(cart__user=user).exists()
 
-    total_price =0
+    total_price = 0
     if has_cart:
         cart = Cart.objects.get(user=user)
         cart_items = CartItem.objects.filter(cart__user=user)
+        print("cart price : ", cart.total_price)
         total_price = cart.total_price + 5
 
     pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
@@ -316,39 +288,6 @@ def checkout_view(request):
     }
 
     return render(request, 'checkout.html', context)
-
-@login_required() 
-def checkout_paypal_view(request):
-    user = request.user
-
-    utilisateur_connecte =  request.user.is_authenticated
-    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    nom_utilisateur = request.user.last_name if utilisateur_connecte else None
-    email_utilisateur = request.user.email if utilisateur_connecte else None
-
-    # Check if the user has a cart
-    has_cart = CartItem.objects.filter(cart__user=user).exists()
-
-    total_price =0
-    if has_cart:
-        cart = Cart.objects.get(user=user)
-        cart_items = CartItem.objects.filter(cart__user=user)
-        total_price = cart.total_price + 5
-
-    pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
-    context= {
-        'utilisateur_connecte': utilisateur_connecte,
-        'prenom_utilisateur' : prenom_utilisateur,
-        'nom_utilisateur' : nom_utilisateur,
-        'email_utilisateur' : email_utilisateur,
-        'cart_items': cart_items,
-        'has_cart': has_cart,
-        'total_price' : total_price,
-        'pub_key' : pub_key
-
-    }
-
-    return render(request, 'checkout_paypal.html', context)
 
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
@@ -415,10 +354,13 @@ def historique_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
+
+    commandes = Commande.objects.filter(user=request.user).order_by('-created_at')
     
     context = {
         'utilisateur_connecte': utilisateur_connecte,
         'prenom_utilisateur': prenom_utilisateur,
+        'commandes': commandes,
         'user': utilisateur }
     
     return render(request, 'historique.html', context)
@@ -578,6 +520,7 @@ def add_to_cart(request):
             item.save()
 
             cart.total_price = cart.total_price + price.prix
+            print("add to cart | new cart price : ", cart.total_price)
             cart.save()
 
             # Décrémenter le stock de l'article !! faut le faire dans le checkout !!
@@ -676,26 +619,6 @@ def newsletter(request):
 
     return render(request, 'newsletter.html', {'form': form})
 
-# def sendEmail(request):
-#     if(request.method=='POST'):
-#        form = NewsletterForm(request.POST)
-#        if form.is_valid():
-#             subject = form.cleaned_data.get('subject')
-#             content= form.cleaned_data.get('message')
-#             #content= 'ROH TKHRA YA CKEDITOR TA3 LA MERDE REERJEORJEOFJEFJOFJEOFJZF FJERFOIJEROIJEROJERO FRJEIRFJEIROJ EZROI'
-#             configuration = sib_api_v3_sdk.Configuration()
-#             configuration.api_key['api-key'] =  settings.SMTP_API_KEY
-#             api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib_api_v3_sdk.ApiClient(configuration))
-#             sender = {"name": 'La pierre de lune', "email": 'medjaoui.imene@gmail.com'}
-#             name = subject
-#             subject = subject
-#             recipients = {"listIds": [2]}
-#             scheduled_at = (datetime.now(pytz.utc) + timedelta(minutes=1)).isoformat()
-#             email_campaigns = sib_api_v3_sdk.CreateEmailCampaign(scheduled_at =scheduled_at ,sender=sender, name=name,  subject=subject,  recipients=recipients,html_content=content) # CreateEmailCampaign | Values to create a campaign
-#             api_response = api_instance.create_email_campaign(email_campaigns)
-#             pprint(api_response)
-#             return redirect('newsletter')
-
 def sendEmail(sujet, contenu):
 
     try:
@@ -740,6 +663,7 @@ def update_quantity_ajax(request, item_id, new_quantity):
 
         # Recalculate the total price of the cart
         cart.calculate_total_price()
+        print("update_quantity_ajax | cart total price : ", cart.total_price)
         cart.save()
 
         return JsonResponse({'success': True, 'message': 'Quantity updated successfully' })
@@ -759,13 +683,16 @@ def get_item_price(request, item_id):
         # Fetch the CartItem object based on item_id
         cart_item = CartItem.objects.get(pk=item_id)
         item_price = cart_item.item_price
+        total_item_price = cart_item.total_item_price
         cart = cart_item.cart
 
-        # Calculate the total price of the cart
-        total_price = cart.cartitem_set.aggregate(total=Sum('item_price'))['total']
+        # # Calculate the total price of the cart
+        # total_price = cart.cartitem_set.aggregate(total=Sum('total_item_price'))['total']
+        total_price = cart.total_price
+        print("get item price | cart total price : ",total_price)
 
         # Return the item price and total price as JSON response
-        return JsonResponse({'item_price': item_price, 'total_price': total_price})
+        return JsonResponse({'item_price': item_price, 'total_item_price': total_item_price, 'total_price': total_price})
     except CartItem.DoesNotExist:
         # Handle the case where CartItem with given item_id does not exist
         return JsonResponse({'error': 'CartItem not found'}, status=404)
@@ -780,17 +707,14 @@ def delete_Cart_item_ajax (request, item_id):
         # Retrieve the CartItem instance
         cart_item = CartItem.objects.get(pk=item_id)
 
-        # Get the associated Article instance
-        # article = cart_item.article
-        # Increment the article's stock by the CartItem's quantity || this should be done in checkout
-        # article.stock += cart_item.quantity
-        # article.save()
-
-        item_price = cart_item.item_price
+        total_item_price = cart_item.total_item_price
+        cart = cart_item.cart
+        cart.total_price = cart.total_price - cart_item.total_item_price
+        cart.save()
         # Delete the Item
         cart_item.delete()
 
-        return JsonResponse({'success': True, 'message': 'Item successfully deleted', 'item_price': item_price})
+        return JsonResponse({'success': True, 'message': 'Item successfully deleted', 'total_item_price': total_item_price})
     except CartItem.DoesNotExist:
         return JsonResponse({'success': False, 'message': 'Cart item not found'})
     except Exception as e:
@@ -845,11 +769,16 @@ def start_order(request):
     data = json.loads(request.body)
 
     items = []
-    total_price = 0
+    total_price = cart.total_price
+    print("start order | total prix : ", cart.total_price)
 
-    for item in cart.cartitem_set.all():
+    cartItems = CartItem.objects.filter(cart=cart)
+
+    #for item in cart.cartitem_set.all():
+    for item in cartItems :
         product = item.article
-        total_price += item.item_price * item.quantity
+        print("prix in for loop : ", item.item_price)
+        # total_price += item.item_price * item.quantity
 
         items.append({
             'price_data': {
@@ -863,7 +792,8 @@ def start_order(request):
         })
 
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
-    success_url = request.build_absolute_uri(reverse('stripe_success'))
+    success_url = request.build_absolute_uri(reverse('stripe_success')) + '?session_id={CHECKOUT_SESSION_ID}'
+    # success_url = request.build_absolute_uri(reverse('stripe_success'))
     cancel_url = request.build_absolute_uri(reverse('panier'))
     
     session = stripe.checkout.Session.create(
@@ -875,7 +805,9 @@ def start_order(request):
     )
 
     payment_intent = session.payment_intent
-    print(session.payment_intent)
+    print("payment intent in checkout :", session.payment_intent)
+    print("session id in checkout :", session.id)
+
 
     commande = Commande.objects.create(
         user=request.user,
@@ -887,78 +819,196 @@ def start_order(request):
         numero_rue=data['numero_rue'],
         code_postal=data['code_postal'],
         ville=data['ville'],
-        etat='payee',
+        etat='en attente',
         total_price=total_price,
+        session_id= session.id,
         payment_intent=payment_intent
     )
 
-    for item in cart.cartitem_set.all():
+    # for item in cart.cartitem_set.all():
+    for item in cartItems :
         product = item.article
         quantity = item.quantity
-        price = item.item_price * quantity
-        product.stock -= quantity
-        product.save()
+        prix_article = item.article_price
+        print("prix par item : ", item.item_price)
+        print("taille par item :  ", prix_article.taille)
 
-        detail_commande = DetailCommande.objects.create(commande=commande, article=product, item_price=price, quantity=quantity)
+        detail_commande = DetailCommande.objects.create(commande=commande, article=product, item_price=item.item_price, quantity=quantity,
+                                                        size=prix_article.taille if prix_article.type_prix == 'size_based' else None)
         detail_commande.save()
 
     # Recalculate total price and save Commande instance
     commande.total_price = sum(item.quantity * item.item_price for item in commande.detailcommande_set.all())
+    print("recalculate in start order | total price : ", commande.total_price)
     commande.save()
+    print("Session ID in start order : ", session.id)
+    return JsonResponse({'session': session, 'commande': payment_intent,'sessionId': session.id})
 
-    # Delete cart items only if the payment is successful
-    # if payment_intent.status == 'succeeded':
-    #     for item in cart.cartitem_set.all():
-    #         product = item.article
-    #         quantity = item.quantity
-    #         # Update the product quantity
-    #         product.stock -= quantity
-    #         product.save()
-        
-    #     # Empty the cart
-    #     cart.cartitem_set.all().delete()
+import stripe
+from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 
-    return JsonResponse({'session': session, 'commande': payment_intent})
+@login_required() 
+@csrf_exempt
+def stripe_success(request):
+    session_id = request.GET.get('session_id')
+    print ("session id : ", session_id)
+    if session_id:
+        stripe.api_key = settings.STRIPE_API_SECRET_KEY
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        print("payment status : ", session.payment_status)
+        if session.payment_status == 'paid':
+            # Retrieve the corresponding Commande object
+            commande = Commande.objects.get(session_id=session.id)
+
+            commande.etat = 'payee' # Update etat to "payee"
+            commande.payment_intent = session.payment_intent
+            print('payment intent after success : ', session.payment_intent)
+            commande.save()
+
+            cart = Cart.objects.get(user=commande.user)
+
+            for item in cart.cartitem_set.all():
+                product = item.article
+                quantity = item.quantity
+                # Update the product quantity
+                product.stock -= quantity
+                product.save()
+
+            # Empty the cart
+            cart.cartitem_set.all().delete()
+            cart.delete()
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    return render(request, 'stripe_success.html', context)
+
+
+@login_required() 
+@csrf_exempt
+def voyance_success(request):
+    session_id = request.GET.get('session_id')
+    print ("session id : ", session_id)
+    if session_id:
+        stripe.api_key = settings.STRIPE_API_SECRET_KEY
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        print("voyance payment status : ", session.payment_status)
+        if session.payment_status == 'paid':
+            # Retrieve the corresponding Commande object
+            commande = DemandeVoyance.objects.get(session_id=session.id)
+
+            commande.etat = 'payee' # Update etat to "payee"
+            commande.payment_intent = session.payment_intent
+            print('payment intent after success : ', session.payment_intent)
+            commande.save()
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    return render(request, 'stripe_success.html', context)
+
+
+# # TODO : READ WEBHOOKS DOCS & WATCH TUTORIALS
+# @csrf_exempt
+# def stripe_webhook(request):
+#     payload = json.loads(request.body)
+#     event_type = payload['type']
+
+#     if event_type == 'checkout.session.completed':
+#         session = stripe.checkout.Session.retrieve(payload['data']['object']['id'])
+#         payment_intent = session.payment_intent
+
+#         # Retrieve the corresponding Commande object
+#         commande = Commande.objects.get(payment_intent=payment_intent)
+
+#         if payment_intent is not None and payment_intent.status == 'succeeded':
+#             commande.etat = 'payee' # Update etat to "payee"
+#             commande.save()
+
+#             cart = Cart.objects.get(user=commande.user)
+
+#             for item in cart.cartitem_set.all():
+#                 product = item.article
+#                 quantity = item.quantity
+#                 # Update the product quantity
+#                 product.stock -= quantity
+#                 product.save()
+
+#             # Empty the cart
+#             cart.cartitem_set.all().delete()
+
+#     return JsonResponse({'status': 'success'})
+
 
 @csrf_protect
 @login_required
 def voyance_order(request):
     data = json.loads(request.body)
 
-    total_price = 30
+    total_price = 3000  # Stripe expects the amount in cents
 
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
     session = stripe.checkout.Session.create(
-        payment_method_types=['card','paypal'],
-        line_items=[{"price": 30, "quantity": 1}],
+        payment_method_types=['card', 'paypal'],
+        line_items=[{
+            "price_data": {
+                "currency": "eur",
+                "product_data": {
+                    "name": "Voyance",
+                },
+                "unit_amount": total_price,
+            },
+            "quantity": 1,
+        }],
         mode='payment',
-        success_url=reverse('stripe_success'),
-        cancel_url=reverse('accueil')
+        success_url = request.build_absolute_uri(reverse('voyance_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url= request.build_absolute_uri(reverse('accueil'))
     )
 
-    payment_intent = session.payment_intent
+    # Confirm the payment intent
+    # stripe.PaymentIntent.confirm(session.payment_intent, payment_method=data['payment_method'])
 
-    voyance = Voyance.objects.create(
+    voyance = DemandeVoyance.objects.create(
         user=request.user,
         prenom=data['prenom'],
         nom=data['nom'],
         email=data['email'],
         telephone=data['telephone'],
-        adresse=data['adresse'],
-        numero_rue=data['numero_rue'],
-        code_postal=data['code_postal'],
-        ville=data['ville'],
         etat='payee',
         total_price=total_price,
-        payment_intent=payment_intent
+        session_id= session.id,
+        payment_intent=session.payment_intent
     )
 
     # Recalculate total price and save Voyance instance
     voyance.save()
 
-    return JsonResponse({'session': session, 'voyance': payment_intent})
+    return JsonResponse({'session': session, 'voyance': session.payment_intent})
 
 
-@login_required() 
-def stripe_success(request):
-    return render(request, 'stripe_success.html')
+@login_required()
+def paiement_voyance_view(request):
+    # Retrieve the current user
+    user_v = request.user
+    
+    cart_items = Voyance.objects.filter(email=user_v.email, etat="en attente")
+    
+
+    total_price = 30
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
+    context = { 'pub_key': pub_key,
+            'utilisateur_connecte': utilisateur_connecte,
+            'prenom_utilisateur': prenom_utilisateur,
+            'cart_items': cart_items,
+            'total_price' : total_price
+        }
+    
+    return render(request, 'paiement_voyance.html', context)
+

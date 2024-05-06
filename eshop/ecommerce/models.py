@@ -119,6 +119,7 @@ class Article(models.Model):
         return self.libelle
 
 
+# not used in code 
 # Table Taille Article
 class TailleArticle(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
@@ -145,7 +146,7 @@ class Cart(models.Model):
     tarif_livraison = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
     def calculate_total_price(self):
-        total_price = sum(item.item_price for item in self.cartitem_set.all())
+        total_price = sum(item.item_price * item.quantity for item in self.cartitem_set.all())
         self.total_price = total_price
         
     def save(self, *args, **kwargs):
@@ -158,11 +159,12 @@ class CartItem(models.Model):
     article_price = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_item_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def save(self, *args, **kwargs):
-        # Calculate item price by multiplying article price by quantity
         
-        self.item_price = self.article_price.prix * self.quantity
+        self.item_price = self.article_price.prix
+        self.total_item_price = self.article_price.prix * self.quantity
         
         super().save(*args, **kwargs)
 
@@ -181,12 +183,16 @@ class Commande(models.Model):
     ville = models.CharField(max_length=100, null=False)
     code_postal = models.CharField(max_length=20, null=False)
     email = models.EmailField(max_length=255, null=False)
+    session_id = models.CharField(max_length=250,blank=True, null=True)
     payment_intent = models.CharField(max_length=250,blank=True, null=True)
 
 
     def __str__(self):
-        return f"Commande pour {self.user.username}"
-
+        if self.etat == "en attente" :
+            return f"En Attente || Commande pour {self.user.username}"
+        
+        if self.etat == "payee":
+            return f"Payée || Commande pour {self.user.username}" 
 
 # Table Détail Commande
 class DetailCommande(models.Model):
@@ -194,12 +200,10 @@ class DetailCommande(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
+    size = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Update Commande total_price when saving DetailCommande
-        self.commande.save()
         super().save(*args, **kwargs)
-
 
 # Table Feedback
 class Feedback(models.Model):
@@ -240,7 +244,7 @@ class Newsletter(models.Model):
         return f"{self.subject}"
     
 
-# Table Commande
+# Table DemandeVoyance
 class DemandeVoyance(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -249,13 +253,10 @@ class DemandeVoyance(models.Model):
     telephone = models.CharField(max_length=20, null=False)
     nom = models.CharField(max_length=100, null=False)
     prenom = models.CharField(max_length=100, null=False)
-    numero_rue = models.CharField(max_length=100, null=False)
-    adresse = models.CharField(max_length=255, null=False)
-    ville = models.CharField(max_length=100, null=False)
-    code_postal = models.CharField(max_length=20, null=False)
     email = models.EmailField(max_length=255, null=False)
+    session_id = models.CharField(max_length=250,blank=True, null=True)
     payment_intent = models.CharField(max_length=250,blank=True, null=True)
 
 
     def __str__(self):
-        return f"Voyance pour {self.user.username}"
+        return f"Voyance pour {self.prenom} {self.nom}"

@@ -297,7 +297,7 @@
 
                 <h2>Demande de voyance</h2>
 
-                <p>30.00 €</p>
+                <p>{{total_price}}.00 €</p>
 
                 <p>1</p>
 
@@ -312,7 +312,7 @@
 
                 <p>Total</p>
 
-                <p>30.00  €</p>
+                <p>{{total_price}}.00  €</p>
 
             </div>
 
@@ -332,11 +332,11 @@
 
                         <h2>Informations</h2> 
 
-                    </div>
+                    </div> 
 
                     <div class="accordion-content">
 
-                        <em><p class="informative_text">Les champs marquer avec * sont obligatoire</p></em>
+                        <em><p class="informative_text">Les champs marqués avec * sont obligatoires</p></em>
 
                         <div class="form-header-container">
 
@@ -371,22 +371,11 @@
 
                             </div>
 
-                            <!-- Other input fields -->
-
-
-                            <div class="form-header-container">
-
-                                <span class="form-header-text1">Adresse de Livraison (France)</span>                        
-
-                            </div>
-
-
-
                             <div class="form-row">
 
                                 <div class="input-container">
 
-                                    <input type="text" class="form-input" name="nom" placeholder="Nom" required>
+                                    <input type="text" class="form-input" name="nom" placeholder="Nom" required value="{{ request.user.last_name }}">
 
                                     <span class="required">*</span>
 
@@ -394,58 +383,13 @@
 
                                 <div class="input-container">
 
-                                    <input type="text" class="form-input" name="prenom" placeholder="Prénom" required>
-
-                                    <span class="required">*</span>
-
-                                </div>
-
-                            </div>
-  
-
-                            <div class="form-row">
-
-                                <div class="input-container">
-
-                                    <input type="text" class="form-input" name="numero_rue" placeholder="Numéro de rue" required>
+                                    <input type="text" class="form-input" name="prenom" placeholder="Prénom" required value="{{ request.user.first_name }}">
 
                                     <span class="required">*</span>
 
                                 </div>
 
                             </div>
-
-                            <div class="form-row">
-
-                                <div class="input-container">
-
-                                    <input type="text" class="form-input" name="adresse" placeholder="Adresse">
-
-                                </div>
-
-                            </div>
-
-                            <div class="form-row">
-
-                                <div class="input-container">
-
-                                    <input type="text" class="form-input" name="ville" placeholder="Ville" required>
-
-                                    <span class="required">*</span>
-
-                                </div>
-
-                                <div class="input-container">
-
-                                    <input type="text" class="form-input" name="code_postal" placeholder="Code postal" required>
-
-                                    <span class="required">*</span>
-
-                                </div>
-
-                            </div>
-
-
 
                             <div class="form-row">
 
@@ -496,18 +440,6 @@
         if (data.telephone === '') {
             errors.push('Votre numéro de téléphone est vide')
         }
-        if (data.adresse === '') {
-            errors.push('Votre adresse est vide')
-        }
-        if (data.numero_rue === '') {
-            errors.push('Votre numéro de rue est vide')
-        }
-        if (data.code_postal === '') {
-            errors.push('Votre code postal est vide')
-        }
-        if (data.ville === '') {
-            errors.push('Votre ville est vide')
-        }
 
         if (errors.length > 0) {
             let html = '<ul>';
@@ -525,16 +457,13 @@
 
     function buy(event) {
         event.preventDefault()
+        console.log("motherfucker tu vas marcher oui ?")
 
         let data = {
             'prenom': document.querySelector('input[name=prenom]').value,
             'nom': document.querySelector('input[name=nom]').value,
             'email': document.querySelector('input[name=email]').value,
             'telephone': document.querySelector('input[name=telephone]').value,
-            'adresse': document.querySelector('input[name=adresse]').value,
-            'numero_rue': document.querySelector('input[name=numero_rue]').value,
-            'code_postal': document.querySelector('input[name=code_postal]').value,
-            'ville': document.querySelector('input[name=ville]').value,
         }
 
         let errors = validateForm(data)

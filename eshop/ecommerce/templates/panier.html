@@ -125,7 +125,9 @@
 
 
            <div class="shop__container">
-            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter</button></a>
+            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                <i class="fa fa-sign-out"></i>
+            </button></a>
             <a href="{% url 'profil' %}"><button class="log__button" >
                 <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
                 {{ prenom_utilisateur }}
@@ -361,7 +363,8 @@
                     <p>{{ item.article_price.taille }} cm</p>
                     {% endif %}
                 </div>
-                <p id="seconditemPrice_{{ item.id }}">{{item.item_price}} €</p>
+                <!-- <p id="seconditemPrice_{{ item.id }}">{{item.item_price}} €</p> -->
+                <p id="seconditemPrice_{{ item.id }}">{{ item.total_item_price }} €</p>
             </div>
             
             {% endfor %}

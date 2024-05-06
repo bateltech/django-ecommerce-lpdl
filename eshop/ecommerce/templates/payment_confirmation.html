@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de paiement</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            line-height: 1.5;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        td {
+            color: #666;
+        }
+        .logo {
+            width: 200px;
+            margin: 20px auto;
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Confirmation de paiement</h1>
+    <div style="background-color: #f2f2f2; padding: 20px; border-radius: 5px;">
+        <p style="font-size: 24px; font-weight: bold; color: #333;">Bonjour {{ commande.user.first_name }},</p>
+        <p style="font-size: 18px; color: #666;">Votre commande a bien été payée. Voici les détails de votre commande:</p>
+        <ul style="list-style-type: none; padding: 0; margin: 0;">
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Adresse de livraison:</strong> {{ commande.numero_rue }} {{ commande.adresse }}, {{ commande.code_postal }} {{ commande.ville }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de commande:</strong> {{ commande.id }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Date de commande:</strong> {{ commande.created_at }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Montant total:</strong> {{ commande.total_price }} €</li>
+        </ul>
+      </div>
+      
+    <h2>Détails de la commande</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Article</th>
+                <th>Taille</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in detail_commandes %}
+                <tr>
+                    <td>{{ detail.article.libelle }}</td>
+                    <td>{% if detail.size %} {{ detail.size }} cm {% else %} - {% endif %}</td>
+                    <td>{{ detail.quantity }}</td>
+                    <td>{{ detail.item_price }} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

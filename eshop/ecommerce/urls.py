@@ -22,7 +22,6 @@ urlpatterns = [
     path('mot-de-passe-oublié/', resetpwrd_view, name='reset_password_process'),
     path('mon-panier/', panier_view, name='panier'),
     path('confirmation-de-commande-par-carte-bancaire/', checkout_view, name='checkout'),
-    path('confirmation-de-commande-avec-paypal/', checkout_paypal_view, name='checkout_paypal'),
     path('mon-profil/', profil_view, name='profil'),
     path('securite/', securite_view, name='securite'),
     path('mes-favoris/', favoris_view, name='favoris'),
@@ -33,6 +32,8 @@ urlpatterns = [
     path('details/<int:article_id>/', details_view, name="details"),
     path('paiement-de-voyance/', paiement_voyance_view, name='paiement_voyance'),
     path('achat-effectué/', stripe_success, name='stripe_success'),
+    path('paiement-effectué/', voyance_success, name='voyance_success'),
+    #path('webhook/', stripe_webhook, name='webhook'),
 
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),

@@ -550,7 +550,7 @@ function updateItemPrice(itemId) {
 
         // Update the item price
         itemPriceElement.textContent = data.item_price +" €";
-        seconditemPriceElement.textContent = data.item_price +" €";
+        seconditemPriceElement.textContent = data.total_item_price +" €";
 
         const mobileItemPriceElement = document.querySelector(`.taille-prix-mobile [id="itemPrice_${itemId}"]`);
         if (mobileItemPriceElement) {
@@ -602,7 +602,6 @@ function updateItemPrice(itemId) {
 //     });
 // }
 
-
 function deleteCartItem(itemId) {
     const csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
@@ -639,7 +638,7 @@ function deleteCartItem(itemId) {
         // Mettre à jour le prix total
         const totalPriceElement = document.getElementById('totalPriceElement');
         const currentTotalPrice = parseFloat(totalPriceElement.textContent.replace(' €', ''));
-        const itemPrice = parseFloat(data.item_price);
+        const itemPrice = parseFloat(data.total_item_price);
         const newTotalPrice = currentTotalPrice - itemPrice;
         totalPriceElement.textContent = newTotalPrice.toFixed(2) + ' €';
     })
@@ -647,7 +646,6 @@ function deleteCartItem(itemId) {
         console.error('Error supp item:', error);
     });
 }
-
 
 function openForm() {
     document.getElementById("popupOverlay").style.display = "flex";
