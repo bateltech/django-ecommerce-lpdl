@@ -32,6 +32,7 @@ urlpatterns = [
     path('details/<int:article_id>/', details_view, name="details"),
     path('paiement-de-voyance/', paiement_voyance_view, name='paiement_voyance'),
     path('achat-effectué/', stripe_success, name='stripe_success'),
+    path('accueil/achat-annulé', stripe_cancel, name='stripe_cancel'),
     path('paiement-effectué/', voyance_success, name='voyance_success'),
     #path('webhook/', stripe_webhook, name='webhook'),
 

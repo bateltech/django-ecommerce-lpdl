@@ -233,7 +233,7 @@ def panier_view(request):
     has_cart = CartItem.objects.filter(cart__user=user).exists()
     cart_items = CartItem.objects.filter(cart__user=user)
     # Retrieve feedback data
-    feedback_items = Feedback.objects.filter(etat=1)
+    feedback_items = Feedback.objects.filter(etat='publie')
 
     total_price = sum(item.item_price * item.quantity  for item in cart_items)
     print("total price in panier : ", total_price)
@@ -341,8 +341,11 @@ def commentaires_view(request):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
+
+    feedbacks = Feedback.objects.filter(utilisateur=request.user)
     
     context = {
+        'feedbacks': feedbacks,
         'utilisateur_connecte': utilisateur_connecte,
         'prenom_utilisateur': prenom_utilisateur,
         'user': utilisateur }
@@ -355,7 +358,7 @@ def historique_view(request):
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     utilisateur = request.user if utilisateur_connecte else None
 
-    commandes = Commande.objects.filter(user=request.user).order_by('-created_at')
+    commandes = Commande.objects.filter(user=request.user, etat='payee').order_by('-created_at')
     
     context = {
         'utilisateur_connecte': utilisateur_connecte,
@@ -745,9 +748,9 @@ def submit_feedback(request):
         # Create a Feedback object and save it to the database
         feedback = Feedback(
             contenu=contenu,
-            date_envoi=timezone.now(),
+            date_envoi=datetime.now(timezone.utc),
             utilisateur_id=user_id,
-            etat=0 
+            etat='en attente'
         )
         feedback.save()
 
@@ -756,6 +759,7 @@ def submit_feedback(request):
     else:
         # Handle non-POST requests as needed
         return render(request, 'accueil.html')
+
 
 import json
 import stripe
@@ -792,9 +796,28 @@ def start_order(request):
         })
 
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
+
+    # Retrieve the delivery fee item from Stripe
+    delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGGcHwNiNEPJKYCIwfx5o3')
+
+    if(total_price<65):
+    # Add the delivery fee item to the items list
+        items.append({
+            'price_data': {
+                'currency': 'eur',
+                'product_data': {
+                    'name': 'Frais de livraison',
+                },
+                'unit_amount': int(delivery_fee_item.fixed_amount.amount),
+            },
+            'quantity': 1,
+        })
+        total_price += delivery_fee_item.fixed_amount.amount
+
+
     success_url = request.build_absolute_uri(reverse('stripe_success')) + '?session_id={CHECKOUT_SESSION_ID}'
     # success_url = request.build_absolute_uri(reverse('stripe_success'))
-    cancel_url = request.build_absolute_uri(reverse('panier'))
+    cancel_url = request.build_absolute_uri(reverse('stripe_cancel'))
     
     session = stripe.checkout.Session.create(
         payment_method_types=['card','paypal'],
@@ -886,6 +909,21 @@ def stripe_success(request):
     return render(request, 'stripe_success.html', context)
 
 
+def stripe_cancel(request):
+    session_id = request.GET.get('session_id')
+    try:
+        commandes = Commande.objects.filter(user=request.user, etat='en attente')
+        for commande in commandes:
+            commande.delete()
+    except Commande.DoesNotExist:
+        pass
+    
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    # ... handle cancelled payment ...
+    return render(request, 'accueil.html', context)
+
 @login_required() 
 @csrf_exempt
 def voyance_success(request):
@@ -948,7 +986,7 @@ def voyance_success(request):
 def voyance_order(request):
     data = json.loads(request.body)
 
-    total_price = 3000  # Stripe expects the amount in cents
+    total_price = settings.VOYANCE_PRICE  # Stripe expects the amount in cents
 
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
     session = stripe.checkout.Session.create(
@@ -977,8 +1015,8 @@ def voyance_order(request):
         nom=data['nom'],
         email=data['email'],
         telephone=data['telephone'],
-        etat='payee',
-        total_price=total_price,
+        etat='en attente',
+        total_price=total_price/100,
         session_id= session.id,
         payment_intent=session.payment_intent
     )

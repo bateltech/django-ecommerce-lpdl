@@ -85,3 +85,8 @@ option {
 .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_sw {
     right: -8rem !important;
 }
+
+.table thead th,
+.accent-teal a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):not(.page-link):not(.btn) {
+    color: #85ffdb;
+}

@@ -434,7 +434,7 @@
             <div class="div2" id="cartItem{{ item.id }}">
                     
                 <div class="produit-info">
-                    <h2>{{ feedback_item.utilisateur.first_name }}.{{ feedback_item.utilisateur.last_name|first|default:'' }}</h2>
+                    <h2>{{ feedback_item.utilisateur.first_name }}.{{ feedback_item.utilisateur.last_name|first|default:'' }} - {{ feedback_item.date_envoi }}</h2>
                     <p>{{feedback_item.contenu}}</p>
                 </div>
             </div>

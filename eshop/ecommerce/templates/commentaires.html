@@ -318,30 +318,31 @@
             <a href="{% url 'favoris' %}"><i class="fas fa-heart"></i>&nbsp;&nbsp;&nbsp;Favoris</a>
             <a href="#" class="active-sidebar"><i class="fas fa-comments"></i>&nbsp;&nbsp;&nbsp;Commentaires</a>
           </div>
-          
+
 
     <div class="profil__main">
 
         <span class="side-openbtn" onclick="openNav()">&#9776;</span>
 
-
         <section class="profil__section" id="profil-1">
             <div class="profile-info">
 
-
-            
-                {% for msg in messages %}
-
-                <div class="alert success-alert">
-                    <h3 class="msg-content">{{msg}}</h3>
-                    <a class="close">&times;</a>
-                  </div>
-                  
-                {% endfor %}
-
-
                 <h2 style="margin: 2rem 0 2rem 0;">MES COMMENTAIRES</h2>
 
+                <div class="commentaires__container">
+
+                    {% for feedback_item in feedbacks %}
+                    <div class="div2">
+                            
+                        <div class="produit-info commentaires__body">
+                            <h3 class="commentaires__user">{{ feedback_item.utilisateur.first_name }}.{{ feedback_item.utilisateur.last_name|first|default:'' }} - {{ feedback_item.date_envoi }}</h2>
+                            <p class="commentaires__content">{{feedback_item.contenu}}</p>
+                        </div>
+                    </div>
+                    <hr>
+                   {% endfor %}
+
+                </div>
                 
             </div>
 

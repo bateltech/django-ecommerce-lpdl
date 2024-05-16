@@ -14,10 +14,10 @@ from datetime import datetime
 class ClientUser(AbstractUser):
     # Ajoutez des champs d'utilisateur personnalisés si nécessaire
      # New fields
-    phone_number = PhoneNumberField(null=True, blank=True)
+    phone_number = PhoneNumberField(null=True, blank=True, verbose_name="N° de téléphone")
     #birthdate = CustomDateFormatField(null=True, blank=True)
     
-    birthdate = models.DateField(null=True, blank=True)
+    birthdate = models.DateField(null=True, blank=True, verbose_name="Date de naissance")
     
     # Add related_name to avoid clashes with the default User model
     groups = models.ManyToManyField(Group, related_name='client_users')
@@ -36,7 +36,7 @@ class ClientUser(AbstractUser):
 
 # Table Pierre
 class Pierre(models.Model):
-    libelle = models.CharField(max_length=255, null=False)
+    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
     description = models.TextField(null=False)
     image = models.ImageField(upload_to='pierres/', null=False)
     couverture = models.ImageField(upload_to='covers/', null=False)
@@ -46,19 +46,25 @@ class Pierre(models.Model):
 
 # Table Catégorie
 class Categorie(models.Model):
-    libelle = models.CharField(max_length=255, null=False)
+    libelle = models.CharField(max_length=255, null=False, verbose_name="Nom")
 
     def __str__(self):
         return self.libelle
+    
+    class Meta:
+        verbose_name = "Catégorie"
 
 
 # Table Sous Catégorie
 class SousCategorie(models.Model):
-    libelle = models.CharField(max_length=255, null=False)
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name="Catégorie")
 
     def __str__(self):
         return self.libelle
+    
+    class Meta:
+        verbose_name = "Sous-catégorie"
 
 
 # Table Commentaire
@@ -76,7 +82,7 @@ class Commentaire(models.Model):
 
 # Table Tag par besoin
 class TagBesoin(models.Model):
-    libelle = models.CharField(max_length=255, null=False)
+    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
 
     def __str__(self):
         return self.libelle
@@ -103,13 +109,13 @@ class PrixArticle(models.Model):
 
 # Table Article
 class Article(models.Model):
-    libelle = models.CharField(max_length=128, null=False)
+    libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
     description = models.TextField(null=False)
     image = models.ImageField(upload_to="articles/", blank=True, null=True)
     stock = models.IntegerField(default=0, null=False)
     prix_article = models.ManyToManyField(PrixArticle, related_name='articles')  # Many-to-Many relationship with PrixArticle
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
-    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE)
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Catégorie')
+    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE, verbose_name='Sous-catégorie')
     tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)  # Many-to-Many relationship with Tag
     pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)  # Many-to-Many relationship with Pierre
     #  when I want to access all the articles related to an instance of a tag or pierre,
@@ -170,15 +176,15 @@ class CartItem(models.Model):
 
 # Table Commande
 class Commande(models.Model):
-    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(ClientUser, on_delete=models.CASCADE, verbose_name='Client')
     articles = models.ManyToManyField(Article, through='DetailCommande')
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
-    telephone = models.CharField(max_length=20, null=False)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Montant total")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date')
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente', verbose_name="État")
+    telephone = models.CharField(max_length=20, null=False, verbose_name='N° de téléphone')
     nom = models.CharField(max_length=100, null=False)
-    prenom = models.CharField(max_length=100, null=False)
-    numero_rue = models.CharField(max_length=100, null=False)
+    prenom = models.CharField(max_length=100, null=False , verbose_name='Prénom')
+    numero_rue = models.CharField(max_length=100, null=False, verbose_name='N° de rue')
     adresse = models.CharField(max_length=255, null=False)
     ville = models.CharField(max_length=100, null=False)
     code_postal = models.CharField(max_length=20, null=False)
@@ -188,19 +194,16 @@ class Commande(models.Model):
 
 
     def __str__(self):
-        if self.etat == "en attente" :
-            return f"En Attente || Commande pour {self.user.username}"
-        
-        if self.etat == "payee":
-            return f"Payée || Commande pour {self.user.username}" 
+        return f"Commande N° {self.id} "
+
 
 # Table Détail Commande
 class DetailCommande(models.Model):
     commande = models.ForeignKey(Commande, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    item_price = models.DecimalField(max_digits=10, decimal_places=2)
-    size = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=1, verbose_name="Quantité")
+    item_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Prix")
+    size = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True, verbose_name="Taille")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -210,7 +213,7 @@ class Feedback(models.Model):
     contenu = models.TextField(null=False)
     date_envoi = models.DateField(null=False)
     utilisateur = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
-    etat = models.IntegerField(null=False,default=0)
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('publie', 'Publié')], default='en attente', verbose_name='État')
 
     def __str__(self):
         return f"Feedback #{self.id} de {self.utilisateur.last_name} {self.utilisateur.first_name}"

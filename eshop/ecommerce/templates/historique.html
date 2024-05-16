@@ -284,7 +284,7 @@
       
     
         <!-- Sidebar Menu -->
-        <aside role="tablist" class="aside-tab">
+        <aside role="tablist" class="aside-tab histo__aside">
             <p> </p>
             <a href="{% url 'profil' %}">
               Informations personnelles
@@ -320,19 +320,8 @@
 
         <span class="side-openbtn" onclick="openNav()">&#9776;</span>
 
-        <section class="profil__section" id="profil-1">
-            <div class="profile-info" style="width: 60%;">
-
-
-            
-                {% for msg in messages %}
-
-                <div class="alert success-alert">
-                    <h3 class="msg-content">{{msg}}</h3>
-                    <a class="close">&times;</a>
-                  </div>
-                  
-                {% endfor %}
+        <section class="profil__section histo__section" id="profil-1">
+            <div class="profile-info histo-info" style="width: 70%;">
 
 
                 <h2 style="margin: 2rem 0 2rem 0;">HISTORIQUE DES ACHATS</h2>
