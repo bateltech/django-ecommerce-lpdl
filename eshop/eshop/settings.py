@@ -609,6 +609,8 @@ EMAIL_RECIPIENT = 'medjaoui.imene@gmail.com'
 
 # Logo Base64 data
 LOGO_BASE64 = ''
+ADRESSE_VOYANCE = 'medjaoui.imene@gmail.com'
+VOYANCE_PRICE = 3000
 
 DOMAIN_NAME = 'http://127.0.0.1:8000/'
 
