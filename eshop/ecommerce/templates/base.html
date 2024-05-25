@@ -76,6 +76,15 @@
     </head>
     
     <body>
+
+        {% if notvipromo %}
+    
+        <div class="top-ribbon">
+            <p class="moving-text"> 📢 Abonnez-vous à la newsletter 💌 dès maintenant et profitez d'une réduction🔖pendant <b style="color: rgb(255, 189, 47);">un an</b> sur toutes vos commandes 🛍️ ! 📢 </p>
+        </div>
+    
+        {% endif %}
+
         {% block content %}
         
         {% endblock %}
@@ -87,7 +96,7 @@
                             <h2 style="color: white;">Menu Principal</h2>
                             <ul class="footer__menu__principal">
                                 <li class="footer__link"><a href="{% url 'accueil' %}" >ACCUEIL</a></li>
-                                <li class="footer__link"><a href="{% url 'accueil' %}#collection" >COLLECTION</a></li>
+                                <li class="footer__link"><a href="{% url 'collections' %}" >COLLECTION</a></li>
                                 <li class="footer__link"><a href="{% url 'accueil' %}#artist" >ARTISTE</a></li>
                                 <li class="footer__link"><a href="{% url 'articles' %}" >ARTICLES</a></li>
                                 <li class="footer__link"><a href="{% url 'accueil' %}#voyance" >VOYANCE</a></li>
@@ -208,9 +217,6 @@
 
         <!--=============== SCROLLREVEAL ===============-->
         <script src="https://unpkg.com/scrollreveal"></script>
-
-        <!--=============== MAIN JS ===============-->
-        <script src="{% static 'js/main.js' %}"></script>
         
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>

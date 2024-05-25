@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+
+
+
         <!--==================== HEADER ====================-->
         <header role="banner" class="header" id="header">
 
@@ -169,9 +172,9 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="#collection" class="nav__link anchor__link">
+                            <a href="{% url 'collections' %}" class="nav__link">
                                 <i class="fa-solid fa-shapes"></i>
-                                 Collection
+                                 Collections
                             </a>
                         </li>
 
@@ -300,6 +303,15 @@
                 </div>
             </section>
 
+
+                        <!--==================== NOUVEAUTÉS ====================-->
+                    
+                        <section class="service__section">
+                            <h1 class="service__title">NOS NOUVEAUTÉS</h1>
+                                <div class="service__container">
+                                
+                                </div>
+                        </section>
 
             <!--==================== COLLECTION ====================-->
             <!-- swiper test -->
@@ -435,7 +447,7 @@
 
                     <div class="artiste__image">
                         <div class="artiste__frame"></div>
-                        <img src="{% static 'img/artiste.png' %}" alt="artiste image">
+                        <img src="{% static 'img/artiste.webp' %}" alt="artiste image">
                     </div>
 
                     <div class="artiste__content">
@@ -457,7 +469,7 @@
             
             <!--==================== SERVICE ====================-->
                     
-                <section class="service__section">
+            <section class="service__section">
                     <h1 class="service__title">COMMANDEZ SEREINEMENT</h1>
                         <div class="service__container">
                             <ul class="service-list">
@@ -490,7 +502,7 @@
             
                               </ul>
                             </div>
-                </section>
+            </section>
 
 
             <!--==================== VOYANCE ====================-->
@@ -565,7 +577,7 @@
             </section>
 
         <!--=============== MAIN JS ===============-->
-        <script src="{% static 'js/main.js' %}"></script>
+        <script src="{% static 'js/accueil.js' %}"></script>
         
         </main>
 

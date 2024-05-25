@@ -2,11 +2,8 @@ User-agent: * # Cette ligne spécifie les instructions qui suivent sont applicab
 
 # Informations de contact
 Sitemap: https://www.lapierredelune.fr/sitemap.xml
-Contact: sandramedium@hotmail.com
-Phone: +33563596168
 
 # Disallow: /  # Interdit l'indexation de toutes les pages par défaut
-
 
 Allow: /  # Autorise l'indexation de toutes les autres pages
 
@@ -44,16 +41,3 @@ Disallow: /submit-feedback/
 Disallow: /reinitialisation-du-mot-de-passe/
 Disallow: /reinitialiser/<uidb64>/<token>/
 Disallow: /reset_password_complete/
-
-
-# Interdit aux robots de suivre les liens vers certaines pages
-NoFollow: /admin/
-NoFollow: /checkout/
-NoFollow: /account/
-
-# Informations spécifiques sur le magasin
-# Magasin La pierre de Lune
-# Sandra Delavacherie créatrice de bijoux
-# en pierres de lithothérapie
-# 14 Pl. Gambetta, 81200 Mazamet, France
-# Voyance avec Sandra Delavacherie, La pierre de Lune

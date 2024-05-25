@@ -86,7 +86,40 @@ html {
     scroll-behavior: smooth;
 }
 
+    .top-ribbon {
+        width: 100%;
+        background-color: #414141;
+        color: white;
+        text-align: center;
+        padding: 10px 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1000; /* Ensure the ribbon is on top of other elements */
+        overflow: hidden;
+    }
+
+    .moving-text {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: moveText 40s linear infinite;
+        width: 100%;
+    }
+
+    @keyframes moveText {
+        from {
+            transform: translateX(50%);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
 body {
+
+    padding-top: 13px; /* Adjust the padding to make space for the ribbon */
+
     scrollbar-width: thin;
     scrollbar-color: rgba(0,0,0,0.5) rgba(233, 233, 233, 0.1) ;
     
@@ -2043,6 +2076,16 @@ aside p {
     padding-top: 1rem;
     font-weight: bold;
 }
+
+.section_panier_checkout .div_vipromo {
+    display: flex;
+    justify-content: space-between;
+    color: greenyellow;
+    padding-top: 1rem;
+    font-weight: bold;
+}
+
+
 
 .accordion-item {
     border-bottom: 1px solid white;

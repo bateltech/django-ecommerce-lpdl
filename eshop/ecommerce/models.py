@@ -15,8 +15,7 @@ class ClientUser(AbstractUser):
     # Ajoutez des champs d'utilisateur personnalisés si nécessaire
      # New fields
     phone_number = PhoneNumberField(null=True, blank=True, verbose_name="N° de téléphone")
-    #birthdate = CustomDateFormatField(null=True, blank=True)
-    
+    VIP = models.BooleanField(default=False, verbose_name="VIP")
     birthdate = models.DateField(null=True, blank=True, verbose_name="Date de naissance")
     
     # Add related_name to avoid clashes with the default User model
@@ -42,6 +41,13 @@ class Pierre(models.Model):
     couverture = models.ImageField(upload_to='covers/', null=False)
     def __str__(self):
         return self.libelle
+
+    def save(self, *args, **kwargs):
+        if self.image and not is_webp_image(self.image):
+            self.image = convert_to_webp(self.image)
+        if self.couverture and not is_webp_image(self.couverture):
+            self.couverture = convert_to_webp(self.couverture)
+        super().save(*args, **kwargs)
 
 
 # Table Catégorie
@@ -124,15 +130,59 @@ class Article(models.Model):
     def __str__(self):
         return self.libelle
 
+    def save(self, *args, **kwargs):
+        if self.image and not is_webp_image(self.image):
+            self.image = convert_to_webp(self.image)
+        super().save(*args, **kwargs)
 
-# not used in code 
-# Table Taille Article
-class TailleArticle(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    taille = models.IntegerField()
+
+# Table Promo
+from django.db import models
+
+class Promo(models.Model):
+    start_date = models.DateField(verbose_name="Date de début")
+    end_date = models.DateField(verbose_name="Date de fin")
+    discount_percentage = models.FloatField(verbose_name="Pourcentage de réduction")
+    articles = models.ManyToManyField('Article', related_name='promos')
 
     def __str__(self):
-        return f"{self.article.libelle} - {self.taille}"
+        return f"Promo : {self.discount_percentage}% de réduction du {self.start_date} au {self.end_date}"
+
+# Table VIPromo
+class VIPromo(models.Model):
+    discount_percentage = models.FloatField(default=10.0, verbose_name="Pourcentage de réduction")
+    client = models.ForeignKey(ClientUser, on_delete=models.CASCADE, related_name='vip_promos')
+    start_date = models.DateField(auto_now_add=True, verbose_name="Date de début")
+    end_date = models.DateField(verbose_name="Date de fin")
+
+    class Meta:
+        verbose_name = "VIPromo"  # Singular name for the model
+        verbose_name_plural = "VIPromos" # Plural name for the model
+
+    def save(self, *args, **kwargs):
+        # Set end_date to one year from start_date
+        self.end_date = self.start_date + timedelta(days=365)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"VIPromo : {self.discount_percentage}% de réduction du {self.start_date} au {self.end_date} pour {self.client.email}"
+
+
+# Table Collection
+class Collection(models.Model):
+    libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
+    description = models.TextField(null=False)
+    image = models.ImageField(upload_to="collections/", blank=True, null=True)
+    articles = models.ManyToManyField(Article)
+    disponible = models.BooleanField(default=False, verbose_name="Disponible")
+
+    def __str__(self):
+        return f"Collection {self.libelle}"
+    
+    def save(self, *args, **kwargs):
+        if self.image and not is_webp_image(self.image):
+            self.image = convert_to_webp(self.image)
+        super().save(*args, **kwargs)
 
 
 # Table Wishlist
@@ -189,6 +239,7 @@ class Commande(models.Model):
     ville = models.CharField(max_length=100, null=False)
     code_postal = models.CharField(max_length=20, null=False)
     email = models.EmailField(max_length=255, null=False)
+    promoVIP = models.BooleanField(default=False)
     session_id = models.CharField(max_length=250,blank=True, null=True)
     payment_intent = models.CharField(max_length=250,blank=True, null=True)
 
@@ -219,34 +270,6 @@ class Feedback(models.Model):
         return f"Feedback #{self.id} de {self.utilisateur.last_name} {self.utilisateur.first_name}"
 
 
-from datetime import timedelta
-# Table Voyance
-class Voyance(models.Model):
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    email = models.EmailField()
-    image = models.ImageField(upload_to='images/')
-    contenu_demande = models.TextField()
-    tarif = models.FloatField(default=30.00)
-    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def get_created_at_plus_six_days(self):
-        return self.created_at + timedelta(days=6)
-
-
-from django_ckeditor_5.fields import CKEditor5Field
-
-# Table Newsletter
-class Newsletter(models.Model):
-    subject = models.TextField(max_length=128)
-    message = CKEditor5Field(config_name='newsletter')
-    image_urls = models.TextField(blank=True, editable=False)
-
-    def __str__(self) -> str:
-        return f"{self.subject}"
-    
-
 # Table DemandeVoyance
 class DemandeVoyance(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
@@ -263,3 +286,69 @@ class DemandeVoyance(models.Model):
 
     def __str__(self):
         return f"Voyance pour {self.prenom} {self.nom}"
+
+
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+
+def convert_to_webp(image_field):
+    # Open the uploaded image
+    uploaded_image = Image.open(image_field)
+
+    # Convert image to WebP format
+    with BytesIO() as output:
+        uploaded_image.save(output, format="WEBP")
+        webp_data = output.getvalue()
+
+    # Get the original file name without extension
+    original_filename = image_field.name.split('/')[-1].split('.')[0]
+
+    # Save the WebP image data as a file object with the original filename and ".webp" extension
+    webp_file = ContentFile(webp_data, name=f"{original_filename}.webp")
+
+    return webp_file
+
+def is_webp_image(image_field):
+    return image_field.name.lower().endswith('.webp')
+
+###############################################################################################################################################
+
+# not used in code 
+# Table Taille Article
+class TailleArticle(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    taille = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.article.libelle} - {self.taille}"
+
+
+from datetime import timedelta
+# not used for now
+# Table Voyance
+class Voyance(models.Model):
+    nom = models.CharField(max_length=100)
+    prenom = models.CharField(max_length=100)
+    email = models.EmailField()
+    image = models.ImageField(upload_to='images/')
+    contenu_demande = models.TextField()
+    tarif = models.FloatField(default=30.00)
+    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_created_at_plus_six_days(self):
+        return self.created_at + timedelta(days=6)
+
+from django_ckeditor_5.fields import CKEditor5Field
+
+# not used for now
+# Table Newsletter
+class Newsletter(models.Model):
+    subject = models.TextField(max_length=128)
+    message = CKEditor5Field(config_name='newsletter')
+    image_urls = models.TextField(blank=True, editable=False)
+
+    def __str__(self) -> str:
+        return f"{self.subject}"
+    

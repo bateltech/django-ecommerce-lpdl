@@ -6,9 +6,53 @@
  * copyright 2023 Batel Technology
  */
 
-
 /*=============== GOOGLE FONTS ===============*/
 @import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Roboto:wght@400;500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+    --header-height: 3.5rem;
+
+    /*========== Colors ==========*/
+    /*Color mode HSL(hue, saturation, lightness)*/
+    --first-color: hsl(207, 65%, 65%);
+    --title-color: hsl(207, 4%, 16%);
+    --text-color: hsl(207, 4%, 28%);
+    --text-color-light: hsl(207, 4%, 56%);
+    --body-color: hsla(0, 0%, 25%, 0.5);
+    --container-color: hsl(207, 4%, 95%);
+    --darkgray-color: hsl(0, 0%, 10%);
+    --darkwhite-color:hsl(0, 0%, 80%);
+
+    --gradient-color: linear-gradient(180deg,
+                          hsla(210, 15%, 55%, 0),
+                          hsla(210, 15%, 60%, 0.4));
+
+    /*========== Font and typography ==========*/
+    /*.5rem = 8px | 1rem = 16px ...*/
+    --body-font: 'Roboto', sans-serif;
+    /* --body-font: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+    --title-font: 'Lora', serif;
+    --accueil-font:'Montserrat', sans-serif;
+    --biggest-font-size: 1.5rem;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+    --tiny-font-size: .625rem;
+
+    /*========== Font weight ==========*/
+    --font-medium: 500;
+    --font-semi-bold: 600;
+
+    /*========== z index ==========*/
+    --z-normal: 1;
+    --z-tooltip: 10;
+    --z-fixed: 100;
+    --z-ultime: 200;
+}
 
 /*=================== BASE ===================*/
 
@@ -175,16 +219,14 @@ button.login__button:hover {
     color : rgb(0, 172, 238); /* Twitter color */
 }
 
-
-
-
 /*-----------------------------------*\
 * PROFIL.HTML
 \*-----------------------------------*/
 
 .profil__section {
     display: flex;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
+    margin-left: 10rem;
     flex-wrap: wrap;
     flex-direction: row-reverse;
     justify-content: center;
@@ -321,15 +363,15 @@ input[type="password"] {
 .custom-datepicker .ui-datepicker-header {
     background-color: #aaa9a9;
     color: rgb(197, 25, 25);
-  }
+}
 
 .custom-datepicker .ui-datepicker-title {
     color: white;
-  }
+}
 
 .custom-datepicker .ui-datepicker-calendar td a {
     color: #333;
-  }
+}
 
 .sidebar {
     display: none;
@@ -339,8 +381,139 @@ input[type="password"] {
     display: none;
 }
 
+/*-----------------------------------*\
+* HISTORIQUE.HTML
+\*-----------------------------------*/
+
+.historique__container {
+    height: 105vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    scrollbar-width: thin; /* for Firefox */
+    scrollbar-color: #555 #262626; /* for Firefox */
+}
+
+.historique__container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.historique__container::-webkit-scrollbar-track {
+    background-color: #262626;
+}
+
+.historique__container::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.historique__container::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+.historique__title {
+    margin-bottom: .75rem;
+}
+    
+.historique__commande {
+    background-color: #262626;
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.historique__commande table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.historique__commande thead tr th {
+    font-family: var(--accueil-font);
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #444;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.historique__commande tbody tr td {
+    font-family: var(--accueil-font);
+    font-size: 14px;
+    padding: 10px 0;
+    border-top: 1px solid #444;
+    text-align: center;
+}
+
+.historique__commande tbody tr {
+    background-color: #333;
+}
+
+.historique__commande tbody tr:hover {
+    background-color: #555;
+}
+
+.historique__commande thead tr th:first-child {
+    width: 30%;
+}
+
+.historique__commande thead tr th:nth-child(2) {
+    width: 15%;
+}
+
+.historique__commande thead tr th:nth-child(3) {
+    width: 15%;
+}
+
+.historique__commande thead tr th:last-child {
+    width: 40%;
+}
 
 
+/*-----------------------------------*\
+* COMMENTAIRES.HTML
+\*-----------------------------------*/
+
+.commentaires__body {
+    background-color: #262626;
+    border-radius: .75rem;
+    padding: .5rem;
+}
+
+.commentaires__user {
+    padding: .5rem;
+    margin-top: 1rem;
+}
+
+.commentaires__content {
+    padding: 1rem;
+    color: white;
+    size: 24em;
+    border: none;
+    border-radius: .5rem;
+    margin: 1rem;
+    background-color: #464646;
+}
+
+.commentaires__container {
+    height: 105vh;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    scrollbar-width: thin; /* for Firefox */
+    scrollbar-color: #555 #262626; /* for Firefox */
+}
 
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
@@ -370,6 +543,12 @@ input[type="password"] {
     .login__button {
         margin-right: 0 !important;
     }
+
+    .histo__section {
+        justify-content: center !important;
+        margin-right: 2rem !important;
+        margin-left: 2rem !important;
+    }
     
 }
 
@@ -384,4 +563,44 @@ input[type="password"] {
         padding: 0.5rem;
     }
 
+    .histo__section {
+        justify-content: center !important;
+        margin-right: 2rem !important;
+        margin-left: 2rem !important;
+    }
+
+
+    .comment__main {
+        display: block !important;
+        width: 100% !important;
+    }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 899px) {
+    .histo__section {
+        justify-content: space-between !important;
+        margin-right: 1rem !important;
+        margin-left: 2rem !important;
+    }
+
+    .histo-info {
+        width: 70% !important;
+    }
+
+    .histo__aside {
+        width: 16em !important;
+    }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1024px) {
+    .histo__section {
+        justify-content: space-between !important;
+        margin-right: 2rem !important;
+        margin-left: 2rem !important;
+    }
+
+    .histo-info {
+        width: 70% !important;
+    }
 }

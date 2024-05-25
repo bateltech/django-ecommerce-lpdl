@@ -167,8 +167,8 @@
                 </li>
 
                 <li class="nav__item">
-                    <a href="{% url 'accueil' %}#collection" class="nav__link">
-                         Collection
+                    <a href="{% url 'collections' %}" class="nav__link">
+                         Collections
                     </a>
                 </li>
 
@@ -334,6 +334,17 @@
                 <p>{{total_price}}  €</p>
 
             </div>
+
+            <div class="div_vipromo">
+
+                <p>Avec VIPromo</p>
+
+                <!-- vip promo appliqué sur le prix total -->
+                <p>{{price_promo}} €</p>
+
+            </div>
+
+
 
             </div>
         
