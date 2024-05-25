@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Article, Commande, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser, Wishlist
+from .models import Article, Commande, Promo, VIPromo, Collection, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser, Wishlist
 from .models import Newsletter
 
 #####################################################################################
 # FULL PERMISSION TABLES
+
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags', 'pierres')  # Display tags and pierres as checkboxes
@@ -11,9 +12,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
     def categorie(self, obj):
         return obj.categorie.libelle
-
-admin.site.register(Pierre)
-admin.site.register(TagBesoin)
+    
 @admin.register(PrixArticle)
 class PrixArticleAdmin(admin.ModelAdmin):
     list_display = ('prix_article', 'type_prix')
@@ -27,8 +26,31 @@ class PrixArticleAdmin(admin.ModelAdmin):
     prix_article.short_description = 'Prix Article'
 
 
+class ArticleInline(admin.TabularInline):
+    model = Collection.articles.through  # Use the through model of the ManyToMany relationship
+    extra = 0
+    verbose_name = "Article"
+    verbose_name_plural = "Articles"
+
+    def get_queryset(self, request):
+        # Fetch the collection from the parent object being viewed
+        collection_id = request.resolver_match.kwargs.get('object_id')
+        if collection_id:
+            return super().get_queryset(request).filter(collection_id=collection_id)
+        return super().get_queryset(request)
+    
+@admin.register(Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    inlines = [ArticleInline]
+    list_display = ('libelle','disponible')
+    readonly_fields = ('articles',)
+    
+admin.site.register(Pierre)
+admin.site.register(TagBesoin)
 admin.site.register(Categorie)
 admin.site.register(SousCategorie)
+admin.site.register(Promo)
+admin.site.register(VIPromo)
 
 #####################################################################################
 # EDIT-ONE-FIELD-ONLY TABLES
@@ -49,12 +71,11 @@ class FeedbackAdmin(admin.ModelAdmin):
     
     def has_add_permission(self, request):
         return False
-
-
     
 
 #####################################################################################
 # READONLY TABLES
+
 from django.contrib.auth.admin import UserAdmin
 from django import forms
 
@@ -92,17 +113,16 @@ class DetailCommandeInline(admin.TabularInline):
     def size(self, obj):
         return "{} cm".format(obj.size)
     
-    
 @admin.register(Commande)
 class CommandeAdmin(admin.ModelAdmin):
     inlines = [DetailCommandeInline]
-    readonly_fields = ('user', 'total_price', 'created_at', 'etat', 'telephone', 'nom', 'prenom', 'numero_rue', 'adresse', 'ville', 'code_postal', 'email', 'session_id', 'payment_intent')
+    readonly_fields = ('user', 'total_price', 'created_at', 'etat', 'telephone', 'nom', 'prenom', 'numero_rue', 'adresse', 'ville', 'code_postal', 'email','promoVIP', 'session_id', 'payment_intent')
     list_display = ('commande_numero', 'montant_total', 'etat', 'date_created')
     list_filter =('etat', 'created_at')
 
     def get_fields(self, request, obj=None):
         if obj:
-            return ['etat', 'user', 'nom', 'prenom', 'telephone', 'email', 'numero_rue', 'adresse', 'ville', 'code_postal']
+            return ['etat', 'user', 'nom', 'prenom', 'telephone', 'email', 'numero_rue', 'adresse', 'ville', 'code_postal', 'promoVIP']
         return []
 
     def commande_numero(self, obj):

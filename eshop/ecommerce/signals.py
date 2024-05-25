@@ -81,9 +81,7 @@ def send_admin_new_commande_email(sender, instance, **kwargs):
             html_message=message,
         )
 
-
-
-
+##############################################################################################################
 
 @receiver(post_save, sender=DemandeVoyance)
 def send_payment_confirmation_voyance_email(sender, instance, **kwargs):
@@ -142,3 +140,4 @@ def send_admin_new_voyance_email(sender, instance, **kwargs):
             html_message=message,
         )
 
+##############################################################################################################

@@ -1,7 +1,7 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, DemandeVoyance
+from .models import TailleArticle, Commande, VIPromo, Promo, Collection, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, DemandeVoyance
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
@@ -111,7 +111,20 @@ def accueil_view(request):
     form = VoyanceForm()
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    return render(request, 'accueil.html', {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur, 'form':form})
+    
+    vipromoobj = VIPromo.objects.filter(client=request.user).first() if utilisateur_connecte else None
+    notvipromo = True
+    if vipromoobj:
+        notvipromo = False
+
+    print(notvipromo)
+    context = {'utilisateur_connecte': utilisateur_connecte,
+                'prenom_utilisateur': prenom_utilisateur,
+                'form':form,
+               'notvipromo': notvipromo
+               }
+    
+    return render(request, 'accueil.html', context)
 
 def articles_view(request):
     categories = Categorie.objects.all()
@@ -169,6 +182,32 @@ def details_view(request, article_id):
         'similar_articles': similar_articles,
         'favoris': favoris }
     return render(request, 'details.html', context)
+
+
+def collections_view(request):
+    collections = Collection.objects.all()
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    context = {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur': prenom_utilisateur,
+        'collection': collections }
+    return render(request, 'collections.html', context)
+
+def detailscollect_view(request, collection_id):
+
+    collection = Collection.objects.get(pk=collection_id)
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    context = {
+        'utilisateur_connecte': utilisateur_connecte,
+        'prenom_utilisateur': prenom_utilisateur,
+        'collection': collection }
+    return render(request, 'details_collection.html', context)
 
 
 def mentions_view(request):
@@ -255,6 +294,10 @@ def panier_view(request):
     
     return render(request, 'panier.html', context)
 
+
+import datetime
+from decimal import Decimal, ROUND_HALF_UP
+
 @login_required() 
 def checkout_view(request):
     user = request.user
@@ -272,6 +315,21 @@ def checkout_view(request):
         cart = Cart.objects.get(user=user)
         cart_items = CartItem.objects.filter(cart__user=user)
         print("cart price : ", cart.total_price)
+
+        price_promo = cart.total_price
+
+        # Apply VIPromo discount if applicable
+        vipromo = VIPromo.objects.filter(client=user).first()
+        if vipromo and vipromo.end_date >= datetime.datetime.now().date():
+            discount_percentage = Decimal(vipromo.discount_percentage) / 100
+            print(" price before :", price_promo)
+            price_promo *= (1 - discount_percentage)
+            price_promo = price_promo.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+            price_promo += 5
+            print("promo : ", discount_percentage)
+            print(" promo price :", price_promo)
+
+
         total_price = cart.total_price + 5
 
     pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
@@ -283,11 +341,13 @@ def checkout_view(request):
         'cart_items': cart_items,
         'has_cart': has_cart,
         'total_price' : total_price,
+        'price_promo' : price_promo,
         'pub_key' : pub_key
 
     }
 
     return render(request, 'checkout.html', context)
+
 
 
 @login_required()  # A CHERCHER COMMENT L'UTILISER
@@ -602,14 +662,48 @@ def abonnement(request):
             # check if the email already exists in the contact list
             for contact in api_response.contacts:
                 if contact['email'] == email:
+                    # Set VIP status to True for the user
+                    try:
+                        user = ClientUser.objects.get(email=email)
+                        user.VIP = True
+                        user.save()
+                    except ClientUser.DoesNotExist:
+                        pass
+
+                    # Check if the user already has a VIPromo object
+                    if not VIPromo.objects.filter(client=user).exists():
+                        # If not, create a new one
+                        start_date = datetime.now()
+                        end_date = start_date + timedelta(days=365)  # 1 year from the start date
+                        vipromo = VIPromo.objects.create(client=user, start_date=start_date, end_date=end_date)
+                        print("vipromo created !")
+
                     return JsonResponse({'message': 'Déja abonné !'}, status=200)
 
             create_contact = sib_api_v3_sdk.CreateContact(email=email, list_ids=[list_id])
             api_response2 = api_instance2.create_contact(create_contact)
+            
+            # Set VIP status to True for the user
+            try:
+                user = ClientUser.objects.get(email=email)
+                user.VIP = True
+                user.save()
+
+                # Create VIPromo object for the user
+                start_date = datetime.now()
+                end_date = start_date + timedelta(days=365)  # 1 year from the start date
+                vipromo = VIPromo.objects.create(client=user, start_date=start_date, end_date=end_date)
+                print("new vipromo created !")
+
+            except ClientUser.DoesNotExist:
+                pass
+
             return JsonResponse({'message': 'Abonnement effectué !'}, status=200)
     
     return JsonResponse({'message': 'Bad request KHRA'}, status=400)
 
+
+# NOT USED FOR NOW
 def newsletter(request):
     if request.method == 'POST':
         form = NewsletterForm(request.POST)
@@ -759,12 +853,23 @@ def submit_feedback(request):
     else:
         # Handle non-POST requests as needed
         return render(request, 'accueil.html')
-
+ 
 
 import json
 import stripe
 from django.http import JsonResponse
 from .models import Cart, CartItem, Commande, DetailCommande
+
+from decimal import Decimal, ROUND_HALF_UP
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+import stripe
+from django.conf import settings
+import json
+from .models import Cart, CartItem, Commande, DetailCommande, VIPromo
+from django.urls import reverse
+import datetime
 
 @csrf_protect
 @login_required
@@ -773,16 +878,15 @@ def start_order(request):
     data = json.loads(request.body)
 
     items = []
-    total_price = cart.total_price
-    print("start order | total prix : ", cart.total_price)
+    total_price = Decimal(cart.total_price)
+    print("start order | total prix : ", total_price)
 
     cartItems = CartItem.objects.filter(cart=cart)
 
-    #for item in cart.cartitem_set.all():
-    for item in cartItems :
+    # Prepare items list and calculate initial total price
+    for item in cartItems:
         product = item.article
         print("prix in for loop : ", item.item_price)
-        # total_price += item.item_price * item.quantity
 
         items.append({
             'price_data': {
@@ -790,7 +894,7 @@ def start_order(request):
                 'product_data': {
                     'name': product.libelle,
                 },
-                'unit_amount': int(item.item_price * 100),
+                'unit_amount': int(item.item_price * 100),  # Stripe expects amounts in cents
             },
             'quantity': item.quantity
         })
@@ -800,8 +904,8 @@ def start_order(request):
     # Retrieve the delivery fee item from Stripe
     delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGGcHwNiNEPJKYCIwfx5o3')
 
-    if(total_price<65):
-    # Add the delivery fee item to the items list
+    if total_price < 65:
+        # Add the delivery fee item to the items list
         items.append({
             'price_data': {
                 'currency': 'eur',
@@ -812,15 +916,38 @@ def start_order(request):
             },
             'quantity': 1,
         })
-        total_price += delivery_fee_item.fixed_amount.amount
+        total_price += Decimal(delivery_fee_item.fixed_amount.amount) / 100
 
+    # Apply VIPromo discount if applicable
+    vipromo = VIPromo.objects.filter(client=request.user).first()
+    if vipromo and vipromo.end_date >= datetime.datetime.now().date():
+        discount_percentage = Decimal(vipromo.discount_percentage) / 100
+        print("discount percentage:", discount_percentage)
+        total_discount = (total_price - Decimal(delivery_fee_item.fixed_amount.amount) / 100 ) * discount_percentage
+        print("total discount:", total_discount)
+
+        # Recalculate total_price after applying the discount
+        total_price_after_discount = total_price - total_discount
+        print("total price after discount:", total_price_after_discount)
+
+        # Apply the discount to the session creation for Stripe
+        session_total_price = total_price_after_discount
+
+        # Since we cannot directly modify delivery fee in Stripe session, adjust only product items
+        discount_per_item = total_discount / sum(item.quantity for item in cartItems)
+        discount_per_item = discount_per_item.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
+
+        for item in items:
+            if item['price_data']['product_data']['name'] != 'Frais de livraison':
+                item_total_price = Decimal(item['price_data']['unit_amount']) / 100  # Convert from cents to euros
+                item_total_price_after_discount = item_total_price - discount_per_item
+                item['price_data']['unit_amount'] = int(item_total_price_after_discount * 100)  # Convert back to cents
 
     success_url = request.build_absolute_uri(reverse('stripe_success')) + '?session_id={CHECKOUT_SESSION_ID}'
-    # success_url = request.build_absolute_uri(reverse('stripe_success'))
     cancel_url = request.build_absolute_uri(reverse('stripe_cancel'))
-    
+
     session = stripe.checkout.Session.create(
-        payment_method_types=['card','paypal'],
+        payment_method_types=['card', 'paypal'],
         line_items=items,
         mode='payment',
         success_url=success_url,
@@ -828,9 +955,8 @@ def start_order(request):
     )
 
     payment_intent = session.payment_intent
-    print("payment intent in checkout :", session.payment_intent)
-    print("session id in checkout :", session.id)
-
+    print("payment intent in checkout:", session.payment_intent)
+    print("session id in checkout:", session.id)
 
     commande = Commande.objects.create(
         user=request.user,
@@ -843,29 +969,33 @@ def start_order(request):
         code_postal=data['code_postal'],
         ville=data['ville'],
         etat='en attente',
-        total_price=total_price,
-        session_id= session.id,
+        total_price=total_price_after_discount,
+        session_id=session.id,
         payment_intent=payment_intent
     )
 
-    # for item in cart.cartitem_set.all():
-    for item in cartItems :
+    for item in cartItems:
         product = item.article
         quantity = item.quantity
         prix_article = item.article_price
-        print("prix par item : ", item.item_price)
-        print("taille par item :  ", prix_article.taille)
+        print("prix par item:", item.item_price)
+        print("taille par item:", prix_article.taille)
 
-        detail_commande = DetailCommande.objects.create(commande=commande, article=product, item_price=item.item_price, quantity=quantity,
-                                                        size=prix_article.taille if prix_article.type_prix == 'size_based' else None)
+        detail_commande = DetailCommande.objects.create(
+            commande=commande,
+            article=product,
+            item_price=item.item_price,
+            quantity=quantity,
+            size=prix_article.taille if prix_article.type_prix == 'size_based' else None
+        )
         detail_commande.save()
 
-    # Recalculate total price and save Commande instance
-    commande.total_price = sum(item.quantity * item.item_price for item in commande.detailcommande_set.all())
-    print("recalculate in start order | total price : ", commande.total_price)
+    print("recalculate in start order | total price:", commande.total_price)
+
     commande.save()
-    print("Session ID in start order : ", session.id)
-    return JsonResponse({'session': session, 'commande': payment_intent,'sessionId': session.id})
+    print("Session ID in start order:", session.id)
+    return JsonResponse({'session': session, 'commande': payment_intent, 'sessionId': session.id})
+
 
 import stripe
 from django.shortcuts import redirect

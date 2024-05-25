@@ -34,6 +34,8 @@ urlpatterns = [
     path('achat-effectué/', stripe_success, name='stripe_success'),
     path('accueil/achat-annulé', stripe_cancel, name='stripe_cancel'),
     path('paiement-effectué/', voyance_success, name='voyance_success'),
+    path('collections/', collections_view, name='collections'),
+    path('collections/<int:collection_id>', detailscollect_view, name='details collection'),
     #path('webhook/', stripe_webhook, name='webhook'),
 
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),

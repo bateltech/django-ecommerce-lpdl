@@ -1,4 +1,4 @@
-console.log("nique ta mère j'en ai marre");
+console.log("slider javascript is running");
 const wrapper_details = document.querySelector(".wrapper_details");
 const carousel_details = document.querySelector(".carousel_details");
 const firstCardWidth = carousel_details.querySelector(".card_details").offsetWidth;
