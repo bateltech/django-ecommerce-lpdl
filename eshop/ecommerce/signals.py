@@ -91,9 +91,13 @@ def send_payment_confirmation_voyance_email(sender, instance, **kwargs):
     if instance.etat == 'payee':
         print("trying to send an email to the customer")
 
+        # get the voyance description
+        voyance = Voyance.objects.filter(type=instance.type).first()
+        
         # build the email context
         context = {
-            'voyance': instance,
+            'commande': instance,
+            'voyance': voyance,
             'LOGO_BASE64': settings.LOGO_BASE64,
             'adresse_voyance': settings.ADRESSE_VOYANCE
         }
@@ -119,9 +123,13 @@ def send_admin_new_voyance_email(sender, instance, **kwargs):
     if  instance.etat == 'payee':
         print("trying to send an email for the admin")
 
+        # get the voyance description
+        voyance = Voyance.objects.filter(type=instance.type).first()
+
         # build the email context
         context = {
-            'voyance': instance,
+            'commande': instance,
+            'voyance': voyance,
             'LOGO_BASE64': settings.LOGO_BASE64,
         }
 

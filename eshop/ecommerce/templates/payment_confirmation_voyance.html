@@ -67,17 +67,21 @@
 <body>
     <h1>Confirmation de paiement</h1>
     <div style="background-color: #f2f2f2; padding: 20px; border-radius: 5px;">
-        <p style="font-size: 24px; font-weight: bold; color: #333;">Bonjour {{ voyance.user.first_name }},</p>
+        <p style="font-size: 24px; font-weight: bold; color: #333;">Bonjour {{ commande.user.first_name }},</p>
         <p style="font-size: 18px; color: #666;">Votre voyance a bien été payée. Voici les détails de votre voyance:</p>
         <ul style="list-style-type: none; padding: 0; margin: 0;">
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de voyance:</strong> {{ voyance.id }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Date de voyance:</strong> {{ voyance.created_at }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Montant total:</strong> {{ voyance.total_price }} €</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Type de voyance:</strong> {{ commande.get_type_display }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de voyance:</strong> {{ commande.id }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Date de voyance:</strong> {{ commande.created_at }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Montant total:</strong> {{ commande.total_price }} €</li>
         </ul>
       </div>
 
-      <p style="font-size: 18px; color: #666;">Veuillez envoyer vos questions, ainsi qu'une photo de vous de la tête au pied, à l'adresse e-mail suivante : {{ adresse_voyance }} </p>
-
+      {% if commande.type == 'par email' %}
+      <p style="font-size: 18px; color: #666;">Veuillez envoyer vos trois questions, ainsi qu'une photo de vous de la tête au pied, à l'adresse e-mail suivante : {{ adresse_voyance }} </p>
+      {% elif commande.type == 'complete' %}
+      <p style="font-size: 18px; color: #666;"> {{ voyance.description }} </p>
+      {% endif %}
 
 </body>
 </html>

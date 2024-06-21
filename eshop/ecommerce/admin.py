@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Commande, Promo, VIPromo, Collection, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser, Wishlist
+from .models import Article,DetailCollection , Commande, Promo, VIPromo, Collection, Voyance, DetailCommande, Pierre, PrixArticle, TagBesoin, Categorie, SousCategorie, Commentaire, Feedback, ClientUser, Wishlist
 from .models import Newsletter
 
 #####################################################################################
@@ -8,10 +8,20 @@ from .models import Newsletter
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     filter_horizontal = ('tags', 'pierres')  # Display tags and pierres as checkboxes
-    list_display = ('libelle', 'stock', 'categorie')
+    list_display = ('libelle', 'stock', 'categorie', 'date_created')
+    readonly_fields =('created_at', 'image_tag',)  
 
     def categorie(self, obj):
         return obj.categorie.libelle
+    
+    def date_created(self, obj):
+        return obj.created_at.strftime("%d/%m/%Y")
+    
+    fieldsets = (
+        (None, {
+            'fields': ('libelle', 'description', 'image', 'image_tag', 'stock', 'prix_article', 'categorie', 'sous_categorie', 'tags', 'pierres', 'created_at')
+        }),
+    )
     
 @admin.register(PrixArticle)
 class PrixArticleAdmin(admin.ModelAdmin):
@@ -25,39 +35,84 @@ class PrixArticleAdmin(admin.ModelAdmin):
 
     prix_article.short_description = 'Prix Article'
 
-
-class ArticleInline(admin.TabularInline):
-    model = Collection.articles.through  # Use the through model of the ManyToMany relationship
-    extra = 0
+class DetailCollectionInline(admin.TabularInline):
+    model = DetailCollection
+    extra = 1
     verbose_name = "Article"
     verbose_name_plural = "Articles"
 
-    def get_queryset(self, request):
-        # Fetch the collection from the parent object being viewed
-        collection_id = request.resolver_match.kwargs.get('object_id')
-        if collection_id:
-            return super().get_queryset(request).filter(collection_id=collection_id)
-        return super().get_queryset(request)
-    
+from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+class CollectionForm(forms.ModelForm):
+    articles = forms.ModelMultipleChoiceField(queryset=Article.objects.all(), widget=forms.SelectMultiple, required=False)
+
+    class Meta:
+        model = Collection
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        articles = cleaned_data.get('articles')
+        instance = self.instance
+
+        if articles and instance.pk:
+            existing_articles = instance.articles.all()
+            for article in articles:
+                if article in existing_articles:
+                    self.add_error('articles', _("L'article '{article}' est déjà associé à cette collection."))
+                    break  # Stop further checks if a duplicate is found
+
+        return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        instance = kwargs.get('instance')
+        
+        if instance and instance.pk:
+            existing_article_ids = instance.detailcollection_set.values_list('article_id', flat=True)
+            self.fields['articles'].queryset = Article.objects.exclude(id__in=existing_article_ids)
+        else:
+            self.fields['articles'].widget = forms.SelectMultiple(attrs={'size': 10})
+            self.fields['articles'].queryset = Article.objects.all()
+
+
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    inlines = [ArticleInline]
+    form = CollectionForm
+    inlines = [DetailCollectionInline]
     list_display = ('libelle','disponible')
-    readonly_fields = ('articles',)
-    
-admin.site.register(Pierre)
+    readonly_fields = ('image_tag',)
+    fieldsets = (
+        (None, {
+            'fields': ('libelle', 'description', 'image', 'image_tag', 'disponible')
+        }),
+    )
+
+
+@admin.register(Pierre)
+class PierreAdmin(admin.ModelAdmin):
+    readonly_fields = ('image_tag','cover_tag',)
+    fieldsets = (
+        (None, {
+            'fields': ('libelle','description', 'image', 'image_tag', 'couverture', 'cover_tag')
+        }),
+    )
+
+
 admin.site.register(TagBesoin)
 admin.site.register(Categorie)
 admin.site.register(SousCategorie)
-admin.site.register(Promo)
-admin.site.register(VIPromo)
+@admin.register(Promo)
+class PromoAdmin(admin.ModelAdmin):
+    list_display = ('libelle', 'discount_percentage', 'end_date')
 
 #####################################################################################
 # EDIT-ONE-FIELD-ONLY TABLES
 
 # admin.site.register(Commentaire) # pour la version 2
 @admin.register(Feedback)
-
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ('feedback', 'etat')
     readonly_fields = ('contenu', 'date_envoi', 'utilisateur')
@@ -72,6 +127,25 @@ class FeedbackAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
     
+
+@admin.register(Voyance)
+class VoyanceAdmin(admin.ModelAdmin):
+    list_display = ('libelle', 'type', 'tarif')
+    readonly_fields = ('type',)
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request):
+        return False
+    
+@admin.register(VIPromo)
+class VIPromoAdmin(admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    def has_add_permission(self, request):
+        return False
 
 #####################################################################################
 # READONLY TABLES

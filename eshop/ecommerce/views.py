@@ -1,7 +1,7 @@
 # views.py
 from django.http import HttpResponse
 from rest_framework import viewsets
-from .models import TailleArticle, Commande, VIPromo, Promo, Collection, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, DemandeVoyance
+from .models import Commande, VIPromo, Promo, Collection, Pierre, Categorie, SousCategorie, Commentaire, TagBesoin, DetailCommande, PrixArticle, Article, Feedback, ClientUser, Wishlist, Voyance, Cart, CartItem, DemandeVoyance
 from .serializers import CommandeSerializer, PierreSerializer, CategorieSerializer, SousCategorieSerializer, CommentaireSerializer, TagBesoinSerializer, DetailCommandeSerializer, PrixArticleSerializer, ArticleSerializer, FeedbackSerializer, UserSerializer, WishlistSerializer, CartSerializer, CartItemSerializer
 from django.views.decorators.csrf import csrf_protect
 from .forms import SignupForm, LoginForm, PersonalInfoForm, PasswordResetForm, VoyanceForm, NewsletterForm
@@ -15,7 +15,7 @@ from django.contrib.auth import authenticate, login, logout  # Importez les fonc
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.utils import timezone
+from django.utils import timezone as time
 from django.contrib import messages
 from django.conf import settings
 
@@ -69,10 +69,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
-class TailleArticleViewSet(viewsets.ModelViewSet):
-    queryset = TailleArticle.objects.all()
-    serializer_class = ArticleSerializer
-
 class WishlistViewSet(viewsets.ModelViewSet):
     queryset = Wishlist.objects.all()
     serializer_class = WishlistSerializer
@@ -109,6 +105,10 @@ def error_500(request):
     
 def accueil_view(request):
     form = VoyanceForm()
+
+    collections = Collection.objects.all()
+    print("mes collections : ", collections.__len__())
+
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
     
@@ -117,14 +117,32 @@ def accueil_view(request):
     if vipromoobj:
         notvipromo = False
 
+    # Calculate the date one month ago from today
+    one_month_ago = time.now() - timedelta(days=30)
+    
+    # Get all articles created at most one month from today
+    recent_articles = Article.objects.filter(created_at__gte=one_month_ago)
+    
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now())
+
+    # Fetch voyances
+    voyances = Voyance.objects.all()
+
     print(notvipromo)
     context = {'utilisateur_connecte': utilisateur_connecte,
                 'prenom_utilisateur': prenom_utilisateur,
                 'form':form,
-               'notvipromo': notvipromo
+               'notvipromo': notvipromo,
+               'recent_articles': recent_articles,
+               'recent_articles_count': recent_articles.count(),
+               'active_promos': active_promos,
+               'collections': collections,
+               'voyances': voyances,
                }
     
     return render(request, 'accueil.html', context)
+
 
 def articles_view(request):
     categories = Categorie.objects.all()
@@ -132,6 +150,13 @@ def articles_view(request):
     articles = Article.objects.filter(sous_categorie__in=sub_categories)
     # print("Categories:", categories)
     print("Subcategories:", sub_categories)
+
+
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now())
+    print("fucking promos : ", active_promos.__len__())
+
+
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
 
@@ -145,12 +170,16 @@ def articles_view(request):
             # Extraire les IDs des articles dans la wishlist
             wishlist_article_ids = list(wishlist.values_list('articles', flat=True))
 
+
     context = {'utilisateur_connecte': utilisateur_connecte,
                 'prenom_utilisateur': prenom_utilisateur,
                 'sub_categories': sub_categories,
                 'articles': articles,
                 'categories': categories,
-                'wishlist_article_ids': wishlist_article_ids }
+                'wishlist_article_ids': wishlist_article_ids,
+                'active_promos': active_promos  # Pass active promos for each article to the template
+                }
+    
     return render(request, 'articles.html', context)
 
 def details_view(request, article_id):
@@ -184,29 +213,36 @@ def details_view(request, article_id):
     return render(request, 'details.html', context)
 
 
-def collections_view(request):
-    collections = Collection.objects.all()
-
-    utilisateur_connecte = request.user.is_authenticated
-    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-
-    context = {
-        'utilisateur_connecte': utilisateur_connecte,
-        'prenom_utilisateur': prenom_utilisateur,
-        'collection': collections }
-    return render(request, 'collections.html', context)
-
 def detailscollect_view(request, collection_id):
-
+    
     collection = Collection.objects.get(pk=collection_id)
 
+    print("collection id  : ", collection_id)
+
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now())
+
+
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+
+    wishlist_article_ids = []  # Liste pour stocker les IDs des articles dans la wishlist de l'utilisateur connecté
+    
+    if utilisateur_connecte:
+
+        # Récupérer la wishlist de l'utilisateur connecté s'il est connecté
+        wishlist = Wishlist.objects.filter(client=request.user.id)
+        if wishlist.exists():  # Vérifier si la wishlist existe pour cet utilisateur
+            # Extraire les IDs des articles dans la wishlist
+            wishlist_article_ids = list(wishlist.values_list('articles', flat=True))
+
 
     context = {
         'utilisateur_connecte': utilisateur_connecte,
         'prenom_utilisateur': prenom_utilisateur,
-        'collection': collection }
+        'collection': collection,
+        'wishlist_article_ids': wishlist_article_ids,
+        'active_promos': active_promos }
     return render(request, 'details_collection.html', context)
 
 
@@ -1048,35 +1084,43 @@ def stripe_cancel(request):
     except Commande.DoesNotExist:
         pass
     
+        collections = Collection.objects.all()
+    print("mes collections : ", collections.__len__())
+
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    
+    vipromoobj = VIPromo.objects.filter(client=request.user).first() if utilisateur_connecte else None
+    notvipromo = True
+    if vipromoobj:
+        notvipromo = False
+
+    # Calculate the date one month ago from today
+    one_month_ago = time.now() - timedelta(days=30)
+    
+    # Get all articles created at most one month from today
+    recent_articles = Article.objects.filter(created_at__gte=one_month_ago)
+    
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now())
+
+    # Fetch voyances
+    voyances = Voyance.objects.all()
+
+    print(notvipromo)
+    context = {'utilisateur_connecte': utilisateur_connecte,
+               'prenom_utilisateur': prenom_utilisateur,
+               'notvipromo': notvipromo,
+               'recent_articles': recent_articles,
+               'recent_articles_count': recent_articles.count(),
+               'active_promos': active_promos,
+               'collections': collections,
+               'voyances': voyances,
+               }
+
     # ... handle cancelled payment ...
     return render(request, 'accueil.html', context)
 
-@login_required() 
-@csrf_exempt
-def voyance_success(request):
-    session_id = request.GET.get('session_id')
-    print ("session id : ", session_id)
-    if session_id:
-        stripe.api_key = settings.STRIPE_API_SECRET_KEY
-        session = stripe.checkout.Session.retrieve(session_id)
-
-        print("voyance payment status : ", session.payment_status)
-        if session.payment_status == 'paid':
-            # Retrieve the corresponding Commande object
-            commande = DemandeVoyance.objects.get(session_id=session.id)
-
-            commande.etat = 'payee' # Update etat to "payee"
-            commande.payment_intent = session.payment_intent
-            print('payment intent after success : ', session.payment_intent)
-            commande.save()
-
-    utilisateur_connecte = request.user.is_authenticated
-    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
-    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
-    return render(request, 'stripe_success.html', context)
 
 
 # # TODO : READ WEBHOOKS DOCS & WATCH TUTORIALS
@@ -1111,61 +1155,45 @@ def voyance_success(request):
 #     return JsonResponse({'status': 'success'})
 
 
-@csrf_protect
-@login_required
-def voyance_order(request):
-    data = json.loads(request.body)
+@login_required()
+def choose_voyance_view(request, voyance_id):
+    # Retrieve the selected voyance
+    print("error ?")
+    voyance = get_object_or_404(Voyance, id=voyance_id)
 
-    total_price = settings.VOYANCE_PRICE  # Stripe expects the amount in cents
+    print('voyance : ', voyance.libelle)
 
-    stripe.api_key = settings.STRIPE_API_SECRET_KEY
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card', 'paypal'],
-        line_items=[{
-            "price_data": {
-                "currency": "eur",
-                "product_data": {
-                    "name": "Voyance",
-                },
-                "unit_amount": total_price,
-            },
-            "quantity": 1,
-        }],
-        mode='payment',
-        success_url = request.build_absolute_uri(reverse('voyance_success')) + '?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url= request.build_absolute_uri(reverse('accueil'))
-    )
-
-    # Confirm the payment intent
-    # stripe.PaymentIntent.confirm(session.payment_intent, payment_method=data['payment_method'])
-
-    voyance = DemandeVoyance.objects.create(
+    # Create a new DemandeVoyance object
+    demande_voyance = DemandeVoyance.objects.create(
         user=request.user,
-        prenom=data['prenom'],
-        nom=data['nom'],
-        email=data['email'],
-        telephone=data['telephone'],
-        etat='en attente',
-        total_price=total_price/100,
-        session_id= session.id,
-        payment_intent=session.payment_intent
+        total_price=voyance.tarif,
+        telephone=request.user.phone_number,  # You may need to adjust this
+        nom=request.user.last_name,  # You may need to adjust this
+        prenom=request.user.first_name,  # You may need to adjust this
+        email=request.user.email,
+        voyance=voyance.libelle,
+        type=voyance.type,
+        etat='en attente'
     )
 
-    # Recalculate total price and save Voyance instance
-    voyance.save()
 
-    return JsonResponse({'session': session, 'voyance': session.payment_intent})
+    print("demande_voyance : ", demande_voyance.id)
 
+    # Redirect to the payment view with the new DemandeVoyance object
+    return redirect('paiement_voyance', demande_voyance_id=demande_voyance.id)
 
 @login_required()
-def paiement_voyance_view(request):
+def paiement_voyance_view(request, demande_voyance_id):
     # Retrieve the current user
     user_v = request.user
     
-    cart_items = Voyance.objects.filter(email=user_v.email, etat="en attente")
-    
+    # Retrieve the DemandeVoyance object
 
-    total_price = 30
+    demande_voyance = get_object_or_404(DemandeVoyance, id=demande_voyance_id)
+    print("demande de voyance : ", demande_voyance.etat)
+    
+    # Retrieve the Voyance description
+    description = Voyance.objects.filter(type=demande_voyance.type).first().description
 
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
@@ -1174,9 +1202,130 @@ def paiement_voyance_view(request):
     context = { 'pub_key': pub_key,
             'utilisateur_connecte': utilisateur_connecte,
             'prenom_utilisateur': prenom_utilisateur,
-            'cart_items': cart_items,
-            'total_price' : total_price
+            'cart_items': demande_voyance,
+            'description': description,
+            'total_price' : demande_voyance.total_price,
         }
     
     return render(request, 'paiement_voyance.html', context)
 
+@csrf_protect
+@login_required
+def voyance_order(request, demande_voyance_id):
+
+    data = json.loads(request.body)
+
+    print("in voyance order baby yeah !")
+
+    demande_voyance = get_object_or_404(DemandeVoyance, id=demande_voyance_id)
+    
+    demande_voyance.prenom=data['prenom']
+    demande_voyance.nom=data['nom']
+    demande_voyance.email=data['email']
+    demande_voyance.telephone=data['telephone']
+    total_price = demande_voyance.total_price
+    voyance = demande_voyance.voyance
+
+    unit_amount = int(total_price * 100)
+
+    stripe.api_key = settings.STRIPE_API_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card', 'paypal'],
+        line_items=[{
+            "price_data": {
+                "currency": "eur",
+                "product_data": {
+                    "name": voyance,
+                },
+                "unit_amount": unit_amount,
+            },
+            "quantity": 1,
+        }],
+        mode='payment',
+        success_url = request.build_absolute_uri(reverse('voyance_success')) + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url= request.build_absolute_uri(reverse('voyance_cancel'))
+    )
+
+    # Confirm the payment intent
+    # stripe.PaymentIntent.confirm(session.payment_intent, payment_method=data['payment_method'])
+
+    
+    demande_voyance.session_id= session.id
+    demande_voyance.payment_intent=session.payment_intent
+
+    demande_voyance.save()
+
+    return JsonResponse({'session': session, 'voyance': session.payment_intent})
+
+
+@login_required() 
+@csrf_exempt
+def voyance_success(request):
+    session_id = request.GET.get('session_id')
+    print ("session id : ", session_id)
+    if session_id:
+        stripe.api_key = settings.STRIPE_API_SECRET_KEY
+        session = stripe.checkout.Session.retrieve(session_id)
+
+        print("voyance payment status : ", session.payment_status)
+        if session.payment_status == 'paid':
+            # Retrieve the corresponding Commande object
+            commande = DemandeVoyance.objects.get(session_id=session.id)
+
+            commande.etat = 'payee' # Update etat to "payee"
+            commande.payment_intent = session.payment_intent
+            print('payment intent after success : ', session.payment_intent)
+            commande.save()
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    context = {'utilisateur_connecte': utilisateur_connecte, 'prenom_utilisateur': prenom_utilisateur}
+    return render(request, 'stripe_success.html', context)
+
+@login_required() 
+@csrf_exempt
+def voyance_cancel(request):
+    session_id = request.GET.get('session_id')
+    try:
+        commandes = DemandeVoyance.objects.filter(user=request.user, etat='en attente')
+        for commande in commandes:
+            commande.delete()
+    except DemandeVoyance.DoesNotExist:
+        pass
+    
+    collections = Collection.objects.all()
+    print("mes collections : ", collections.__len__())
+
+    utilisateur_connecte = request.user.is_authenticated
+    prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
+    
+    vipromoobj = VIPromo.objects.filter(client=request.user).first() if utilisateur_connecte else None
+    notvipromo = True
+    if vipromoobj:
+        notvipromo = False
+
+    # Calculate the date one month ago from today
+    one_month_ago = time.now() - timedelta(days=30)
+    
+    # Get all articles created at most one month from today
+    recent_articles = Article.objects.filter(created_at__gte=one_month_ago)
+    
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now())
+
+    # Fetch voyances
+    voyances = Voyance.objects.all()
+
+    print(notvipromo)
+    context = {'utilisateur_connecte': utilisateur_connecte,
+               'prenom_utilisateur': prenom_utilisateur,
+               'notvipromo': notvipromo,
+               'recent_articles': recent_articles,
+               'recent_articles_count': recent_articles.count(),
+               'active_promos': active_promos,
+               'collections': collections,
+               'voyances': voyances,
+               }
+
+    # ... handle cancelled payment ...
+    return render(request, 'accueil.html', context)

@@ -394,7 +394,7 @@
                         </li>
 
                         <li class="nav__item">
-                            <a href="{% url 'collections' %}" class="nav__link">
+                            <a href="{% url 'accueil' %}#collection" class="nav__link">
                                 <i class="fa-solid fa-shapes"></i>
                                  Collections
                             </a>
@@ -627,6 +627,34 @@
                                     <div id="shortDesc" style="color: white; font-weight: lighter;">{{ article.description }}</div>
                                 {% endif %}
                                 
+                                {% if article.tags.all or article.pierres.all %}
+                                {% if article.tags.all %}
+
+                                <br><br>
+                                <h2 style="margin-bottom: 0.75rem;">Besoins : </h2> 
+                                <p style="color: white;">
+                                {% for tag in article.tags.all %}
+                                    {{ tag.libelle }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                                </p>
+
+                                <br><br>
+                            
+                                {% if article.pierres.all %}
+                                <h2 style="margin-bottom: 0.75rem;">Pierres : </h2>
+
+                                <p style="color: white;">
+                                
+                                {% for pierre in article.pierres.all %}
+                                    {{ pierre.libelle }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+
+                                </p>
+                                {% endif %}
+                
+
+                                {% endif %}
                             </div>
 
                               
@@ -655,7 +683,11 @@
                         <div class="card proposed_article card_details" style="background-image: url('/media/{{ article.image}}');" onclick="redirectToArticle('{{ article.id }}')">
                             <div class="overlay">
                                 <h3 style="font-weight: 900;">{{ article.libelle }}</h3>
-                                <p>{{ article.prix_article.first.prix }} €</p>
+                                {% if article.prix_article.first.type_prix == "fixed" %}
+                                <p>{{ article.prix_article.first}}</p>
+                                {% else %}
+                                <p>Par taille - {{ article.prix_article.first.prix}} à {{ article.prix_article.last.prix }} €</p>
+                                {% endif %}
                             </div>
                         </div>
                         {% endfor %}

@@ -5,282 +5,539 @@
 
 {% block content %}
 
-        <!--==================== HEADER ====================-->
-        <header role="banner" class="header" id="header">
+    <link rel="stylesheet" href="{% static 'css/log_style.css' %}">
+    <!--==================== HEADER ====================-->
+    <header role="banner" class="header" id="header">
 
-            <!--==================== TOP BAR ====================-->
-            <div class="top__bar">
+        <!--==================== TOP BAR ====================-->
+        <div class="top__bar">
 
-                   <div class="search__container">
-                    {% if utilisateur_connecte %}
-                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    {% else %}
-                    <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    {% endif %}
+                <div class="search__container">
+                {% if utilisateur_connecte %}
+                <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
+                <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                {% else %}
+                <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
+                <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                {% endif %}
 
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
-                   </div>
-
-                    <!-- Barre de recherche -->
-                    <div id="searchBar" class="search-bar">
-                        <form id="search-form" method="post" autocomplete="off">
-                            {% csrf_token %}
-                        <input type="text" id="searchInput" placeholder="Rechercher...">
-                        </form>
-                        <div id="results-box" class="results-card" style="display:none"></div>
-                    </div>
-                
-                    <!-- Script to log search input to console -->
-
-                    <script>
-                        $(document).ready(function() {
-
-                            const searchForm = document.getElementById('search-form');
-                            const searchInput = document.getElementById('searchInput');
-                            const resultsBox = document.getElementById('results-box');
-
-                            const searchFormMobile = document.getElementById('search-form-mobile');
-                            const searchInputMobile = document.getElementById('searchInputMobile');
-                            const resultsBoxMobile = document.getElementById('results-box-mobile');
-
-                            const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-                            function sendSearchData(form, input, results) {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: '{% url "search" %}',
-                                    data: {
-                                        'csrfmiddlewaretoken': csrf,
-                                        'article': input.value,
-                                    },
-                                    success: function(res) {
-                                        let data = res.data;
-                                        if (Array.isArray(data)) {
-                                            results.innerHTML = '';
-                                            data.forEach(article => {
-                                                let articleContainer = document.createElement('a');
-                                                articleContainer.onclick = function() {
-                                                    window.location.href = "/details/" + article.id;
-                                                };
-                                                articleContainer.classList.add('link', 'article-container');
-
-                                                let imgElement = document.createElement('img');
-                                                imgElement.src = article.image;
-                                                imgElement.alt = article.name;
-                                                imgElement.classList.add('article-img');
-                                                imgElement.style.marginRight = '10px';
-
-                                                let nameElement = document.createElement('h5');
-                                                nameElement.textContent = article.name;
-                                                nameElement.style.color = 'black';
-
-                                                articleContainer.appendChild(imgElement);
-                                                articleContainer.appendChild(nameElement);
-
-                                                results.appendChild(articleContainer);
-                                            });
-                                        } else {
-                                            if (input.value.length > 0) {
-                                                results.innerHTML = `<b>${data}</b>`;
-                                            } else {
-                                                results.innerHTML = '';
-                                                results.style.display = 'none';
-                                            }
-                                        }
-                                    },
-
-                                    error: function(err) {
-                                        console.log(err);
-                                    },
-                                });
-                            }
-
-                            searchInput.addEventListener('input', function(e) {
-                                const searchQuery = e.target.value.trim();
-                                if (searchQuery.length > 0) {
-                                    resultsBox.style.display = 'block';
-                                } else {
-                                    resultsBox.style.display = 'none';
-                                }
-                                sendSearchData(searchForm, searchInput, resultsBox);
-                            });
-
-                            searchInputMobile.addEventListener('input', function(e) {
-                                const searchQuery = e.target.value.trim();
-                                if (searchQuery.length > 0) {
-                                    resultsBoxMobile.style.display = 'block';
-                                } else {
-                                    resultsBoxMobile.style.display = 'none';
-                                }
-                                sendSearchData(searchFormMobile, searchInputMobile, resultsBoxMobile);
-                            });
-                            });
-                    </script>
-
-
-                   <a href="{% url 'accueil' %}" class="logo__prin"> 
-                    <img id="logo" src="{% static 'img/logo.webp' %}" alt="logo la pierre de lune">
-                   </a>
-
-                   {% if utilisateur_connecte %}
-
-
-                   <!-- Desktop version -->
-                   <div class="shop__container">
-                    <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
-                        <i class="fa fa-sign-out"></i>
-                    </button></a>
-                    <a href="{% url 'profil' %}"><button class="log__button" >
-                        <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
-                        {{ prenom_utilisateur }}
-                        <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
-                    </button></a>
-                   </div>
-                
-
-                   {% else %}
-
-                   <div class="shop__container">
-                    <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
-                        <i class="fa fa-user-plus"></i>
-                    </button></a>
-                    <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
-                        <i class="fa fa-sign-in"></i>
-                    </button></a>
-                   </div>
-
-                   {% endif %} 
-
-            </div>
-
-
-            <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
-                <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
-            </div>
-
-            <!--==================== NAVIGATION BAR ====================-->
-            <nav class="nav container" id="nav-bar">
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list grid">
-                        <li class="nav__item">
-                            <a href="#" class="nav__link active-link">
-                                <i class="fa-regular fa-moon"></i>
-                                 Accueil
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="{% url 'collections' %}" class="nav__link active-link">
-                                <i class="fa-solid fa-shapes"></i>
-                                 Collections
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="#artist" class="nav__link anchor__link">
-                                <i class="fa-solid fa-person-rays"></i>
-                                 Artiste
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="{% url 'articles' %}" class="nav__link">
-                                <i class="fa-solid fa-store"></i>
-                                 Articles
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="{% url 'pierres' %}" class="nav__link">
-                                <i class="fa-regular fa-gem"></i>
-                                 Pierres
-                            </a>
-                        </li>
-
-                        <li class="nav__item">
-                            <a href="#voyance" class="nav__link anchor__link">
-                                <i class="fa-solid fa-hand-sparkles"></i>
-                                 Voyance
-                            </a>
-                        </li>
-
-                    </ul>
-
-                    <!--Close button-->
-                <div class="nav__close" id="nav-close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
+                <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                 </div>
 
-                <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;" alt="logo version mobile">
+                <!-- Barre de recherche -->
+                <div id="searchBar" class="search-bar">
+                    <form id="search-form" method="post" autocomplete="off">
+                        {% csrf_token %}
+                    <input type="text" id="searchInput" placeholder="Rechercher...">
+                    </form>
+                    <div id="results-box" class="results-card" style="display:none"></div>
+                </div>
+            
+                <!-- Script to log search input to console -->
+
+                <script>
+                    $(document).ready(function() {
+
+                        const searchForm = document.getElementById('search-form');
+                        const searchInput = document.getElementById('searchInput');
+                        const resultsBox = document.getElementById('results-box');
+
+                        const searchFormMobile = document.getElementById('search-form-mobile');
+                        const searchInputMobile = document.getElementById('searchInputMobile');
+                        const resultsBoxMobile = document.getElementById('results-box-mobile');
+
+                        const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+                        function sendSearchData(form, input, results) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '{% url "search" %}',
+                                data: {
+                                    'csrfmiddlewaretoken': csrf,
+                                    'article': input.value,
+                                },
+                                success: function(res) {
+                                    let data = res.data;
+                                    if (Array.isArray(data)) {
+                                        results.innerHTML = '';
+                                        data.forEach(article => {
+                                            let articleContainer = document.createElement('a');
+                                            articleContainer.onclick = function() {
+                                                window.location.href = "/details/" + article.id;
+                                            };
+                                            articleContainer.classList.add('link', 'article-container');
+
+                                            let imgElement = document.createElement('img');
+                                            imgElement.src = article.image;
+                                            imgElement.alt = article.name;
+                                            imgElement.classList.add('article-img');
+                                            imgElement.style.marginRight = '10px';
+
+                                            let nameElement = document.createElement('h5');
+                                            nameElement.textContent = article.name;
+                                            nameElement.style.color = 'black';
+
+                                            articleContainer.appendChild(imgElement);
+                                            articleContainer.appendChild(nameElement);
+
+                                            results.appendChild(articleContainer);
+                                        });
+                                    } else {
+                                        if (input.value.length > 0) {
+                                            results.innerHTML = `<b>${data}</b>`;
+                                        } else {
+                                            results.innerHTML = '';
+                                            results.style.display = 'none';
+                                        }
+                                    }
+                                },
+
+                                error: function(err) {
+                                    console.log(err);
+                                },
+                            });
+                        }
+
+                        searchInput.addEventListener('input', function(e) {
+                            const searchQuery = e.target.value.trim();
+                            if (searchQuery.length > 0) {
+                                resultsBox.style.display = 'block';
+                            } else {
+                                resultsBox.style.display = 'none';
+                            }
+                            sendSearchData(searchForm, searchInput, resultsBox);
+                        });
+
+                        searchInputMobile.addEventListener('input', function(e) {
+                            const searchQuery = e.target.value.trim();
+                            if (searchQuery.length > 0) {
+                                resultsBoxMobile.style.display = 'block';
+                            } else {
+                                resultsBoxMobile.style.display = 'none';
+                            }
+                            sendSearchData(searchFormMobile, searchInputMobile, resultsBoxMobile);
+                        });
+                        });
+                </script>
+
+
+                <a href="{% url 'accueil' %}" class="logo__prin"> 
+                <img id="logo" src="{% static 'img/logo.webp' %}" alt="logo la pierre de lune">
                 </a>
 
-                <div class="nav__buttons">
+                {% if utilisateur_connecte %}
 
-                    <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
-                    <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
-                    
-                    <!-- Toggle button -->
-                    <div class="nav__toggle" id="nav-toggle">
-                        <i class="fa-solid fa-bars-staggered"></i>
-                    </div>
+
+                <!-- Desktop version -->
+                <div class="shop__container">
+                <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+                    <i class="fa fa-sign-out"></i>
+                </button></a>
+                <a href="{% url 'profil' %}"><button class="log__button" >
+                    <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+                    {{ prenom_utilisateur }}
+                    <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+                </button></a>
                 </div>
-            </nav>
             
-        </header>
 
-        <!--=============== LOG HEADER BUTTONS ==================-->
+                {% else %}
 
-        <!-- Mobile version -->
+                <div class="shop__container">
+                <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+                    <i class="fa fa-user-plus"></i>
+                </button></a>
+                <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+                    <i class="fa fa-sign-in"></i>
+                </button></a>
+                </div>
 
-        {% if utilisateur_connecte %}
-
-        <div class="log__container">
-            <a href="{% url 'profil' %}"><button class="log__button" >
-                <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
-                {{ prenom_utilisateur }}
-                <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
-            </button></a>
-
-            <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
-                <i class="fa fa-sign-out"></i>
-            </button></a>
+                {% endif %} 
 
         </div>
 
-        {% else %}
 
-        <div class="log__container">
-            <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
-                <i class="fa fa-user-plus"></i>
-            </button></a>
-            <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
-                <i class="fa fa-sign-in"></i>
-            </button></a>
+        <div  class="separation_img" style="display: flex; justify-content: space-around; align-items: center;">
+            <img src="{% static 'img/Vector.webp' %}" alt="separation" style="width: auto; padding: 2rem;">
         </div>
 
-        {% endif %}
+        <!--==================== NAVIGATION BAR ====================-->
+        <nav class="nav container" id="nav-bar">
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list grid">
+                    <li class="nav__item">
+                        <a href="{% url 'accueil' %}" class="nav__link active-link">
+                            <i class="fa-regular fa-moon"></i>
+                                Accueil
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="{% url 'accueil' %}#collection" class="nav__link active-link">
+                            <i class="fa-solid fa-shapes"></i>
+                                Collections
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="{% url 'accueil' %}#artist" class="nav__link ">
+                            <i class="fa-solid fa-person-rays"></i>
+                                Artiste
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="{% url 'articles' %}" class="nav__link">
+                            <i class="fa-solid fa-store"></i>
+                                Articles
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="{% url 'pierres' %}" class="nav__link">
+                            <i class="fa-regular fa-gem"></i>
+                                Pierres
+                        </a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="{% url 'accueil' %}#voyance" class="nav__link ">
+                            <i class="fa-solid fa-hand-sparkles"></i>
+                                Voyance
+                        </a>
+                    </li>
+
+                </ul>
+
+                <!--Close button-->
+            <div class="nav__close" id="nav-close">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+
+            <a href="{% url 'accueil' %}" class="nav__logo">
+                <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;" alt="logo version mobile">
+            </a>
+
+            <div class="nav__buttons">
+
+                <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
+                <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                
+                <!-- Toggle button -->
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </div>
+            </div>
+        </nav>
         
+    </header>
 
-        <!-- Barre de recherche Mobile -->
-        <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
-            <form id="search-form-mobile" method="post" autocomplete="off">
-                {% csrf_token %}
-                <input type="text" id="searchInputMobile" placeholder="Rechercher...">
-            </form>
-            <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
+    <!--=============== LOG HEADER BUTTONS ==================-->
+
+    <!-- Mobile version -->
+
+    {% if utilisateur_connecte %}
+
+    <div class="log__container">
+        <a href="{% url 'profil' %}"><button class="log__button" >
+            <i class="far fa-circle-user fa-lg" style="padding: 0; padding-right: 5px; "></i>
+            {{ prenom_utilisateur }}
+            <i class="fa-solid fa-chevron-down" style="padding: 0;"></i>
+        </button></a>
+
+        <a href="{% url 'deconnexion' %}"><button class="log__button">Se déconnecter
+            <i class="fa fa-sign-out"></i>
+        </button></a>
+
+    </div>
+
+    {% else %}
+
+    <div class="log__container">
+        <a href="{% url 'inscription' %}"><button class="log__button">S'inscrire
+            <i class="fa fa-user-plus"></i>
+        </button></a>
+        <a href="{% url 'connexion' %}"><button class="log__button">Se connecter
+            <i class="fa fa-sign-in"></i>
+        </button></a>
+    </div>
+
+    {% endif %}
+    
+
+    <!-- Barre de recherche Mobile -->
+    <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
+        <form id="search-form-mobile" method="post" autocomplete="off">
+            {% csrf_token %}
+            <input type="text" id="searchInputMobile" placeholder="Rechercher...">
+        </form>
+        <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
+    </div>
+
+    <!--==================== MAIN ====================-->
+    <main class="main">
+
+        <!--=============== MAIN JS ===============-->
+        <script src="{% static 'js/main.js' %}"></script>
+        
+        
+        <div class="collection__main">
+
+            <!-- product cards -->
+            <section class="collect__section">
+                <div class="collect__header" style="background: center / cover no-repeat url('/media/{{ collection.image}}');
+                                                    background-color: rgba(0, 0, 0, 0.7);
+                                                    background-blend-mode: darken;">
+                    
+                    <div class="breadcrumb-div" style="margin: 1rem 0;">
+                        <p id="breadcrumb" >Collections / {{collection.libelle}}</p>
+                    </div>
+                    
+                    <h2 id="title-category">{{collection.libelle}}</h2>
+                    <p>{{collection.description}}</p>
+                </div>
+
+                <div class="product-cards-collection" id="productCardsContainer">
+                    {% for article in collection.articles.all %}
+                    <div class="product-card" article-id="{{ article.id }}" article-category="{{ article.categorie.libelle }}" article-sub-category="{{ article.sous_categorie_id }}"  style="background: center / cover no-repeat url('/media/{{ article.image}}');">
+                        
+                        <!-- <div class="ribbon_promo" data-ribbon="20%" style="--d:8px;--c:red;"></div> -->
+                        
+                        {% if article.is_new %}
+                        <div class="ribbon left" data-ribbon="Nouveau !" style="--d:10px;--c:green;--f:13px;"></div>
+                        {% endif %}
+
+
+                        <!-- Display ribbon_promo for each active promo associated with the article -->
+                        {% for promo in active_promos %}
+                        {% if article in promo.articles.all %}
+                            <div class="ribbon_promo">- {{ promo.discount_percentage|floatformat:"0" }}%</div>
+                        {% endif %}
+                        {% endfor %}
+
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+                        <div class="product-image" article-id="{{ article.id }}"></div>
+
+                        <div class="heart-icon" >
+                            {% if article.id in wishlist_article_ids %}
+                            <img src="{% static 'img/empty_heart.svg' %}" 
+                                alt="Heart Icon"  class="heart-outline hidden add-to-wishlist-btn" data-article-id="{{ article.id }}">
+
+                            <img src="{% static 'img/filled_heart.svg' %}" alt="Red Heart Icon" 
+                                class="heart-red add-to-wishlist-btn" data-article-id="{{ article.id }}">
+                            {% else %}
+                            <img src="{% static 'img/empty_heart.svg' %}" 
+                                alt="Heart Icon"  class="heart-outline add-to-wishlist-btn" data-article-id="{{ article.id }}">
+
+                            <img src="{% static 'img/filled_heart.svg' %}" alt="Red Heart Icon" 
+                                class="heart-red hidden add-to-wishlist-btn" data-article-id="{{ article.id }}">
+                            {% endif %}
+                        </div>
+                
+                        <div class="product-info" article-id="{{ article.id }}">
+                            <h3>{{ article.libelle }}</h3>
+                            {% if article.prix_article.first.type_prix == "fixed" %}
+                            <p>{{ article.prix_article.first}}</p>
+                            {% else %}
+                            <p>Par taille - {{ article.prix_article.first.prix}} à {{ article.prix_article.last.prix }} €</p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+                
+            </section>
+
         </div>
 
-        <!--==================== MAIN ====================-->
-        <main class="main">
+        <!--==================== LIVRAISON ====================-->
+        <section class="livraison__section">
 
-            <!--=============== MAIN JS ===============-->
-            <script src="{% static 'js/main.js' %}"></script>
+            <!-- <img src ="{% static 'img/line.svg' %}" alt ="line" class="right__line"> -->
+
+            <div class="livraison__container">
+                <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="Image SVG">
+                <div class="livraison__paragraphes">
+                    <b><p>Livraison à domicile</p></b>
+                    <p>5,00 €</p>
+                    <p>2 à 3 jours ouvrables (France)</p>
+                </div>
+            </div>
+            
+            <!-- <img src ="{% static 'img/line.svg' %}" alt ="line" class="left__line">
+
+            <img src ="{% static 'img/line.svg' %}" alt ="line"class="right__line"> -->
+
+            <div class="livraison__container">
+                <div class="livraison__paragraphes">
+                    <p>Livraison gratuite pour tous les achats à partir de 65,00 €</p>
+                </div>
+            </div>
+            
+            <!-- <img src ="{% static 'img/line.svg' %}" alt ="line" class="left__line"> -->
+        </section>
+    </main>
+
+    <script>
+        // Sélectionnez tous les éléments avec la classe product-image
+        const productCards = document.querySelectorAll('.product-image');
+    
+        // Parcourez chaque élément et ajoutez un gestionnaire d'événements pour le clic
+        productCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Récupérez l'ID de l'article en utilisant l'attribut article-id
+                const articleId = card.getAttribute('article-id');
+    
+                // Effectuez une redirection vers la vue details_view avec l'ID de l'article en tant que paramètre
+                window.location.href = `/details/${articleId}/`;
+            });
+        });
+
+        // Sélectionnez tous les éléments avec la classe product-info
+        const productInfos = document.querySelectorAll('.product-info');
+    
+        // Parcourez chaque élément et ajoutez un gestionnaire d'événements pour le clic
+        productInfos.forEach(info => {
+            info.addEventListener('click', () => {
+                // Récupérez l'ID de l'article en utilisant l'attribut article-id
+                const articleId = info.getAttribute('article-id');
+    
+                // Effectuez une redirection vers la vue details_view avec l'ID de l'article en tant que paramètre
+                window.location.href = `/details/${articleId}/`;
+            });
+        });
+
+    </script>
         
-        </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist-btn');
+            var utilisateurConnecte = {{ utilisateur_connecte|yesno:"true,false" }};
+            
+            addToWishlistButtons.forEach(button => {
+                button.addEventListener('click', function() {
+
+                    if (utilisateurConnecte) {
+
+                    
+
+                    const articleId = this.getAttribute('data-article-id');
+                    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+                    fetch('/add_to_wishlist/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: new URLSearchParams({
+                            'article_id': articleId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.added) {
+                            Toastify({
+                                text: 'Article ajouté à votre wishlist !',
+                                duration: 3000,
+                                gravity: 'top',
+                                position: 'right',
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }
+                            }).showToast();
+                        } else {
+                            Toastify({
+                                text: 'Article retiré de votre wishlist !',
+                                duration: 3000,
+                                gravity: 'top',
+                                position: 'right',
+                                stopOnFocus: true, // Prevents dismissing of toast on hover
+                                style: {
+                                    background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                                }
+                            }).showToast();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                }
+                
+                else {
+
+                Toastify({
+                    text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre liste de souhaits.',
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                    }
+                }).showToast();
+
+                }
+                });
+            });
+        
+            if(!utilisateurConnecte) {
+                // Get the heart icon container
+                const heartIcons = document.querySelectorAll('.heart-icon');
+                
+                // Trigger click event on the heart icon is clicked
+                heartIcons.forEach(icon => {
+                    icon.addEventListener('click', function(){
+                        console.log("heart clicked");
+                        const outlineHeart = this.querySelector('.heart-outline');
+                        const redHeart = this.querySelector('.heart-red');
+                        outlineHeart.classList.add('hidden');
+                        redHeart.classList.remove('hidden');
+                        
+                        // add to favorite code.
+                    });
+                });
+            }
+        
+            // Sélectionner les icônes not_connected
+            var notConnectedCartIcon = document.querySelector('#not_connected_cart');
+            var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
+
+            // Ajouter un gestionnaire d'événements click à chaque icône
+            notConnectedCartIcon.addEventListener('click', function() {
+                showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
+            });
+
+            notConnectedFavorisIcon.addEventListener('click', function() {
+                showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
+            });
+
+            // Fonction pour afficher un toast
+            function showToast(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                    }
+                }).showToast();
+            }
+        
+        
+        });
+    </script>
 
 {% endblock %}

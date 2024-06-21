@@ -89,14 +89,14 @@
         
         {% endblock %}
 
-                <!--==================== FOOTER ====================-->
+        <!--==================== FOOTER ====================-->
         <footer class="footer" style="background-color:#414141;">
                     <div class="row">
                         <div class="column col1" style="background-color:#414141;">
                             <h2 style="color: white;">Menu Principal</h2>
                             <ul class="footer__menu__principal">
                                 <li class="footer__link"><a href="{% url 'accueil' %}" >ACCUEIL</a></li>
-                                <li class="footer__link"><a href="{% url 'collections' %}" >COLLECTION</a></li>
+                                <li class="footer__link"><a href="{% url 'accueil' %}#collection" >COLLECTION</a></li>
                                 <li class="footer__link"><a href="{% url 'accueil' %}#artist" >ARTISTE</a></li>
                                 <li class="footer__link"><a href="{% url 'articles' %}" >ARTICLES</a></li>
                                 <li class="footer__link"><a href="{% url 'accueil' %}#voyance" >VOYANCE</a></li>

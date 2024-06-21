@@ -86,7 +86,38 @@ html {
     scroll-behavior: smooth;
 }
 
+    .top-ribbon {
+        width: 100%;
+        background-color: #414141;
+        color: white;
+        text-align: center;
+        padding: 5px 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1010; /* Ensure the ribbon is on top of other elements */
+        overflow: hidden;
+    }
+
+    .moving-text {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: moveText 40s linear infinite;
+        width: 100%;
+    }
+
+    @keyframes moveText {
+        from {
+            transform: translateX(50%);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
 body {
+
     scrollbar-width: thin;
     scrollbar-color: rgba(0,0,0,0.5) rgba(233, 233, 233, 0.1) ;
     
@@ -492,6 +523,199 @@ img {
 }
 
 /*-----------------------------------*\
+* #NOUVEAUX ARTICLES
+\*-----------------------------------*/
+
+.autres__articles {
+    padding-block: 2rem;
+    width: 100%;
+    background-color: var(--darkgray-color);
+    position: relative;
+}
+
+.read-more-btn {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/*-----------------------------------*\
+* NOUVEAUTES SLIDER
+\*-----------------------------------*/
+
+.slider-container-new {
+    width: 100%;
+    height: 28rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider_new {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s ease-in-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide_new {
+    width: 55%;
+    height: 100%;
+    display: none;
+    position: relative;
+    border-radius: 1rem !important;
+    border: 1px solid white;
+}
+
+
+.slide_new.active_new {
+    display: grid;
+    grid-template-columns: auto 45%;
+}
+
+.image_new {
+    width: 100%;
+    height: auto;
+    position: relative;
+    right: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* No repeat */
+    /* background-attachment: fixed; /* Fixed background */
+    background-clip: border-box; /* Extend background to border */
+    background-origin: padding-box; /* Position background from padding edge */
+    background-blend-mode: overlay; /* Blend mode for background */
+    border-radius: 0 1rem 1rem 0 !important;
+}
+
+.slide-content-new {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    padding: 2rem;
+    color: black;
+    background-color: #E8E8E8;
+    border-radius: 1rem 0 0 1rem !important;
+}
+
+.slide-content-new h1 {
+    margin: 0;
+    margin-bottom: 4rem !important;
+    color: black;
+    font-size: var(--h1-font-size);
+    font-weight: bold;
+    font-family: var(--accueil-font);
+    border-bottom: 1px solid var(--darkgray-color);
+}
+
+.slide-content-new p {
+    margin: 0;
+    width: 100%;
+    height: fit-content;
+}
+
+.slide-content-new button {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 2rem;
+    color: white;
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 5rem;
+    cursor: pointer;
+}
+
+.controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    padding: 0 1rem;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.control {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+/*-----------------------------------*\
+* PROMO POPUP MODAL
+\*-----------------------------------*/
+
+.popup-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    width: 12rem;
+    height: 16rem;
+    background: linear-gradient(to right, #5f5cfc, #6a82fb);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+    text-align: center;
+    background-size: contain;
+    background-position: top;
+    border-radius: 15px;
+}
+
+.popup-content h2,
+.popup-content p {
+    margin: 0.5rem 0;
+}
+
+.popup-content p {
+    font-size: 1.2em;
+    color: black;
+}
+
+.shop-now-btn {
+    padding: 0.5rem 1rem;
+    background-color: #242479;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.shop-now-btn:hover {
+    background-color: #242479ab;
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+
+/*-----------------------------------*\
 * #COLLECTION SWIPER 
 \*-----------------------------------*/
 
@@ -526,6 +750,10 @@ img {
     margin: 0 2em;
 }
 
+.card_new {
+    width: 40em;    
+}
+
 .mon-slider:not(.swiper-slide-active) {
     filter: blur(2px);
 }
@@ -556,7 +784,7 @@ img {
     font-weight: 500;
     font-family: 'Lora', serif;
     top: .2em;
-    margin-top: 4rem;
+    margin-top: 2rem;
     color: white;
 }
 
@@ -564,12 +792,11 @@ img {
     background-color: hsl(220, 5%, 50%);
     color: #fff;
     font-size: 1rem;
-    text-transform: uppercase;
-    font-weight: 600;
+    font-family: var(--body-font);
     border: none;
     padding: .5em;
     border-radius: .5em;
-    margin-top: .5em;
+    margin-top: 1em;
     cursor: pointer;
 }
 
@@ -688,6 +915,7 @@ img {
     padding-block: 2rem;
     width: 100%;
     background-color: var(--darkgray-color);
+    padding-bottom: 4rem;
 }
 
 .service__title {
@@ -753,7 +981,6 @@ img {
     color: black;
 }
 
-
 /*-----------------------------------*\
 * #VOYANCE
 \*-----------------------------------*/
@@ -761,50 +988,113 @@ img {
 .voyance__section {
     padding-block: 2rem;
     width: 100%;
-    height: 32rem;
+    height: 36rem;
+    background: url("../img/voyance_bg.webp") no-repeat center / cover;
     background-color: var(--darkgray-color);
     position: relative;
-}
-
-.voyance__content {
-    background: url("../img/voyance_bg.webp") no-repeat center center fixed;
-    background-color: hsla(0, 0%, 0%, 1);
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size:cover;
-    width: 100%;
-    height: 20rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    margin-top: 7rem;
-    margin-bottom: 2rem;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.voyance-text {
-    text-align: left;
-    font-family: var(--body-font);
-    width: 70%;
-    height: 100%;
-    padding-right: 15rem;
-    color: white;
-    font-size: 1.25rem;
-    float: left;
-    letter-spacing: 0.5px;
-    margin-left: 5rem;
+    padding-top: 4rem;
 }
 
 .voyance__title {
-    z-index: 1;
-    position: absolute;
-    margin-left: 20rem;
-    margin-bottom: 10rem;
+    margin-top: -4rem;
+    margin-bottom: 2rem;
+    text-decoration: underline white;
+    text-underline-offset: .5rem;
 }
 
- 
+.voyance__content {
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 24rem;
+    padding: 2rem 0;
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    /* position: absolute;
+    top: 50%;
+    transform: translateY(-50%); */
+}
+
+.card__voyance {
+    background-color: transparent;
+    width: 13.5rem;
+    height: 20rem;
+    perspective: 1000px;
+}
+
+.card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+.card__voyance:hover .card__inner {
+    transform: rotateY(180deg);
+}
+
+.card__front, .card__back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    flex-direction: column;
+}
+
+.card__front {
+    background-color: #fff;
+    background: url("../img/card_front.webp") no-repeat center center;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.2); /* Dark overlay */
+    background-blend-mode: darken;
+    color: black;
+}
+
+.card__back {
+    background: url("../img/card_back.webp") no-repeat center center;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    background-blend-mode: darken; /* Blending the overlay with the background image */
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.card__back button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    font-weight: bold;
+    border-radius: .5rem;
+    background-color: white;
+    color: var(--darkgray-color);
+    cursor: pointer;
+}
+
+.card__back button:hover {
+    background-color: gray;
+    color: white;
+}
+
+.voyance-text {
+    text-align: center;
+    font-family: var(--body-font);
+    width: 70%;
+    height: 100%;
+    color: white;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+
+/* 
 .voyance__title::before {
     content: "";
     left: 7%;
@@ -832,6 +1122,8 @@ img {
 .voyance__button:hover {
     cursor: pointer;
 }
+
+*/
 
 /* Style du fond gris en arrière-plan */
 .bg-modal {
@@ -935,7 +1227,7 @@ img {
     display: grid;
     place-items: center;
     background-color: var(--darkgray-color);
-    padding-top: 2rem;
+    padding-top: 4rem;
     padding-bottom: 4rem;
     
 }
@@ -961,7 +1253,7 @@ img {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     border-radius: 2px;
-    margin-top: 5rem;
+    margin-top: 7rem;
     z-index: 1000; /* Make sure the label appears above the map */
 }
 
@@ -1391,12 +1683,104 @@ aside p {
     grid-template-rows: 6.25rem 6.25rem 6.25rem 6.25rem;
     margin-bottom: 0.938rem;
     border-radius: 1.25rem;
+    position: relative; /* Ensure the ribbons are positioned relative to the card */
+    overflow: hidden; /* Prevent the ribbons from spilling outside the card */
+
+}
+
+.ribbon {
+    --d: 6px; /* folded part */
+    --c: blue; /* color */
+    --f: 16px; /* ribbon font-size */
+    z-index: 1;
+    width: 130px;
+    height: 100px;
+    position: absolute;
+    display: inline-block;
+    margin: 0;
+    background: transparent;
 }
   
+.ribbon::before {
+    content: attr(data-ribbon);
+    position: absolute;
+    font-size: var(--f);
+    top: 0;
+    right: 0;
+    transform: translate(29.29%, -100%) rotate(45deg);
+    color: #fff;
+    text-align: center;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    transform-origin: bottom left;
+    padding: 5px 35px calc(var(--d) + 5px);
+    background: linear-gradient(rgba(0, 0, 0, 0.5) 0 0) bottom/100% var(--d)
+      no-repeat var(--c);
+    background-clip: padding-box;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, calc(100% - var(--d)) calc(100% - var(--d)), var(--d) calc(100% - var(--d)), 0 100%);
+    -webkit-mask: linear-gradient(135deg, transparent calc(50% - var(--d) * 0.707), #fff 0) bottom left,
+            linear-gradient(-135deg, transparent calc(50% - var(--d) * 0.707), #fff 0) bottom right;
+    mask: linear-gradient(135deg, transparent calc(50% - var(--d) * 0.707), #fff 0) bottom left,
+            linear-gradient(-135deg, transparent calc(50% - var(--d) * 0.707), #fff 0) bottom right;
+    -webkit-mask-size: 300vmax 300vmax;
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+    mask-size: 300vmax 300vmax; /* Standard property for compatibility */
+}
+  
+.left::before {
+    left: 0;
+    right: auto;
+    transform: translate(-29.29%, -100%) rotate(-45deg);
+    transform-origin: bottom right;
+}
+
+.ribbon_promo {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-size: 14px; /* reduced font size */
+    font-weight: bold;
+    color: #fff;
+    width: 4rem !important;
+    height: auto;
+}
+.ribbon_promo {
+    --c: #d81a14;
+    --r: 25%; /* reduced the cutout part */
+    padding: 0.2em 0.4em; /* adjusted padding */
+    aspect-ratio: 1;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 0;
+    width: fit-content;
+    box-sizing: border-box;
+}
+.ribbon_promo:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 60% 20% -40%;
+    background: color-mix(in srgb, var(--c), #000 35%);
+    clip-path: polygon(5% 0,95% 0,100% 100%,50% calc(100% - var(--r)),0 100%);
+}
+.ribbon_promo:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: radial-gradient(35% 35%,#0000 96%,#0003 97% 99%,#0000) var(--c);
+    clip-path: polygon(100.00% 50.00%,89.66% 55.22%,98.30% 62.94%,86.96% 65.31%,93.30% 75.00%,81.73% 74.35%,85.36% 85.36%,74.35% 81.73%,75.00% 93.30%,65.31% 86.96%,62.94% 98.30%,55.22% 89.66%,50.00% 100.00%,44.78% 89.66%,37.06% 98.30%,34.69% 86.96%,25.00% 93.30%,25.65% 81.73%,14.64% 85.36%,18.27% 74.35%,6.70% 75.00%,13.04% 65.31%,1.70% 62.94%,10.34% 55.22%,0.00% 50.00%,10.34% 44.78%,1.70% 37.06%,13.04% 34.69%,6.70% 25.00%,18.27% 25.65%,14.64% 14.64%,25.65% 18.27%,25.00% 6.70%,34.69% 13.04%,37.06% 1.70%,44.78% 10.34%,50.00% 0.00%,55.22% 10.34%,62.94% 1.70%,65.31% 13.04%,75.00% 6.70%,74.35% 18.27%,85.36% 14.64%,81.73% 25.65%,93.30% 25.00%,86.96% 34.69%,98.30% 37.06%,89.66% 44.78%); /* from https://css-generators.com/starburst-shape/ */
+}
+
+
 .product-image {
     cursor: pointer;
     height: 100% !important;
     width: auto !important;
+    z-index: 1;
+
 }
   
 .heart-icon {
@@ -1547,6 +1931,55 @@ aside p {
     content: "";
     display: table;
     clear: both;
+}
+
+/*-----------------------------------*\
+* DETAILS_COLLECTION.HTML
+\*-----------------------------------*/
+
+.collection__main {
+    display: flex;
+    justify-content: center;
+}
+
+.collect__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 2rem;
+    padding-left: 0.625rem;
+    width: 100%;
+    height: 18rem;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.collect__header h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.collect__header p {
+    color: white;
+    font-family: var(--title-font);
+    margin-bottom: 2rem;
+}
+
+.collect__section {
+    padding-block: 2rem;
+    padding: 2rem;
+    width: 90%;
+    border-bottom: 1px solid #cccccc;
+}
+
+.product-cards-collection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2em;
+    margin-top: 1.25rem;
+    padding: 0 2rem;
 }
 
 /*-----------------------------------*\
@@ -2044,6 +2477,26 @@ aside p {
     font-weight: bold;
 }
 
+.section_panier_checkout .div_description {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-family: var(--title-font);
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid white;
+}
+
+.section_panier_checkout .div_vipromo {
+    display: flex;
+    justify-content: space-between;
+    color: greenyellow;
+    padding-top: 1rem;
+    font-weight: bold;
+}
+
+
+
 .accordion-item {
     border-bottom: 1px solid white;
 }
@@ -2239,6 +2692,10 @@ aside p {
     .wrapper_details .carousel_details {
         grid-auto-columns: calc(100% - 10rem);
     }
+
+    .wrapper_details .carousel_nouveau {
+        grid-auto-columns: calc(100% - 1rem) !important;
+    }
 }
 
 /* For small devices */
@@ -2273,7 +2730,37 @@ aside p {
        height: 4rem !important;
     }
 
+    .card_new {
+        width: 20em;    
+    }
 
+    /*-----------------------------------*\
+    * #VOYANCE
+    \*-----------------------------------*/
+
+    .voyance__section {
+        height: 54rem !important;
+    }
+    
+    .voyance__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 46rem;
+    }
+
+    .voyance__content > *:first-child {
+        margin-top: -6rem;
+    }
+
+    .voyance__content > *:last-child {
+        margin-top: -2rem;
+    }
+
+    .card__voyance {
+        height: 16rem;
+    }
     /*-----------------------------------*\
     * #SERVICE
     \*-----------------------------------*/
@@ -2374,6 +2861,7 @@ aside p {
         position: fixed;
         width: 100%;
         padding:1rem;
+        margin-top: 0 !important;
         margin-bottom: 2rem;
         display: flex;
         flex-direction: row;
@@ -2384,6 +2872,17 @@ aside p {
         border-radius: 0 0 1rem 1rem;
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
+
+    .top-ribbon {
+        position: fixed; 
+        bottom: 0 !important;
+        top: auto;
+    }
+
+    .moving-text {
+        width: 200%;
+    }
+
 
     .footer__copy {
         padding-bottom: 5rem;
@@ -2460,6 +2959,7 @@ aside p {
     /*-----------------------------------*\
     * #ARTISTE
     \*-----------------------------------*/
+
     .artiste__section {
         height: 50rem;
         padding-block: 0;
@@ -2546,8 +3046,7 @@ aside p {
     }
 
     .voyance__title {
-        float: left;
-        padding-top: 0;
+        padding-top: 2rem;
         margin-bottom: 2rem;
         margin-left: 0.5rem !important;
     }
@@ -2561,18 +3060,10 @@ aside p {
 
     .voyance__content {
         display: flex;
-        flex-direction: column;
         justify-content: space-evenly;
         align-items: center;
         padding-top: 1rem;
-        margin-top: 5rem;
-        height: 41rem;
-        background: url("../img/voyance_bg.webp") no-repeat 80% center fixed;
-        background-color: hsla(0, 0%, 0%, 1);
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+        margin-top: 1rem;
     }
 
     .voyance-text {
@@ -2582,8 +3073,7 @@ aside p {
         margin: 0;
         padding: 1rem;
         height: fit-content;
-        text-align: justify;
-        background-color: #46464667;
+        text-align: center;
         border-radius: 2rem;
     }
    
@@ -2826,6 +3316,14 @@ aside p {
     }
 
     /*-----------------------------------*\
+    * DETAILS_COLLECTION.HTML
+    \*-----------------------------------*/
+
+    .collect__header {
+        height: max-content;
+    }
+
+    /*-----------------------------------*\
     * DETAILS.HTML
     \*-----------------------------------*/
 
@@ -3054,7 +3552,6 @@ aside p {
         width: 85%;
         height: fit-content;
         font-size: 1.12rem;
-        margin-left: 2rem;
         padding-right: 0 !important;
     }
 
@@ -3316,9 +3813,7 @@ aside p {
 
     .voyance-text {
         width: 75%;
-        padding-right: 8rem;
         font-size: 1.12rem;
-        margin-left: 3rem;
     }
 
     /* Change background header */

@@ -167,7 +167,7 @@
                 </li>
 
                 <li class="nav__item">
-                    <a href="{% url 'collections' %}" class="nav__link">
+                    <a href="{% url 'accueil' %}#collection" class="nav__link">
                          Collections
                     </a>
                 </li>
@@ -295,9 +295,9 @@
 
             <div class="cart_item">
 
-                <h2>Demande de voyance</h2>
+                <h2>{{cart_items.voyance}}</h2>
 
-                <p>{{total_price}}.00 €</p>
+                <p>{{total_price}} €</p>
 
                 <p>1</p>
 
@@ -312,8 +312,12 @@
 
                 <p>Total</p>
 
-                <p>{{total_price}}.00  €</p>
+                <p>{{total_price}}  €</p>
 
+            </div>
+
+            <div class="div_description">
+                <p>{{description}}</p>
             </div>
 
             </div>
@@ -457,7 +461,7 @@
 
     function buy(event) {
         event.preventDefault()
-        console.log("motherfucker tu vas marcher oui ?")
+        console.log("function buy with data json currently running")
 
         let data = {
             'prenom': document.querySelector('input[name=prenom]').value,
@@ -473,7 +477,7 @@
         } else {
             var stripe = Stripe('{{ pub_key }}')
 
-            fetch ('/voyance_order/', {
+            fetch ('/voyance_order/{{ cart_items.id }}/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

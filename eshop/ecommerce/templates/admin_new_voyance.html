@@ -69,15 +69,20 @@
         <p style="font-size: 24px; font-weight: bold; color: #333;">Bonjour Sandra,</p>
         <p style="font-size: 18px; color: #666;">Vous avez reçu un paiement pour une nouvelle demande de voyance. Voici les détails de la voyance:</p>
         <ul style="list-style-type: none; padding: 0; margin: 0;">
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de voyance:</strong> {{ voyance.id }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Date de voyance:</strong> {{ voyance.created_at }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Montant total:</strong> {{ voyance.total_price }} €</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Nom du client:</strong> {{ voyance.nom }} {{ voyance.prenom }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Adresse e-mail du client:</strong> {{ voyance.email }}</li>
-            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de téléphone du client:</strong> {{ voyance.telephone }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Type de voyance:</strong> {{ commande.get_type_display }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de voyance:</strong> {{ commande.id }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Date de voyance:</strong> {{ commande.created_at }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Montant total:</strong> {{ commande.total_price }} €</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Nom du client:</strong> {{ commande.nom }} {{ commande.prenom }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Adresse e-mail du client:</strong> {{ commande.email }}</li>
+            <li style="font-size: 16px; color: #333; margin-bottom: 10px;"><strong>Numéro de téléphone du client:</strong> {{ commande.telephone }}</li>
         </ul>
-        <p style="font-size: 18px; color: #666;">Vous allez recevoir les informations personnelles du client via cette adresse e-mail : {{ voyance.email }} </p>
-        
+
+        {% if commande.type == 'par email' %}
+        <p style="font-size: 18px; color: #666;">Vous allez recevoir les informations personnelles du client via cette adresse e-mail : {{ commande.email }} </p>
+        {% elif commande.type == 'complete' %}
+        <p style="font-size: 18px; color: #666;">Le client vous contactera via ce numéro de téléphone : {{ commande.telephone }} </p>
+        {% endif %}
     </div>
 
 </body>

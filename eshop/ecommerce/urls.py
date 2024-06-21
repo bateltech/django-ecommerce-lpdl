@@ -30,14 +30,14 @@ urlpatterns = [
     path('deconnexion/', logout_view, name='deconnexion'),
     path('connexion/', CustomLoginView.as_view(), name='connexion'),
     path('details/<int:article_id>/', details_view, name="details"),
-    path('paiement-de-voyance/', paiement_voyance_view, name='paiement_voyance'),
+    path('choose_voyance/<int:voyance_id>/', choose_voyance_view, name='choose_voyance'),
+    path('paiement-de-voyance/<int:demande_voyance_id>/', paiement_voyance_view, name='paiement_voyance'),
     path('achat-effectué/', stripe_success, name='stripe_success'),
     path('accueil/achat-annulé', stripe_cancel, name='stripe_cancel'),
     path('paiement-effectué/', voyance_success, name='voyance_success'),
-    path('collections/', collections_view, name='collections'),
-    path('collections/<int:collection_id>', detailscollect_view, name='details collection'),
+    path('accueil/paiement-annulé', voyance_cancel, name='voyance_cancel'),
+    path('collections/<int:collection_id>/', detailscollect_view, name='collections'),
     #path('webhook/', stripe_webhook, name='webhook'),
-
     path('mon-profil/update_personal_info/', update_personal_info, name='update_personal_info'),
     path('mon-profil/update_password/', update_password, name='update_password'),
     path('add_to_wishlist/', add_to_wishlist, name='add_to_wishlist'),
@@ -47,7 +47,7 @@ urlpatterns = [
     # path('finaliser_commande/', finaliser_commande, name='finaliser_commande'),
 
     path('start_order/',start_order,name='start_order'),
-    path('voyance_order/', voyance_order, name='voyance_order'),
+    path('voyance_order/<int:demande_voyance_id>/', voyance_order, name='voyance_order'),
 
     path('submit-feedback/', submit_feedback, name='submit_feedback'),
 

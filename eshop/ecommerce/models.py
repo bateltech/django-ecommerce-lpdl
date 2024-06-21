@@ -1,14 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from phonenumber_field.modelfields import PhoneNumberField
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
-
-# class CustomDateFormatField(models.DateField):
-#     def to_python(self, value):
-#         if value:
-#             return datetime.strptime(value, '%d/%m/%Y').date()
-#         return None
 
 # Table Client
 class ClientUser(AbstractUser):
@@ -49,6 +45,38 @@ class Pierre(models.Model):
             self.couverture = convert_to_webp(self.couverture)
         super().save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)
+        if self.couverture:
+            self.couverture.delete(save=False)
+        super().delete(*args, **kwargs)
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" width="100" height="100" />' % (self.image.url))
+        else:
+            return 'Aucune photo'
+
+    image_tag.short_description = 'Aperçu de la photo'
+    image_tag.allow_tags = True
+
+    def cover_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" width="150" height="100" />' % (self.couverture.url))
+        else:
+            return 'Aucune couverture'
+
+    cover_tag.short_description = 'Aperçu de la couverture'
+    cover_tag.allow_tags = True
+
+
+@receiver(post_delete, sender=Pierre)
+def delete_pierre_images(sender, instance, **kwargs):
+    if instance.image:
+        instance.image.delete(save=False)
+    if instance.couverture:
+        instance.couverture.delete(save=False)
 
 # Table Catégorie
 class Categorie(models.Model):
@@ -113,33 +141,58 @@ class PrixArticle(models.Model):
             return f"{self.get_type_prix_display()} - {self.prix} €"
     
 
+from django.utils import timezone as timez
 # Table Article
 class Article(models.Model):
     libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
     description = models.TextField(null=False)
-    image = models.ImageField(upload_to="articles/", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
+    image = models.ImageField(upload_to="articles/", null=False)
     stock = models.IntegerField(default=0, null=False)
-    prix_article = models.ManyToManyField(PrixArticle, related_name='articles')  # Many-to-Many relationship with PrixArticle
+    prix_article = models.ManyToManyField(PrixArticle, related_name='articles')
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Catégorie')
     sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE, verbose_name='Sous-catégorie')
-    tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)  # Many-to-Many relationship with Tag
-    pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)  # Many-to-Many relationship with Pierre
+    tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)
+    pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)
     #  when I want to access all the articles related to an instance of a tag or pierre,
     #  I should use this : my_tag.articles.all() that's what related_name is for
 
     def __str__(self):
         return self.libelle
 
+    def is_new(self):
+        return self.created_at >= timez.now() - timedelta(days=30)
+    
     def save(self, *args, **kwargs):
         if self.image and not is_webp_image(self.image):
             self.image = convert_to_webp(self.image)
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)
+        super().delete(*args, **kwargs)
+
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" width="100" height="150" />' % (self.image.url))
+        else:
+            return 'Aucune photo'
+
+    image_tag.short_description = 'Aperçu de la photo'
+    image_tag.allow_tags = True
+
+@receiver(post_delete, sender=Article)
+def delete_article_image(sender, instance, **kwargs):
+    if instance.image:
+        instance.image.delete(save=False)
 
 
 # Table Promo
 from django.db import models
 
 class Promo(models.Model):
+    libelle = models.CharField(max_length=128, null=False, default="", verbose_name="Nom")
     start_date = models.DateField(verbose_name="Date de début")
     end_date = models.DateField(verbose_name="Date de fin")
     discount_percentage = models.FloatField(verbose_name="Pourcentage de réduction")
@@ -169,11 +222,12 @@ class VIPromo(models.Model):
 
 
 # Table Collection
+from django.utils.safestring import mark_safe
 class Collection(models.Model):
     libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
     description = models.TextField(null=False)
+    articles = models.ManyToManyField(Article, through='DetailCollection')
     image = models.ImageField(upload_to="collections/", blank=True, null=True)
-    articles = models.ManyToManyField(Article)
     disponible = models.BooleanField(default=False, verbose_name="Disponible")
 
     def __str__(self):
@@ -183,7 +237,49 @@ class Collection(models.Model):
         if self.image and not is_webp_image(self.image):
             self.image = convert_to_webp(self.image)
         super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)
+        super().delete(*args, **kwargs)
 
+    def image_tag(self):
+        if self.image:
+            return mark_safe('<img src="%s" width="100" height="150" />' % (self.image.url))
+        else:
+            return 'Aucune photo'
+
+    image_tag.short_description = 'Aperçu de la photo'
+    image_tag.allow_tags = True
+
+# Table DetailCollection
+class DetailCollection(models.Model):
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['collection', 'article'], name='unique_collection_article')
+        ]
+
+@receiver(post_delete, sender=Collection)
+def delete_collection_image(sender, instance, **kwargs):
+    if instance.image:
+        instance.image.delete(save=False)
+
+
+# Table Voyance
+class Voyance(models.Model):
+    libelle = models.CharField(max_length=128, null=False, verbose_name='Nom', default='')
+    description = models.TextField(null=False)
+    tarif = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    type = models.CharField(max_length=20, choices=[('par email', 'Par Email'), ('complete', 'Complète')], default='par email')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.libelle}"
+
+    def get_created_at_plus_six_days(self):
+        return self.created_at + timedelta(days=6)
 
 # Table Wishlist
 class Wishlist(models.Model):
@@ -275,6 +371,8 @@ class DemandeVoyance(models.Model):
     user = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    voyance = models.CharField(max_length=128, null=False, verbose_name='Nom', default='')
+    type = models.CharField(max_length=20, choices=[('par email', 'Par Email'), ('complete', 'Complète')], verbose_name='Type', default='par email')
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
     telephone = models.CharField(max_length=20, null=False)
     nom = models.CharField(max_length=100, null=False)
@@ -314,31 +412,6 @@ def is_webp_image(image_field):
 
 ###############################################################################################################################################
 
-# not used in code 
-# Table Taille Article
-class TailleArticle(models.Model):
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    taille = models.IntegerField()
-
-    def __str__(self):
-        return f"{self.article.libelle} - {self.taille}"
-
-
-from datetime import timedelta
-# not used for now
-# Table Voyance
-class Voyance(models.Model):
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100)
-    email = models.EmailField()
-    image = models.ImageField(upload_to='images/')
-    contenu_demande = models.TextField()
-    tarif = models.FloatField(default=30.00)
-    etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def get_created_at_plus_six_days(self):
-        return self.created_at + timedelta(days=6)
 
 from django_ckeditor_5.fields import CKEditor5Field
 
