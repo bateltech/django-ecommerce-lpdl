@@ -243,7 +243,7 @@
                     <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     {% endif %}
 
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                     <!-- Barre de recherche -->
@@ -344,7 +344,7 @@
                     </script>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
-                    <img id="logo" src="{% static 'img/logo.webp' %}">
+                    <img id="logo" src="{% static 'img/logo.webp' %}" alt="logo lpdl">
                    </a>
 
                    {% if utilisateur_connecte %}
@@ -437,7 +437,7 @@
                 </div>
                 
                 <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;" alt="logo version mobile">
                    </a>
                    
                 <div class="nav__buttons">
@@ -450,7 +450,7 @@
                     <a id="not_connected_favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
                     {% endif %}
 
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -523,7 +523,6 @@
                 </aside> -->
 
                 <section class="details__section">
-
                     <div class="flex-container">
                         <div class="card_image">
                             <img id="article__image" src="{{ article.image.url }}" alt="{{ article.libelle }}">
@@ -534,6 +533,7 @@
                             <div class="accueil__line"></div>
                             <div style="display: -webkit-flex;">
                                 {% if price.type_prix == "size_based" %}
+
                                 <div style="margin: 0.75rem; display: flex; flex-direction: column; justify-content: flex-start;">
                                     <label style="margin-top: 0.5rem; color: white; font-size: 20px; margin-bottom: 0.75rem; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;">Taille<br></label>
                                     <select name="size" id="size">
@@ -554,6 +554,7 @@
                                     <p id="prixparTaille" style="margin-top: 0.5rem; color: white; font-size: 20px;">{{price.prix}} €</p>
                                 </div>
 
+
                                 {% else %}
 
                                 <div style="margin: 0.75rem; display: flex; flex-direction: column; justify-content: flex-start;">
@@ -564,7 +565,7 @@
                                 {% endif %}
                             </div>
 
-                            <div style="display: -webkit-flex; margin: 0.75rem;">
+                            <div style="display: -webkit-flex; padding-bottom: 2rem;">
                                 
                                 <!-- 
                                 <div class="StarReview" style="width: 161.32px; height: 24.38px; position: relative">
@@ -573,7 +574,13 @@
                                 <span style="color: white;"> 4.5</span>
                                 <div class="Line10" style="width: 19.30px; height: 0px; transform: rotate(90.42deg); transform-origin: 0 0; border: 1px #D9D9D9 solid; margin: 0.75rem;"></div>
                              -->
-                                <a href="http://127.0.0.1:8000/" style="color: white; font-size: 15px;"> Voir les avis </a>
+                                <!-- <a href="http://127.0.0.1:8000/" style="color: white; font-size: 15px;"> Voir les avis </a> -->
+                                                            <!-- Display ribbon_promo for each active promo associated with the article -->
+                                {% for promo in active_promos %}
+                                {% if article in promo.articles.all %}
+                                    <div class="ribbon_promo">- {{ promo.discount_percentage|floatformat:"0" }}%</div>
+                                {% endif %}
+                                {% endfor %}
                             </div>
 
                             <div class="accueil__line"></div>
@@ -586,7 +593,7 @@
                             </div>
                             {% else %}
                             <div id="out-stock">
-                                <img src="{% static 'img/icon_detail_close.svg' %}" alt="icon valider" style="width: 20.55px; height: 17.14px;"/>
+                                <img src="{% static 'img/icon_detail_close.svg' %}" alt="icon close" style="width: 20.55px; height: 17.14px;"/>
                                 <span style="color: #811414; font-size: large; margin-left: 0.75rem;"> rupture de stock</span>
                                 
                             </div>
@@ -607,7 +614,7 @@
                             </div>
 
                             <div style="display: -webkit-flex; padding: 0.75rem 0.75rem;">
-                                <img src="{% static 'img/camion.svg' %}" style="width: 29.33px; height: 30.47px;"/>
+                                <img src="{% static 'img/camion.svg' %}" style="width: 29.33px; height: 30.47px;" alt="camion"/>
                                 <span style="width: 280px; height: 26.41px; text-align: center; color: white; font-size: 16px; padding-top: 0.5rem;"> La livraison gratuite à partir de 65 €.</span>
 
                             </div>
@@ -848,85 +855,89 @@
                 });
                 
                 /* Bouton ajouter au panier */
-                document.getElementById('add-to-cart-form').addEventListener('submit', function(event) {
-                event.preventDefault(); // Empêcher le formulaire d'être soumis normalement
+                document.getElementById('add-to-cart-form').addEventListener('submit', 
+                function(event) {
+                    event.preventDefault(); // Empêcher le formulaire d'être soumis normalement
                 
-            if (utilisateurConnecte) {
-                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-                const articleId = document.querySelector('input[name="article_id"]').value;
-                const priceId = document.querySelector('input[name="price_id"]').value;
+                    if (utilisateurConnecte) {
+                        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                        const articleId = document.querySelector('input[name="article_id"]').value;
+                        const priceId = document.querySelector('input[name="price_id"]').value;
 
-                fetch('/add_to_cart/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': csrftoken
-                    },
-                    body: new URLSearchParams({
-                        'article_id': articleId,
-                        'price_id': priceId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.added_p) {
-                        Toastify({
-                            text: 'Article ajouté au panier !',
-                            duration: 3000,
-                            gravity: 'top',
-                            position: 'right',
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
-                            style: {
-                                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        fetch('/add_to_cart/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: new URLSearchParams({
+                                'article_id': articleId,
+                                'price_id': priceId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.added_p) {
+                                Toastify({
+                                    text: 'Article ajouté au panier !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                    }
+                                }).showToast();
                             }
-                        }).showToast();
-                    }
+                            else {
+                                Toastify({
+                                    text: 'Cet article est en rupture de stock !',
+                                    duration: 3000,
+                                    gravity: 'top',
+                                    position: 'right',
+                                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                                    style: {
+                                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                                    }
+                                }).showToast();
+                                console.log(`Erreur lors de l'ajout de l'article au panier`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+
+                    }                 
                     else {
                         Toastify({
-                            text: 'Cet article est en rupture de stock !',
+                            text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre panier.',
                             duration: 3000,
                             gravity: 'top',
                             position: 'right',
-                            stopOnFocus: true, // Prevents dismissing of toast on hover
+                            stopOnFocus: true,
                             style: {
                                 background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
                             }
                         }).showToast();
-                        console.log(`Erreur lors de l'ajout de l'article au panier`);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-
-            }                 
-                else {
-                    Toastify({
-                        text: 'Veuillez vous connecter ou vous inscrire pour ajouter des articles à votre panier.',
-                        duration: 3000,
-                        gravity: 'top',
-                        position: 'right',
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-                        }
-                    }).showToast();
-                }
             });
             
                 // Sélectionner les icônes not_connected
                 var notConnectedCartIcon = document.querySelector('#not_connected_cart');
                 var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
 
+                if(notConnectedCartIcon){
                 // Ajouter un gestionnaire d'événements click à chaque icône
                 notConnectedCartIcon.addEventListener('click', function() {
                     showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
                 });
-
+                }
+                if(notConnectedFavorisIcon){
                 notConnectedFavorisIcon.addEventListener('click', function() {
                     showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
                 });
-
+                }
+                
                 // Fonction pour afficher un toast
                 function showToast(message) {
                     Toastify({
@@ -952,5 +963,6 @@
 
 
         </main>
-
+        
+        <script src="{% static 'js/slider.js' %}"></script>
 {% endblock %}

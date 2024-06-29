@@ -19,7 +19,7 @@
         <div class="search__container">
             <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
             <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-            <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+            <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
 
             <!-- Barre de recherche -->
@@ -119,7 +119,7 @@
             </script>
 
            <a href="{% url 'accueil' %}" class="logo__prin">
-            <img id="logo" src="{% static 'img/logo.webp'%}">
+            <img id="logo" src="{% static 'img/logo.webp'%}" alt="logo lpdl">
            </a>
            {% if utilisateur_connecte %}
 
@@ -216,7 +216,7 @@
 
                     <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -301,7 +301,12 @@
                         {% else %}
                         <h2></h2>
                         {% endif %}
-                        <h2 id="itemPrice_{{ item.id }}">{{ item.item_price }} €</h2>
+                        <div style="display: flex; flex-direction: column;">
+                        {% if item.item_price != item.article_price.prix %}
+                        <h2 style="text-decoration: line-through;">{{ item.article_price.prix }} €</h2>
+                        {% endif %}
+                        <h2 id="itemPrice_{{ item.id }}" style="font-weight: bold;">{{ item.item_price }} €</h2>
+                        </div>
                     </div>
 
                     <div class="taille-prix taille-prix-mobile" style="display: none;">
@@ -309,16 +314,21 @@
                         <h2>{{ item.article_price.taille}} cm</h2>
                         
                         {% endif %}
-                        <h2 id="itemPrice_{{ item.id }}">{{ item.item_price }} €</h2>
+                        <div style="display: flex; flex-direction: column;">
+                            {% if item.item_price != item.article_price.prix %}
+                            <h2 style="text-decoration: line-through;">{{ item.article_price.prix }} €</h2>
+                            {% endif %}
+                            <h2 id="itemPrice_{{ item.id }}" style="font-weight: bold;">{{ item.item_price }} €</h2>
+                        </div>
                     </div>
                     
                     <div class="white-container">
                             <button class="counter-button" onclick="changeCounter({{ item.id }}, -1)">
-                                <img src="{% static 'img/ic_baseline-minus.svg' %}" alt="Description of your image">
+                                <img src="{% static 'img/ic_baseline-minus.svg' %}" alt="minus">
                             </button>
                             <span class="counter-value" id="counter{{ item.id }}">{{ item.quantity }}</span>
                             <button class="counter-button" onclick="changeCounter({{ item.id}}, 1)">
-                                <img src="{% static 'img/ic_baseline-plus.svg' %}" alt="Description of your image">
+                                <img src="{% static 'img/ic_baseline-plus.svg' %}" alt="plus">
                             </button>
                             
 
@@ -330,11 +340,11 @@
                     <div class="button-item-mobile" style="display: none;">
                         <div class="white-container white-container-mobile">
                             <button class="counter-button" onclick="changeCounter({{ item.id }}, -1)">
-                                <img src="{% static 'img/ic_baseline-minus.svg' %}" alt="Description of your image">
+                                <img src="{% static 'img/ic_baseline-minus.svg' %}" alt="minus">
                             </button>
                             <span class="counter-value" id="counter{{ item.id }}">{{ item.quantity }}</span>
                             <button class="counter-button" onclick="changeCounter({{ item.id}}, 1)">
-                                <img src="{% static 'img/ic_baseline-plus.svg' %}" alt="Description of your image">
+                                <img src="{% static 'img/ic_baseline-plus.svg' %}" alt="plus">
                             </button>
                             
                         </div>
@@ -445,5 +455,8 @@
     </section>
 
 </main>
+
+
+<script src="{% static 'js/panier.js' %}"></script>
 
 {% endblock %}

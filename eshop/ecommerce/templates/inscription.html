@@ -16,7 +16,7 @@
                    <div class="search__container">
                     <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                     <!-- Barre de recherche -->
@@ -117,7 +117,7 @@
                     </script>
 
                    <a href="{% url 'accueil' %}" class="logo__prin">
-                    <img id="logo" src="{% static 'img/logo.webp'%}">
+                    <img id="logo" src="{% static 'img/logo.webp'%}" alt="logo lpdl">
                    </a>
 
                    {% if utilisateur_connecte %}
@@ -209,14 +209,14 @@
                 </div>
 
                 <a href="{% url 'accueil' %}" class="nav__logo">
-                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;">
+                    <img src="{% static 'img/logo_mb.webp' %}" style="width: auto; height: 2rem;" alt="logo version mobile">
                    </a>
                    
                 <div class="nav__buttons">
 
                     <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -338,15 +338,19 @@
             var notConnectedCartIcon = document.querySelector('#not_connected_cart');
                 var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
 
+                if(notConnectedCartIcon){
                 // Ajouter un gestionnaire d'événements click à chaque icône
                 notConnectedCartIcon.addEventListener('click', function() {
                     showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
                 });
+                }
 
+                if(notConnectedFavorisIcon){
                 notConnectedFavorisIcon.addEventListener('click', function() {
                     showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
                 });
-
+                }
+                
                 // Fonction pour afficher un toast
                 function showToast(message) {
                     Toastify({

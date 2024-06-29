@@ -6,7 +6,42 @@
 
 <style>
 
+    .cookie-consent-banner {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+    .cookie-consent-banner p {
+        margin: 0;
+        padding: 0;
+    }
+    .cookie-consent-banner button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+
     @media screen and (max-width: 767px) {
+        /*-----------------------------------*\
+        * COOKIES CONSENT BANNER
+        \*-----------------------------------*/
+        .cookie-consent-banner {
+            position: fixed;
+            top: 0;
+            bottom: auto;
+            width: fit-content;
+            z-index: 1100;
+        }
 
         /*-----------------------------------*\
         * NOUVEAUTES SLIDER
@@ -95,13 +130,14 @@
                     <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     {% endif %}
 
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                    </div>
 
                     <!-- Barre de recherche -->
                     <div id="searchBar" class="search-bar">
                         <form id="search-form" method="post" autocomplete="off">
                             {% csrf_token %}
+                        <label for="searchInput" style="color: transparent; position: absolute;">chercher</label>
                         <input type="text" id="searchInput" placeholder="Rechercher...">
                         </form>
                         <div id="results-box" class="results-card" style="display:none"></div>
@@ -306,7 +342,7 @@
 
                     <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
                     <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
-                    <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                    <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                     
                     <!-- Toggle button -->
                     <div class="nav__toggle" id="nav-toggle">
@@ -355,6 +391,7 @@
         <div id="searchBarMobile" class="search-bar-mobile" style="display: none;">
             <form id="search-form-mobile" method="post" autocomplete="off">
                 {% csrf_token %}
+                <label for="searchInputMobile" style="color: transparent; position: absolute;">chercher</label>
                 <input type="text" id="searchInputMobile" placeholder="Rechercher...">
             </form>
             <div id="results-box-mobile" class="results-card-mobile" style="display:none"></div>
@@ -473,7 +510,7 @@
                     {% for collection in collections %}
                     <div class="card swiper-slide mon-slider">
                         <div class="card__image">
-                            <img src="{{ collection.image.url }}" alt="card image">
+                            <img src="{{ collection.image.url }}" loading="lazy" alt="card image of collection {{ collection.id }}">
                         </div>
         
                         <div class="card__content">
@@ -514,7 +551,23 @@
 
                     <div class="artiste__image">
                         <div class="artiste__frame"></div>
-                        <img src="{% static 'img/artiste.webp' %}" alt="artiste image">
+                        
+                        <img 
+                            src="{% static 'img/artiste_469.webp' %}" 
+                            srcset="
+                                {% static 'img/artiste_200.webp' %} 200w,
+                                {% static 'img/artiste_380.webp' %} 380w,
+                                {% static 'img/artiste_469.webp' %} 469w
+                            " 
+                            sizes="
+                                (max-width: 200px) 200px,
+                                (max-width: 380px) 380px,
+                                469px
+                            " 
+                            alt="photo de l'artiste"
+                            width="469"
+                            height="auto">
+
                     </div>
 
                     <div class="artiste__content">
@@ -543,7 +596,7 @@
                                 <li class="service-item">
                                   
                                   <div class="service-item-icon">
-                                    <img src="{% static 'img/Money Yours.svg' %}" alt="service icon">
+                                    <img src="{% static 'img/Money Yours.svg' %}" alt="service money">
                                   </div>
             
                                   <div class="service-content">
@@ -556,7 +609,7 @@
             
                                 <li class="service-item">
                                   <div class="service-item-icon">
-                                    <img src="{% static 'img/Shipped.svg' %}" alt="service icon">
+                                    <img src="{% static 'img/Shipped.svg' %}" alt="service camion">
                                   </div>
             
                                   <div class="service-content">
@@ -597,87 +650,40 @@
 
                 </div>
 
-                <script>
-                    function togglePopup() {
-                        var popup = document.getElementById('popupOverlay');
-                        popup.style.display = (popup.style.display === 'none' || popup.style.display === '') ? 'flex' : 'none';
-                    }
-
-                    function previewImage(event) {
-
-                        var image = document.getElementById('image-preview');
-
-                        if(event.target.files.length == 0) {
-                        image.style.display = "none";
-                        image.src = "#";
-                        return;
-                        }
-
-                        image.style.display = "block";
-                        image.style.height = "5rem";  
-                        image.style.width = "auto";
-
-                        image.src = URL.createObjectURL(event.target.files[0]);
-
-                    }
-
-                    // Fonction pour valider le formulaire et rediriger vers la page de paiement
-                    function validateAndRedirect(event) {
-                        event.preventDefault(); // Empêche l'envoi du formulaire
-                        var form = document.querySelector('form');
-                        if (form.checkValidity()) { // Vérifie si le formulaire est valide
-                            window.location.href = "/paiement"; // Redirige vers la page de paiement
-                        } else {
-                            alert("Veuillez remplir tous les champs du formulaire."); // Affiche un message d'erreur si le formulaire n'est pas valide
-                        }
-                    }
-
-                </script>
-
             </section>
 
             <!--==================== GOOGLE MAPS ====================-->
             
-            <section class="maps__section">
+            <section class="maps__section" id="map-container" style="display: none;">
                 <div class="floating-label">VISITEZ-NOUS !</div>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2894.533093464446!2d2.372805111524024!3d43.49121346277241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12ae1933a0a3a0d3%3A0x634215eade142367!2sLa%20pierre%20de%20lune!5e0!3m2!1sfr!2sdz!4v1686522074819!5m2!1sfr!2sdz" 
                  height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="google maps"></iframe>
             </section>
 
-        <!--=============== MAIN JS ===============-->
-        <script src="{% static 'js/accueil.js' %}"></script>
+            <div class="cookie-consent-banner" id="cookie-consent-banner">
+                <p>  Nous utilisons des cookies pour améliorer votre expérience. Cela inclut les cookies de Google Maps et Stripe. En continuant à visiter ce site, vous acceptez notre utilisation des cookies.</p>
+                <button id="accept-cookies">Accepter</button>
+            </div>
         
         </main>
 
-        <div class="overlay bg-modal" id="popupOverlay">
-            <div class="popup">
-                <span class="close" id="voyance-close" onclick="togglePopup()">&times;</span> 
-                <!-- close-btn -->
-                <form action="{% url 'formulaire_voyance' %}" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    
-                    <label for="{{ form.nom.id_for_label }}">Nom:</label>
-                    {{ form.nom }}
-    
-                    <label for="{{ form.prenom.id_for_label }}">Prénom:</label>
-                    {{ form.prenom }}
-
-                    <label for="{{ form.email.id_for_label }}">Email:</label>
-                    <input type="email" id="email" name="email" value="{{ request.user.email }}" readonly>
-                    
-                    <label for="{{ form.image.id_for_label }}">Photo:</label>
-                    {{ form.image }}
-
-                    <img id="image-preview" src="#" alt="Aperçu de l'image" style="display: none; max-width: 100%; margin-top: 10px;">
-    
-                    <label for="{{ form.contenu_demande.id_for_label }}">Contenu de la demande:</label>
-                    {{ form.contenu_demande }}
-
-                    <button type="submit">Envoyer</button>
-                </form>
-            </div>
-        </div>
-
+        <script>
+            document.getElementById('accept-cookies').addEventListener('click', function() {
+                document.cookie = "cookieConsent=true; path=/; max-age=" + 60*60*24*365; // 1 year expiration
+                document.getElementById('cookie-consent-banner').style.display = 'none';
+                document.getElementById('map-container').style.display = 'grid';
+                // Load Stripe and other third-party scripts here if necessary
+            });
         
+            document.addEventListener('DOMContentLoaded', function() {
+                if (document.cookie.split(';').some((item) => item.trim().startsWith('cookieConsent=true'))) {
+                    document.getElementById('cookie-consent-banner').style.display = 'none';
+                    document.getElementById('map-container').style.display = 'grid';
+                    // Load Stripe and other third-party scripts here if necessary
+                }
+            });
+        </script>
+    <!--=============== MAIN JS ===============-->
+    <script src="{% static 'js/accueil.js' %}" async></script>
 
 {% endblock %}

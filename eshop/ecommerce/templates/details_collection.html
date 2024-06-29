@@ -21,7 +21,7 @@
                 <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                 {% endif %}
 
-                <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
+                <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
                 </div>
 
                 <!-- Barre de recherche -->
@@ -223,7 +223,7 @@
 
                 <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
                 <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
-                <a href="#search" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
+                <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                 
                 <!-- Toggle button -->
                 <div class="nav__toggle" id="nav-toggle">
@@ -365,7 +365,7 @@
             <!-- <img src ="{% static 'img/line.svg' %}" alt ="line" class="right__line"> -->
 
             <div class="livraison__container">
-                <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="Image SVG">
+                <img class="livraison__image" src="{% static 'img/camion.svg' %}" alt="camion">
                 <div class="livraison__paragraphes">
                     <b><p>Livraison à domicile</p></b>
                     <p>5,00 €</p>
@@ -512,16 +512,17 @@
             // Sélectionner les icônes not_connected
             var notConnectedCartIcon = document.querySelector('#not_connected_cart');
             var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
-
+            if(notConnectedCartIcon){
             // Ajouter un gestionnaire d'événements click à chaque icône
             notConnectedCartIcon.addEventListener('click', function() {
                 showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
             });
-
+            }
+            if(notConnectedFavorisIcon){
             notConnectedFavorisIcon.addEventListener('click', function() {
                 showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
             });
-
+            }
             // Fonction pour afficher un toast
             function showToast(message) {
                 Toastify({
