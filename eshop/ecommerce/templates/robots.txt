@@ -1,7 +1,7 @@
 User-agent: * # Cette ligne spécifie les instructions qui suivent sont applicables à tous les robots d'indexation.
 
 # Informations de contact
-Sitemap: https://www.lapierredelune.fr/sitemap.xml
+Sitemap: https://www.lapierredelune.net/sitemap.xml
 
 # Disallow: /  # Interdit l'indexation de toutes les pages par défaut
 
