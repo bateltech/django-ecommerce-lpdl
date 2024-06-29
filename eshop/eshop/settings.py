@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'corsheaders',
 ]
 
 JAZZMIN_SETTINGS = {
@@ -151,6 +152,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     #'csp.middleware.CSPMiddleware',
 ]
 
@@ -161,6 +164,9 @@ MIDDLEWARE = [
 # CSP_IMG_SRC = ("'self'",)
 # CSP_REPORT_URI = '/csp-violation-report/'
 
+CORS_ALLOWED_ORIGINS = [
+    "https://www.lapierredelune.net",
+]
 
 ROOT_URLCONF = 'eshop.urls'
 
@@ -605,28 +611,29 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'lpdl.help@gmail.com'
 EMAIL_HOST_PASSWORD = 'fyre tmmb fxln kezl'
 EMAIL_USE_TLS = True
+# Replace with the admin email address
 EMAIL_RECIPIENT = 'medjaoui.imene@gmail.com'
 
 # Logo Base64 data
 LOGO_BASE64 = ''
+# Replace with the admin email address
 ADRESSE_VOYANCE = 'medjaoui.imene@gmail.com'
-VOYANCE_PRICE = 3000
 
 DOMAIN_NAME = 'http://127.0.0.1:8000/'
 
 # Replace YOUR_API_KEY with your api key
-SMTP_API_KEY = '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'
+SMTP_API_KEY = 'your_api_key'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%9roubymq4e4vg(bvy5l__)nzz522$_@po)w9l0!y&_)w=1jlp'
+SECRET_KEY = 'your_api_key'
 
 # Stripe settings
-STRIPE_API_KEY_PUBLISHABLE = 'pk_test_51P2E97HwNiNEPJKYtU9fzsNvxDS26U52TTdgc6AZspOXuX6WN7xi1XfrAYaFlXL3oGbxPUIAB3Xwyn3wiG4X4zxW00WoqSmQ46'
-STRIPE_API_SECRET_KEY = 'sk_test_51P2E97HwNiNEPJKYZ1nBLjkicG2V6wGn015Q5rM07nw9ZOmXW6C2HidV83l8vMR1uMEPjxspIl7eD2s0x2KzAZek00Z1gsVTLY'
+STRIPE_API_KEY_PUBLISHABLE = 'your_api_key'
+STRIPE_API_SECRET_KEY = 'your_api_key'
 
 # STRIPE_WEBHOOK_SECRET = 'your_webhook_secret'
 # STRIPE_WEBHOOK_ENDPOINT = 'https://your-domain.com/webhooks/stripe/'
-STRIPE_ENDPOINT_SECRET = 'whsec_2de45187ea3817ec2b2d21f2f74a9110e1d698a1241525b7764345f6bb641112'
+STRIPE_ENDPOINT_SECRET = 'your_api_key'

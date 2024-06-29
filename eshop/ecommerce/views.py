@@ -191,6 +191,9 @@ def details_view(request, article_id):
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
 
+    # Fetch all active promos
+    active_promos = Promo.objects.filter(end_date__gte=time.now(), articles=article)
+
     if utilisateur_connecte:
         favoris = Wishlist.objects.filter(client=request.user).exists()
         if favoris:
@@ -209,6 +212,7 @@ def details_view(request, article_id):
         'price': price.first(),
         'categories': categories,
         'similar_articles': similar_articles,
+        'active_promos': active_promos,
         'favoris': favoris }
     return render(request, 'details.html', context)
 
@@ -595,6 +599,18 @@ def add_to_cart(request):
         article = Article.objects.get(pk=article_id)
         price = PrixArticle.objects.get(pk=price_id)
 
+         # Check for active promos for the article
+        active_promos = Promo.objects.filter(end_date__gte=time.now(), articles=article)
+        if active_promos.exists():
+            promo = active_promos.first()
+            discount = Decimal(promo.discount_percentage)
+            print("discount", discount)
+            discounted_price = price.prix * (1 - discount / 100)
+        else:
+            discounted_price = price.prix
+
+        print("discounted count ", discounted_price)
+
         # Vérifier le stock de l'article
         if article.stock > 0:
             # Check if the user has a cart
@@ -607,24 +623,25 @@ def add_to_cart(request):
             cart.save()
 
             # Create cart item
-            try:
+            try:    
                 item = CartItem.objects.get(cart=cart, article=article, article_price=price)
                 item.quantity = item.quantity + 1
+                item.item_price = discounted_price
             except CartItem.DoesNotExist:
                 item = CartItem.objects.create(
                 cart=cart,
                 article=article,
-                article_price=price)
+                article_price=price,
+                item_price = discounted_price)
 
+            
+            print("item price avant: ", item.item_price)
             item.save()
-
-            cart.total_price = cart.total_price + price.prix
+            print("item price : ", item.item_price)
+            # cart.total_price = cart.total_price + price.prix
+            cart.total_price = cart.total_price + discounted_price
             print("add to cart | new cart price : ", cart.total_price)
             cart.save()
-
-            # Décrémenter le stock de l'article !! faut le faire dans le checkout !!
-            # article.stock -= 1
-            # article.save()
 
             added_p = True
         else:
@@ -1084,7 +1101,7 @@ def stripe_cancel(request):
     except Commande.DoesNotExist:
         pass
     
-        collections = Collection.objects.all()
+    collections = Collection.objects.all()
     print("mes collections : ", collections.__len__())
 
     utilisateur_connecte = request.user.is_authenticated

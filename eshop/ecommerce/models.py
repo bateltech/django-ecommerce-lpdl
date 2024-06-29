@@ -315,8 +315,8 @@ class CartItem(models.Model):
 
     def save(self, *args, **kwargs):
         
-        self.item_price = self.article_price.prix
-        self.total_item_price = self.article_price.prix * self.quantity
+        # self.item_price = self.article_price.prix
+        self.total_item_price = self.item_price * self.quantity
         
         super().save(*args, **kwargs)
 
