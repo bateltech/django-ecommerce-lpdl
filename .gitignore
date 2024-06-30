@@ -9,7 +9,7 @@
 *.pyc
 __pycache__/
 db.sqlite3
-
+.env
 # Ignore local settings
 local_settings.py
 sitemapper.js

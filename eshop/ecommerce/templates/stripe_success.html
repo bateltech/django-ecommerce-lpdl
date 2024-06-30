@@ -18,8 +18,8 @@
                     <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
                     <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     {% else %}
-                    <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
-                    <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+                    <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
+                    <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
                     {% endif %}
 
                     <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
@@ -320,6 +320,40 @@
 
 
         </main>
+
+        <script>
+            // Sélectionner les icônes not_connected
+            var notConnectedCartIcon = document.querySelector('#not_connected_cart');
+                var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
+        
+                if(notConnectedCartIcon){
+                // Ajouter un gestionnaire d'événements click à chaque icône
+                notConnectedCartIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
+                });
+            }
+        
+            if(notConnectedFavorisIcon){
+                notConnectedFavorisIcon.addEventListener('click', function() {
+                    showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
+                });
+            }
+        
+                // Fonction pour afficher un toast
+                function showToast(message) {
+                    Toastify({
+                        text: message,
+                        duration: 3000,
+                        gravity: 'top',
+                        position: 'right',
+                        stopOnFocus: true,
+                        style: {
+                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                        }
+                    }).showToast();
+                }
+            
+        </script>
 
         <script>
             stripe.handleCardPayment(

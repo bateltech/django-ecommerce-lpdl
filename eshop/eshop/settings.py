@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 #DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','imenemedjaoui.pythonanywhere.com','lpdl.local']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','195.35.1.100','lapierredelune.net','lpdl.local']
 
 
 # Application definition
@@ -165,7 +168,7 @@ MIDDLEWARE = [
 # CSP_REPORT_URI = '/csp-violation-report/'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://www.lapierredelune.net",
+    os.getenv('CORS_ORIGIN'),
 ]
 
 ROOT_URLCONF = 'eshop.urls'
@@ -196,10 +199,10 @@ DATABASES = {
     # pour Test Local
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pierre_db',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',  # Ou l'adresse de votre serveur MySQL
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),  # Ou l'adresse de votre serveur MySQL
         'PORT': '3306',       # Port MySQL par défaut
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -608,32 +611,32 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-EMAIL_HOST_USER = 'lpdl.help@gmail.com'
-EMAIL_HOST_PASSWORD = 'fyre tmmb fxln kezl'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 # Replace with the admin email address
-EMAIL_RECIPIENT = 'medjaoui.imene@gmail.com'
+EMAIL_RECIPIENT = os.getenv('ADMIN_EMAIL')
 
 # Logo Base64 data
 LOGO_BASE64 = ''
 # Replace with the admin email address
-ADRESSE_VOYANCE = 'medjaoui.imene@gmail.com'
+ADRESSE_VOYANCE = os.getenv('ADMIN_EMAIL')
 
-DOMAIN_NAME = 'http://127.0.0.1:8000/'
+DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 
 # Replace YOUR_API_KEY with your api key
-SMTP_API_KEY = 'your_api_key'
+SMTP_API_KEY = os.getenv('SMTP_API_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'your_api_key'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # Stripe settings
-STRIPE_API_KEY_PUBLISHABLE = 'your_api_key'
-STRIPE_API_SECRET_KEY = 'your_api_key'
+STRIPE_API_KEY_PUBLISHABLE = os.getenv('STRIPE_API_KEY_PUBLISHABLE')
+STRIPE_API_SECRET_KEY = os.getenv('STRIPE_API_SECRET_KEY')
 
 # STRIPE_WEBHOOK_SECRET = 'your_webhook_secret'
 # STRIPE_WEBHOOK_ENDPOINT = 'https://your-domain.com/webhooks/stripe/'
-STRIPE_ENDPOINT_SECRET = 'your_api_key'
+STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')

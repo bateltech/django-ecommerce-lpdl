@@ -221,8 +221,14 @@
 
             <div class="nav__buttons">
 
-                <a href="{% url 'panier' %}" aria-label="icône de panier"><i class="bi bi-cart3 fa-lg"></i></a>
-                <a href="{% url 'favoris' %}" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                {% if utilisateur_connecte %}
+                <a href="{% url 'panier' %}"><i class="bi bi-cart3 fa-lg"></i></a>
+                <a href="{% url 'favoris' %}"><i class="bi bi-suit-heart fa-lg"></i></a>
+                {% else %}
+                <a id="not_connected_cart"><i class="bi bi-cart3 fa-lg"></i></a>
+                <a id="not_connected_favoris"><i class="bi bi-suit-heart fa-lg"></i></a>
+                {% endif %}
+
                 <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-lg" style="width: 50px;"></i></a>
                 
                 <!-- Toggle button -->

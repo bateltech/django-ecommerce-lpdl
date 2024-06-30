@@ -2751,7 +2751,7 @@ aside p {
     \*-----------------------------------*/
 
     .voyance__section {
-        height: 54rem !important;
+        height: 60rem !important;
     }
     
     .voyance__content {
@@ -2898,7 +2898,6 @@ aside p {
 
     .footer__copy {
         padding-bottom: 5rem;
-        margin-bottom: 1rem;
         text-align: center;
         position: absolute;
         width: 100%;
@@ -2973,7 +2972,7 @@ aside p {
     \*-----------------------------------*/
 
     .artiste__section {
-        height: 50rem;
+        height: 54rem;
         padding-block: 0;
         padding-bottom: 1rem;
         margin-bottom: 0;
@@ -2993,7 +2992,7 @@ aside p {
     }
 
     .artiste__container {
-        height: 44rem;
+        height: fit-content;
         top: 9rem;
         display: flex;
         flex-direction: column;

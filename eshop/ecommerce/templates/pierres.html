@@ -19,8 +19,8 @@
             <a href="{% url 'panier' %}" style="width: 50px;" aria-label="icône de panier"><i class="bi bi-cart3 fa-2x"></i></a>
             <a href="{% url 'favoris' %}" style="width: 50px;" aria-label="icône de favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
             {% else %}
-            <a style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
-            <a style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
+            <a href="#" style="width: 50px;" aria-label="icône de panier" id="not_connected_cart"><i class="bi bi-cart3 fa-2x"></i></a>
+            <a href="#" style="width: 50px;" aria-label="icône de favoris" id="not_connected_favoris"><i class="bi bi-suit-heart fa-2x"></i></a>
             {% endif %}
             <a href="#" class="search__icon" aria-label="icône de recherche"><i class="bi bi-search fa-2x" style="width: 50px;"></i></a>
            </div>
