@@ -357,11 +357,13 @@ img {
     color: white;
     background-color: var(--button-color);
     border-color: hsla(0, 0%, 90%, 0.7);
+    cursor: pointer;
 }
 
 .log__button:hover { 
     background-color: hsla(0, 0%, 80%, 0.7);
     border-color: white;
+
 }
 
 .top__bar i {
@@ -982,6 +984,7 @@ img {
     font-weight:500;
     letter-spacing: 0.4px;
     margin-bottom: 1rem;
+    margin-top: .5rem;
 }
 
 .service-item-text {
@@ -1424,6 +1427,7 @@ img {
     
 .newsletter .btn:hover {
     cursor:pointer;
+    background-color: #6e6e6e;
 }
 
 .row {
@@ -3014,7 +3018,7 @@ aside p {
         height: fit-content;
         padding: 0.5rem;
         margin-top: 8rem;
-        font-size: 135%;
+        font-size: 120%;
         text-align: justify;
     }
 
