@@ -684,36 +684,42 @@
         </main>
 
         <script>
-                // Sélectionner les icônes not_connected
-                var notConnectedCartIcon = document.querySelector('#not_connected_cart');
-                var notConnectedFavorisIcon = document.querySelector('#not_connected_favoris');
-
-                if(notConnectedCartIcon){
-                    // Ajouter un gestionnaire d'événements click à chaque icône
-                    notConnectedCartIcon.addEventListener('click', function() {
+            // Sélectionner les icônes not_connected par ID
+            var notConnectedCartIcons = document.querySelectorAll('#not_connected_cart');
+            var notConnectedFavorisIcons = document.querySelectorAll('#not_connected_favoris');
+        
+            if (notConnectedCartIcons.length > 0) {
+                // Ajouter un gestionnaire d'événements click à chaque icône de panier
+                notConnectedCartIcons.forEach(function(icon) {
+                    icon.addEventListener('click', function() {
                         showToast('Veuillez vous connecter ou vous inscrire pour accéder au panier.');
                     });
-                }
-                if(notConnectedFavorisIcon){
-                    notConnectedFavorisIcon.addEventListener('click', function() {
+                });
+            }
+        
+            if (notConnectedFavorisIcons.length > 0) {
+                // Ajouter un gestionnaire d'événements click à chaque icône de favoris
+                notConnectedFavorisIcons.forEach(function(icon) {
+                    icon.addEventListener('click', function() {
                         showToast('Veuillez vous connecter ou vous inscrire pour accéder à vos favoris.');
                     });
-                }
-
-                // Fonction pour afficher un toast
-                function showToast(message) {
-                    Toastify({
-                        text: message,
-                        duration: 3000,
-                        gravity: 'top',
-                        position: 'right',
-                        stopOnFocus: true,
-                        style: {
-                            background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-                        }
-                    }).showToast();
-                }
-            
+                });
+            }
+        
+            // Fonction pour afficher un toast
+            function showToast(message) {
+                Toastify({
+                    text: message,
+                    duration: 3000,
+                    gravity: 'top',
+                    position: 'right',
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+                    }
+                }).showToast();
+            }
         </script>
-
+        
+        
 {% endblock %}
