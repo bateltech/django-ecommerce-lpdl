@@ -154,7 +154,7 @@ def articles_view(request):
 
     # Fetch all active promos
     active_promos = Promo.objects.filter(end_date__gte=time.now())
-    print("fucking promos : ", active_promos.__len__())
+    print("promos : ", active_promos.__len__())
 
 
     utilisateur_connecte = request.user.is_authenticated
@@ -486,7 +486,7 @@ def signup_view(response):
                     
                     # Gérer le cas où l'email existe déjà
                     form.add_error('email', 'Cet email est déjà utilisé.')
-                    print("MOTHER FUCKER => ", form.errors)
+                    
                     return render(response, "inscription.html", {"form":form, "error_message":"Cet email est déjà utilisé. Veuillez choisir un autre email."})
 
         else: 
@@ -691,7 +691,7 @@ def formulaire_voyance(request):
             return redirect('accueil')
     else:
         form = VoyanceForm(request.user)
-        print("ARE YOU FUCKING KIDDING ME ???")
+        print("ARE YOU KIDDING ME ???")
 
     return render(request, 'accueil', {'form': form})
 
@@ -715,6 +715,7 @@ def abonnement(request):
             # check if the email already exists in the contact list
             for contact in api_response.contacts:
                 if contact['email'] == email:
+                    print("Im in !")
                     # Set VIP status to True for the user
                     try:
                         user = ClientUser.objects.get(email=email)
@@ -726,7 +727,7 @@ def abonnement(request):
                     # Check if the user already has a VIPromo object
                     if not VIPromo.objects.filter(client=user).exists():
                         # If not, create a new one
-                        start_date = datetime.now()
+                        start_date = datetime.datetime.now()
                         end_date = start_date + timedelta(days=365)  # 1 year from the start date
                         vipromo = VIPromo.objects.create(client=user, start_date=start_date, end_date=end_date)
                         print("vipromo created !")
@@ -743,7 +744,7 @@ def abonnement(request):
                 user.save()
 
                 # Create VIPromo object for the user
-                start_date = datetime.now()
+                start_date = datetime.datetime.now()
                 end_date = start_date + timedelta(days=365)  # 1 year from the start date
                 vipromo = VIPromo.objects.create(client=user, start_date=start_date, end_date=end_date)
                 print("new vipromo created !")
@@ -753,7 +754,7 @@ def abonnement(request):
 
             return JsonResponse({'message': 'Abonnement effectué !'}, status=200)
     
-    return JsonResponse({'message': 'Bad request KHRA'}, status=400)
+    return JsonResponse({'message': 'Bad request'}, status=400)
 
 
 # NOT USED FOR NOW

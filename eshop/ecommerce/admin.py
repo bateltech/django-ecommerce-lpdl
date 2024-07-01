@@ -155,12 +155,15 @@ from django import forms
 
 @admin.register(ClientUser)
 class ClientUserAdmin(UserAdmin):
+    
+    # Define the fields to display in the form view
+    fieldsets = (
+        (None, {'fields': ('username','email', 'VIP')}),
+        ('Informations personnelles', {'fields': ('first_name', 'last_name', 'phone_number', 'birthdate')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Dates importantes', {'fields': ('last_login', 'date_joined')}),
+    )
 
-    readonly_fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'birthdate')
-    
-    def get_fields(self, request, obj=None):
-        return ['username', 'first_name', 'last_name', 'email', 'phone_number', 'birthdate']
-    
     def has_delete_permission(self, request, obj=None):
         return False
 
