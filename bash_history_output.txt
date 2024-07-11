@@ -1,0 +1,688 @@
+ls
+sudo su
+sudo freshclam
+sudo apt install clamav clamav-daemon
+sudo apt update & &sudo apt upgrade
+sudo apt update && sudo apt upgrade
+sudo nano /etc/apt/sources.list.d/Bacula-Community.list
+sudo apt update && sudo apt upgrade
+sudo freshclam
+ps aux | grep freshclam
+sudo kill -9 59120
+sudo kill -9 13992
+sudo kill -9 687
+ps aux | grep freshclam
+sudo rm /var/log/clamav/freshclam.log
+sudo chown clamav:clamav /var/log/clamav/freshclam.log
+sudo chmod 0644 /var/log/clamav/freshclam.log
+sudo freshclam
+sudo chown clamav:clamav /var/log/clamav/freshclam.log
+sudo chmod 0644 /var/log/clamav/freshclam.log
+sudo freshclam
+sudo systemctl restart clamav-freshclam
+ls
+-_-
+cd ..
+ls
+
+cd sysadmin
+hein
+cd sysadmin
+cd ..
+cd sysadmin
+yes 
+clear
+no
+cd 
+cd /
+ls
+cd home
+ls
+cd sysadmin
+cd /
+cd ~
+ls
+cd home
+cd ..
+cd sysadmin
+clear
+scp -r -p 336C:\Users\Aser\Desktop\TO_DO_LPDL.txt sysadmin@195.35.1.100:/home/sysadmin/
+scp -r -P 336C:\Users\Aser\Desktop\TO_DO_LPDL.txt sysadmin@195.35.1.100:/home/sysadmin/
+scp -r -P 3366 C:\Users\Aser\Desktop\TO_DO_LPDL.txt sysadmin@195.35.1.100:/home/sysadmin/
+ls
+exit
+ls
+cat todo
+cat TO_DO_LPDL.tx
+cat TO_DO_LPDL.txr
+cat TO_DO_LPDL.txt 
+nano TO_DO_LPDL.txt 
+sudo nano ~/.bash_history
+tail -n 10 ~/.bash_history
+
+cat ~/.bash_history | grep -
+cat ~/.bash_history | 
+exit
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+ps aux | grep runserver
+sudo netstat -tuln | grep 8000
+curl http://localhost:8000
+sudo ufw status
+sudo ufw allow 8000
+sudo ufw status
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+ps aux | grep apt
+kill 1172190
+sudo kill 1172190
+ps aux | grep apt
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo apt upgrade
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+docker --version
+ls
+cd home
+cd ..
+ls
+cd sysadmin
+ls
+mkdir lapierredelune
+ls
+cd lapierredelune
+cd ..
+cd lapierredelune/
+sudo apt install git
+sudo apt install apache2 -y
+sudo systemctl status apache2
+git clone https://github.com/bateltech/django-ecommerce-lpdl.git
+ls
+cd django-ecommerce-lpdl/
+ls
+python --version
+python3 --version
+nano Dockerfile
+ls
+nano docker-compose.yml
+cd ..
+cd..
+cd ..
+sudo mysql_secure_installation
+mysql --version
+Command 'mysql' not found, but can be installed with:
+sudo apt install mysql-client-core-8.0     # version 8.0.35-0ubuntu0.22.04.1, or
+sudo apt install mariadb-client-core-10.6  # version 1:10.6
+mysql --version
+sudo apt remove mariadb-client-core-10.6  # version 1:10.6
+sudo apt purge mysql-client-core-8.0
+sudo apt remove mysql-client-core-8.0
+sudo apt install mysql-server -y
+mysql --version
+sudo mysql_secure_installation
+sudo mysql -u root -p
+sudo systemctl start mysql
+sudo mysql -u root -p
+ls 
+cd l
+cd lapierredelune/
+ls
+cd django-ecommerce-lpdl/
+ls
+pip install -r requirements.txt
+sudo apt install python3-pip
+pip install -r requirements.txt
+nano requirements.txt
+pip install -r requirements.txt
+nano requirements.txt
+cd ..
+git pull
+git init
+git pull
+nano requirements.txt
+ls
+cd django-ecommerce-lpdl/
+nano requirements.txt
+pip install -r requirements.txt
+nano requirements.txt
+pip install -r requirements.txt
+pip install mod_wsgi==5.0.0
+source pierre_env/bin/activate
+ls
+python3 -m venv pierre_env
+apt install python3.10-venv
+sudo apt install python3.10-venv
+python3 -m venv pierre_env
+source pierre_env/bin/activate
+nano requirements.txt
+pip install -r requirements.txt
+sudo apt install apache2-dev
+pip install -r requirements.txt
+cleart
+clear
+sudo apt install pkg-config libmysqlclient-dev -y
+pip install -r requirements.txt
+ls
+cd eshop
+ls
+cd eshop
+ls
+nano settings.py
+cd ..
+ls
+cd eshop
+cd ..
+ls
+cd ..
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshhop
+cd eshop
+ls
+cd ecommerce
+ls
+cd migrations
+ls
+rm -f 000*.py
+ls
+cd ..
+ls
+python3 manage.py makemigrations
+python3 manage.py migrate
+cd ..
+ls
+cd 
+ls
+mysql -u lpdladmin -p pierre < /home/sysadmin/pierre.sql
+head -n 10 /home/sysadmin/pierre.sql
+sudo mysql -u root -p
+mysql -u lpdladmin -p pierre_db < /home/sysadmin/pierre.sql
+mysql -u lpdladmin -p pierre_db < /home/sysadmin/pierre_db.sql
+head -n 10 /home/sysadmin/pierre_db.sql
+ls
+rm pierre.sql 
+ls
+cd lapierredelune/
+ls
+cd django-ecommerce-lpdl/
+cd eshop
+ls
+cd eshop
+ls
+nano settings.py
+cd ..
+ls
+python manage.py createsuperuser
+python manage.py runserver 0.0.0.0:8000
+cd eshop
+nano settings.py
+cd .
+cd ..
+python manage.py runserver 0.0.0.0:8000
+screen
+sceen -S truc
+screen -S truc
+clear
+screen -ls
+exit
+ls
+cd lapierredelune/
+ls
+cd django-ecommerce-lpdl/
+cd eshop
+ls
+python3 manage.py runserver
+source pierre_env/bin/activate
+cd ..
+cd django-ecommerce-lpdl/
+source pierre_env/bin/activate
+cd eshop
+python3 manage.py runserver
+clear
+screen -ls
+screen -r 1222604.truc
+screen -r 1222304.truc
+screen -r 1222086.truc
+clear
+screen -r 1222086.truc
+screen -ls
+screen -r 1222304.truc
+screen -r 1222086.truc
+screen -r truc
+screen -ls
+t es con
+sudo kill 1222086
+screen -ls
+screen -S obol
+screen -ls
+sudo kill 1222474
+screen -ls
+screen -r truc
+ls
+cd lapierredelune/
+git init
+git diff
+git remote *v
+git remote -v
+ls
+git 
+git grep
+ls
+cd django-ecommerce-lpdl/
+git grep
+git remote -v
+cd
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+cd eshop
+ls
+cd eshop
+ls
+cp settings.py /home/sysadmin
+cd
+ls
+ls /home/sysadmin
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+git pull
+git stash
+git pull
+screen -r truc
+ls /home/sysadmin
+ls
+cd
+ls
+nano .env
+mv .env lapierredelune/django-ecommerce-lpdl/
+nano .env
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+nano .env
+cd eshop/
+ls
+cd eshop/
+nano settinges.py
+nano settings.py
+cd ..
+ls
+nano .env
+cd eshop
+python3 manage.py runserver 0.0.0.0:8000
+screen -r truc
+cd eshop
+nano settings.py
+screen -r truc
+cd /etc/apache2/sites-available/
+ls
+sudo nano lpdl.conf
+sudo a2ensite lpdl.conf
+sudo systemctl restart apache2
+sudo systemctl status apache2.service
+screen -r truc
+screen -ls
+sudo kill 1263881
+screen -ls
+screen -r truc
+screen -ls
+screen -r truc
+ls
+nano settings.py
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+cd eshop/
+ls
+source pierre_env/bin/activate
+cd ..
+source pierre_env/bin/activate
+sudo systemctl restart apache2
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshop
+ls
+cd static
+cd css
+cd ..
+ls 
+sudo systemctl restart apache2
+source pierre_env/bin/activate
+cd ..
+source pierre_env/bin/activate
+ls
+cd eshop
+python3 manage.py runserver 0.0.0.0:8000
+screen -r truc
+clear
+screen -r truc
+screen -S workshop
+screen -r truc
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+source pierre_env/bin/activate
+sudo apt-get install libapache2-mod-wsgi-py3
+sudo a2enmod wsgi
+sudo a2dissite 000-default.conf
+sudo systemctl restart apache2
+sudo systemctl reload apache2
+sudo apt install certbot python3-certbot-apache -y
+# Set the ownership to your user and group
+sudo chown -R sysadmin:sysadmin /home/sysadmin/lapierredelune/django-ecommerce-lpdl
+# Allow read permissions for all users (use 755 for directories and 644 for files)
+sudo find /home/sysadmin/lapierredelune/django-ecommerce-lpdl -type d -exec chmod 755 {} \;
+sudo find /home/sysadmin/lapierredelune/django-ecommerce-lpdl -type f -exec chmod 644 {} \;
+sudo chown -R sysadmin:sysadmin /home/sysadmin/lapierredelune/django-ecommerce-lpdl
+sudo find /home/sysadmin/lapierredelune/django-ecommerce-lpdl -type d -exec chmod 755 {} \;
+sudo find /home/sysadmin/lapierredelune/django-ecommerce-lpdl -type f -exec chmod 644 {} \;
+sudo chmod 755 /home/sysadmin
+sudo chmod 755 /home/sysadmin/lapierredelune
+sudo chmod 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl
+sudo systemctl restart apache2
+sestatus
+sudo tail -f /var/log/apache2/lapierredelune_error.log
+clear
+whoami
+who
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+nano .env
+chown sysadmin:sysadmin .env
+chmod 600 .env
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo a2enmod alias
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo nano /etc/apache2/sites-available/lpdl.conf
+ls
+ls eshop/
+sudo rm /etc/apache2/sites-available/lpdl.conf
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+ls
+sudo nano /eshop/settings.py
+cd eshop/
+nano settings.py
+ls
+sudo nano /eshop/settings.py
+sudo nano settings.py
+ls
+cd eshop/
+ls
+sudo nano settings.py
+cd ..
+ls
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo apt update
+sudo apt install apache2 apache2-dev
+source /home/sysadmin/lapierredelune/django-ecommerce-lpdl/pierre_env/bin/activate
+pip install mod_wsgi
+mod_wsgi-express module-config
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo a2ensite lapierredelune.conf
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod alias
+systemctl reload apache2
+sudo systemctl reload apache2
+sudo a2ensite lapierredelune.conf
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod alias
+sudo systemctl restart apache2
+Job for apache2.service failed because the control process exited with error code.
+See "systemctl status apache2.service" and "journalctl -xeu apache2.service" for details.
+sudo systemctl status apache2.service
+sudo systemctl restart apache2
+cleart
+clear
+sudo systemctl status apache2.service
+sudo journalctl -xeu apache2.service
+sudo apache2ctl configtest
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo systemctl status apache2.service
+sudo systemctl restart apache2
+clear
+sudo apache2ctl configtest
+sudo journalctl -xeu apache2.service
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo journalctl -xeu apache2.service
+sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo systemctl restart apache2
+sudo a2ensite lapierredelune.conf
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo a2enmod alias
+sudo systemctl restart apache2
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+ls
+cd eshop
+python manage.py collectstatic
+python manage.py runserver 0.0.0.0:8000
+sudo systemctl restart apache2
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+python manage.py collectstatic
+python manage.py runserver 0.0.0.0:8000
+ls
+cd eshop/
+sudo nano wsgi.py
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+python3 --version
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo ufw status
+sudo ufw allow 80
+sudo ufw status
+cd ..
+python3 manage.py runserver 0.0.0.0:8000
+sudo systemctl restart apache2
+sudo tail -f /var/log/apache2/error.log
+ls 
+cd eshop/
+suno nano wsgi.py
+suso nano wsgi.py
+sudo nano wsgi.py
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+clear
+cd
+ls
+sudo a2dissite lapierredelune.conf
+sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo a2ensite lapierredelune.conf
+sudo a2dissite 000-default.conf
+sudo systemctl restart apache2
+journalctl -xeu apache2.service
+sudo journalctl -xeu apache2.service
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo a2dissite 000-default.conf
+sudo systemctl restart apache2
+sudo a2ensite lapierredelune.conf
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/pierre_env
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/pierre_env
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chown -R www-data:www-data /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/static
+sudo chmod -R 755 /home/sysadmin/lapierredelune/django-ecommerce-lpdl/eshop/media
+sudo systemctl restart apache2
+source /home/sysadmin/lapierredelune/django-ecommerce-lpdl/pierre_env/bin/activate
+sudo rm /var/www/html/index.html
+sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo a2ensite lapierredelune.conf
+sudo a2dissite 000-default.conf
+sudo a2dissite lapierredelune.conf
+sudo systemctl restart apache2
+sudo a2ensite lapierredelune.conf
+sudo systemctl restart apache2
+ls /etc
+sudo nano /etc/hosts
+ping lapierredelune.net
+sudo systemctl restart apache2
+sudo chmod 775 ../django-ecommerce-lpdl
+ls
+cd lapierredelune/
+sudo chmod 775 ../django-ecommerce-lpdl
+sudo chmod 775 django-ecommerce-lpdl
+cd django-ecommerce-lpdl/
+sudo chmod 775 ../django-ecommerce-lpdl
+ls
+cd ..
+ls
+cd ..
+ls
+sudo chmod 664 pierre_db.sql
+sudo systemctl restart apache2
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+sudo a2ensite lapierredelune.conf
+ping www.lapierredelune.net
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshop/
+cd e
+cd eshop/
+sudo nano settings.py
+sudo a2ensite lapierredelune.conf
+sudo systemctl restart apache2
+sudo nano settings.py
+sudo a2ensite lapierredelune.conf
+sudo systemctl restart apache2
+ls
+cd ..
+ls
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo rm /etc/apache2/sites-available/lapierredelune.conf
+sudo nano /etc/apache2/sites-available/lapierredelune.conf
+sudo a2ensite lapierredelune.conf
+sudo systemctl restart apache2
+sudo apt-get install libapache2-mod-wsgi-py3
+sudo a2enmod wsgi
+sudo systemctl restart apache2
+ls
+python3 manage.py collectstatic
+sudo tail -f /var/log/apache2/lapierredelune_error.log
+clear
+cd ..
+sudo nano .env
+cd eshop/
+ls
+cd eshop/
+sudo nano settings.py
+cd ..
+sudo nano .env
+cd ..
+sudo nano .env
+pip install python-dotenv
+ls
+sudo nano .env
+sudo chmod 644 .env
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshop/
+ls
+cd eshop/
+sudo nano settings.py
+screen -r truc
+screen -S truc
+clear
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+source pierre_env/bin/activate
+cd eshop
+python3 manage.py runserver 0.0.0.0:8000
+ls
+ps aux
+cat ~/.bash_history | grep 8000
+cat ~/.bash_history | grep aux
+ps aux | grep runserver
+sudo kill 1263785
+sudo kill 1263786
+sudo kill 1263785
+ps aux | grep runserver
+python3 manage.py runserver 0.0.0.0:8000
+cd eshop
+nano settings.py
+clear
+cd 
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshop/
+python3 manage.py runserver 0.0.0.0:8000
+cd eshop
+nano settings.py
+cd..
+cd ..
+python3 manage.py runserver 0.0.0.0:8000
+clear
+cd ..
+sudo systemctl restart apache2
+python3 manage.py runserver 0.0.0.0:8000
+cd eshop
+python3 manage.py runserver 0.0.0.0:8000
+cd ..
+ls
+git pull
+cd eshop
+python3 manage.py runserver 0.0.0.0:8000
+python3 manage.py collectstatic
+python3 manage.py runserver 0.0.0.0:8000
+sudo systemctl status apache2.service
+ls
+cd eshop
+ls
+nano wsgi.py
+clear
+lq
+ls
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+cd eshop/
+ls
+python3 manage.py runserver
+cd 
+cd lapierredelune/
+cd django-ecommerce-lpdl/
+ls
+source pierre_env/bin/activate
+cat ~/.bash_history
+cat ~/.bash_history | grep source
+cd eshop
+python3 manage.py runserver
+ls of 
+lsof -i :8000
+sudo kill 1222107
+lsof -i :8000
+python3 manage.py runserver
+python3 manage.py runserver 0.0.0.0:8000
+pip install python-dotenv
+python3 manage.py runserver 0.0.0.0:8000
+python3 manage.py collectstatic
+python3 manage.py runserver 0.0.0.0:8000
+sudo systemctl status apache2.service
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo systemctl restart apache2
+sudo a2ensite lpdl.conf
+screen -r truc
+python3 manage.py runserver 0.0.0.0:8000

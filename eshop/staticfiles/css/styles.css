@@ -19,6 +19,7 @@
     --title-color: hsl(207, 4%, 16%);
     --text-color: hsl(207, 4%, 28%);
     --text-color-light: hsl(207, 4%, 56%);
+    --button-color: hsl(0, 1%, 40%);
     --body-color: hsla(0, 0%, 25%, 0.5);
     --container-color: hsl(207, 4%, 95%);
     --darkgray-color: hsl(0, 0%, 10%);
@@ -342,20 +343,27 @@ img {
     right:0;
 }
 
+.shop__container a {
+    height: 2.75rem !important;
+}
+
 .log__button {
-    padding: 0.5rem;
+    padding: .75rem .5rem;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     border-radius: 3rem;
+    font-size: var(--normal-font-size);
     border: 1px solid;
     color: white;
-    background-color: hsla(0, 1%, 67%, 0.6);
+    background-color: var(--button-color);
     border-color: hsla(0, 0%, 90%, 0.7);
+    cursor: pointer;
 }
 
 .log__button:hover { 
     background-color: hsla(0, 0%, 80%, 0.7);
     border-color: white;
+
 }
 
 .top__bar i {
@@ -786,10 +794,11 @@ img {
     top: .2em;
     margin-top: 2rem;
     color: white;
+    background-color: var(--darkgray-color);
 }
 
 .card__btn {
-    background-color: hsl(220, 5%, 50%);
+    background-color: var(--body-color);
     color: #fff;
     font-size: 1rem;
     font-family: var(--body-font);
@@ -975,6 +984,7 @@ img {
     font-weight:500;
     letter-spacing: 0.4px;
     margin-bottom: 1rem;
+    margin-top: .5rem;
 }
 
 .service-item-text {
@@ -1114,7 +1124,7 @@ img {
     border-radius: 3rem;
     border: 1px solid;
     color: white;
-    background-color: hsla(0, 1%, 67%, 0.6);
+    background-color: var(--button-color);
     border-color: hsla(0, 0%, 90%, 0.7);
     margin-top: 12rem;
 }
@@ -1286,6 +1296,13 @@ img {
     padding-left: 0.25rem;
 }
 
+.footer__social {
+    list-style-type: none;  /* Supprimer les puces de liste */
+    padding: 0;             /* Supprimer le padding par défaut */
+    margin: 0;              /* Supprimer la marge par défaut */
+    display: flex;          /* Utiliser Flexbox pour l'alignement horizontal */
+  }
+
 .footer img {
     width: 1.5rem;
     height: auto;
@@ -1410,6 +1427,7 @@ img {
     
 .newsletter .btn:hover {
     cursor:pointer;
+    background-color: #6e6e6e;
 }
 
 .row {
@@ -1617,8 +1635,6 @@ aside p {
 }
 
 /* Style for horizontal-scroll for sub categories buttons */
-
-
 
 .horizontal-scroll, .horizontal-scroll-mobile {
     white-space: nowrap; /* Prevent content from wrapping */
@@ -2739,7 +2755,7 @@ aside p {
     \*-----------------------------------*/
 
     .voyance__section {
-        height: 54rem !important;
+        height: 60rem !important;
     }
     
     .voyance__content {
@@ -2816,7 +2832,7 @@ aside p {
     }
 
     .nav__menu {
-        background-color: #686662;
+        background-color: var(--button-color);
     }
 
     .nav__menu {
@@ -2886,7 +2902,6 @@ aside p {
 
     .footer__copy {
         padding-bottom: 5rem;
-        margin-bottom: 1rem;
         text-align: center;
         position: absolute;
         width: 100%;
@@ -2961,7 +2976,7 @@ aside p {
     \*-----------------------------------*/
 
     .artiste__section {
-        height: 50rem;
+        height: 54rem;
         padding-block: 0;
         padding-bottom: 1rem;
         margin-bottom: 0;
@@ -2981,7 +2996,7 @@ aside p {
     }
 
     .artiste__container {
-        height: 44rem;
+        height: fit-content;
         top: 9rem;
         display: flex;
         flex-direction: column;
@@ -3003,7 +3018,7 @@ aside p {
         height: fit-content;
         padding: 0.5rem;
         margin-top: 8rem;
-        font-size: 135%;
+        font-size: 120%;
         text-align: justify;
     }
 
@@ -3562,7 +3577,7 @@ aside p {
         border-radius: 3rem;
         border: 1px solid;
         color: white;
-        background-color: hsla(0, 1%, 67%, 0.6);
+        background-color: var(--button-color);
         border-color: hsla(0, 0%, 90%, 0.7);
         margin-top: 0 !important;
     }

@@ -14,16 +14,19 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = False
+# Load .env file
+dotenv_path = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','195.35.1.100','lapierredelune.net','lpdl.local']
+
+# SECURITY WARNING: don't run with debug turned on in production!
+#DEBUG = True
+DEBUG = False
+
+ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
 
 
 # Application definition
@@ -640,3 +643,4 @@ STRIPE_API_SECRET_KEY = os.getenv('STRIPE_API_SECRET_KEY')
 # STRIPE_WEBHOOK_SECRET = 'your_webhook_secret'
 # STRIPE_WEBHOOK_ENDPOINT = 'https://your-domain.com/webhooks/stripe/'
 STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
+
