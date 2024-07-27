@@ -347,6 +347,8 @@ def checkout_view(request):
     nom_utilisateur = request.user.last_name if utilisateur_connecte else None
     email_utilisateur = request.user.email if utilisateur_connecte else None
 
+    vip = False
+
     # Check if the user has a cart
     has_cart = CartItem.objects.filter(cart__user=user).exists()
 
@@ -357,7 +359,7 @@ def checkout_view(request):
         print("cart price : ", cart.total_price)
 
         price_promo = cart.total_price
-
+        
         # Apply VIPromo discount if applicable
         vipromo = VIPromo.objects.filter(client=user).first()
         if vipromo and vipromo.end_date >= datetime.datetime.now().date():
@@ -368,6 +370,7 @@ def checkout_view(request):
             price_promo += 5
             print("promo : ", discount_percentage)
             print(" promo price :", price_promo)
+            vip = True
 
 
         total_price = cart.total_price + 5
@@ -382,7 +385,8 @@ def checkout_view(request):
         'has_cart': has_cart,
         'total_price' : total_price,
         'price_promo' : price_promo,
-        'pub_key' : pub_key
+        'pub_key' : pub_key,
+        'vip' : vip
 
     }
 
@@ -887,6 +891,7 @@ def delete_Voyance_ajax (request, item_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
+from datetime import datetime, timezone
 def submit_feedback(request):
     if request.method == 'POST':
         contenu = request.POST.get('contenu')
