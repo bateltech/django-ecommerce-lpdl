@@ -891,7 +891,7 @@ def delete_Voyance_ajax (request, item_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
-from datetime import datetime, timezone
+from datetime import datetime as dt, timezone as tz
 def submit_feedback(request):
     if request.method == 'POST':
         contenu = request.POST.get('contenu')
@@ -901,7 +901,7 @@ def submit_feedback(request):
         # Create a Feedback object and save it to the database
         feedback = Feedback(
             contenu=contenu,
-            date_envoi=datetime.now(timezone.utc),
+            date_envoi=dt.now(tz.utc),
             utilisateur_id=user_id,
             etat='en attente'
         )
@@ -979,7 +979,7 @@ def start_order(request):
 
     # Apply VIPromo discount if applicable
     vipromo = VIPromo.objects.filter(client=request.user).first()
-    if vipromo and vipromo.end_date >= datetime.datetime.now().date():
+    if vipromo and vipromo.end_date >= datetime.date():
         discount_percentage = Decimal(vipromo.discount_percentage) / 100
         print("discount percentage:", discount_percentage)
         total_discount = (total_price - Decimal(delivery_fee_item.fixed_amount.amount) / 100 ) * discount_percentage
