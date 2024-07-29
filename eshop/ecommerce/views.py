@@ -976,6 +976,7 @@ def start_order(request):
         })
         total_price += Decimal(delivery_fee_item.fixed_amount.amount) / 100
 
+    total_price_after_discount = total_price
     # Apply VIPromo discount if applicable
     vipromo = VIPromo.objects.filter(client=request.user).first()
     if vipromo and vipromo.end_date >= datetime.datetime.now().date():
