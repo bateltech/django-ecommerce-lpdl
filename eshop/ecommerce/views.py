@@ -928,7 +928,6 @@ from django.conf import settings
 import json
 from .models import Cart, CartItem, Commande, DetailCommande, VIPromo
 from django.urls import reverse
-import datetime
 
 @csrf_protect
 @login_required
@@ -979,7 +978,7 @@ def start_order(request):
 
     # Apply VIPromo discount if applicable
     vipromo = VIPromo.objects.filter(client=request.user).first()
-    if vipromo and vipromo.end_date >= datetime.date():
+    if vipromo and vipromo.end_date >= datetime.datetime.now().date():
         discount_percentage = Decimal(vipromo.discount_percentage) / 100
         print("discount percentage:", discount_percentage)
         total_discount = (total_price - Decimal(delivery_fee_item.fixed_amount.amount) / 100 ) * discount_percentage
