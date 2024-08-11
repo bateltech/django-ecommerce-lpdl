@@ -7,7 +7,7 @@ from .models import Newsletter
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    filter_horizontal = ('tags', 'pierres')  # Display tags and pierres as checkboxes
+    filter_horizontal = ('tags', 'pierres','prix_article')  # Display tags and pierres as checkboxes
     list_display = ('libelle', 'stock', 'categorie', 'date_created')
     readonly_fields =('created_at', 'image_tag',)  
 

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache-server
+  template:
+    metadata:
+      labels:
+        app: apache-server
+    spec:
+      containers:
+      - name: apache-server
+        image: apache-server:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        env:
+          - name: APACHE_LOG_DIR
+            value: "/usr/local/apache2/logs"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "1"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"

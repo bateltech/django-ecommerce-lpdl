@@ -1,0 +1,890 @@
+.
+├── apache
+│   ├── Dockerfile
+│   └── my-httpd.conf
+├── directory_tree.txt
+├── eshop
+│   ├── directory_tree.txt
+│   ├── Dockerfile
+│   ├── ecommerce
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── __init__.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_clientuser_birthdate_clientuser_phone_number.py
+│   │   │   ├── 0003_pierre_couverture.py
+│   │   │   ├── 0004_alter_pierre_couverture.py
+│   │   │   ├── 0005_alter_pierre_couverture_wishlist.py
+│   │   │   ├── 0006_cart_rename_fk_user_commande_user_and_more.py
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── signals.py
+│   │   ├── templates
+│   │   │   ├── accueil.html
+│   │   │   ├── admin_new_commande.html
+│   │   │   ├── admin_new_voyance.html
+│   │   │   ├── articles.html
+│   │   │   ├── base.html
+│   │   │   ├── checkout.html
+│   │   │   ├── commentaires.html
+│   │   │   ├── conditions.html
+│   │   │   ├── connexion.html
+│   │   │   ├── details_collection.html
+│   │   │   ├── details.html
+│   │   │   ├── erreur.html
+│   │   │   ├── favoris.html
+│   │   │   ├── historique.html
+│   │   │   ├── inscription.html
+│   │   │   ├── mentions.html
+│   │   │   ├── paiement_voyance.html
+│   │   │   ├── panier.html
+│   │   │   ├── payment_confirmation.html
+│   │   │   ├── payment_confirmation_voyance.html
+│   │   │   ├── pierres.html
+│   │   │   ├── profil.html
+│   │   │   ├── resetpwrd.html
+│   │   │   ├── robots.txt
+│   │   │   ├── securite.html
+│   │   │   ├── sitemap.xml
+│   │   │   └── stripe_success.html
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── eshop
+│   │   ├── asgi.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── manage.py
+│   ├── media
+│   │   ├── articles
+│   │   │   ├── 6892d4dc-8f47-447e-a288-645291225137_media_0_7_d_07d41018-2bc6-4909-a05e-7b9ab8cb2d6b.webp
+│   │   │   ├── 6892d4dc-8f47-447e-a288-645291225137_media_a_d_5_ad5c07a7-5137-4216-b24b-7bdcad8bb6b2.webp
+│   │   │   ├── bouddhas.webp
+│   │   │   ├── bourcle_doreille_en_mokaite.webp
+│   │   │   ├── bracelet_améthyste.webp
+│   │   │   ├── bracelets.webp
+│   │   │   ├── bracelet.webp
+│   │   │   ├── château_rasque_EC-343.webp
+│   │   │   ├── deco.webp
+│   │   │   ├── malas.webp
+│   │   │   ├── plaques.webp
+│   │   │   └── rooterberg_Dierikon_Winter_1.webp
+│   │   ├── collections
+│   │   │   ├── luna_2whkPfk.webp
+│   │   │   ├── luna.webp
+│   │   │   └── preciosa.webp
+│   │   ├── covers
+│   │   │   ├── agate_rouge_cover.jpg
+│   │   │   ├── agate_rouge.webp
+│   │   │   ├── ambre_cover.jpg
+│   │   │   ├── ambre.webp
+│   │   │   ├── amethyste_cover.jpg
+│   │   │   ├── amethyste.webp
+│   │   │   ├── aventurine_cover.jpg
+│   │   │   ├── aventurine.webp
+│   │   │   ├── citrine_cover.jpg
+│   │   │   ├── citrine.webp
+│   │   │   ├── hematite_cover.jpg
+│   │   │   ├── hematite.webp
+│   │   │   ├── howlite_cover.jpg
+│   │   │   ├── howlite.webp
+│   │   │   ├── jaspe_brechique_cover.jpg
+│   │   │   ├── jaspe_brechique.webp
+│   │   │   ├── jaspe_leopard_cover.jpg
+│   │   │   ├── jaspe_leopard.webp
+│   │   │   ├── jaspe_mokaite_cover.jpg
+│   │   │   ├── jaspe_mokaite.webp
+│   │   │   ├── jaspe_rouge_cover.jpg
+│   │   │   ├── jaspe_rouge.webp
+│   │   │   ├── labradorite_cover.jpg
+│   │   │   ├── labradorite.webp
+│   │   │   ├── lapis_lazuli_cover.jpg
+│   │   │   ├── lapis_lazuli.webp
+│   │   │   ├── lave_cover.jpg
+│   │   │   ├── lave.webp
+│   │   │   ├── obsidienne_flocon_de_neige_cover.jpg
+│   │   │   ├── obsidienne_flocon_de_neige.webp
+│   │   │   ├── oeil_de_tigre_cover.jpg
+│   │   │   ├── oeil_de_tigre.webp
+│   │   │   ├── quartz_blanc_cover.jpg
+│   │   │   ├── quartz_blanc.webp
+│   │   │   ├── quartz_rose_cover.jpg
+│   │   │   ├── quartz_rose.webp
+│   │   │   ├── quartz_tourmaline_noire_cover.jpg
+│   │   │   ├── quartz_tourmaline_noire.webp
+│   │   │   ├── rodhonite_cover.jpg
+│   │   │   ├── rodhonite.webp
+│   │   │   ├── sodalite_cover.jpg
+│   │   │   ├── sodalite.webp
+│   │   │   ├── tourmaline_cover.jpg
+│   │   │   └── tourmaline.webp
+│   │   └── pierres
+│   │       ├── agate_rouge.webp
+│   │       ├── ambre.webp
+│   │       ├── amethyste.webp
+│   │       ├── aventurine.webp
+│   │       ├── citrine.webp
+│   │       ├── hematite.webp
+│   │       ├── howlite.webp
+│   │       ├── jaspe_brechique.webp
+│   │       ├── jaspe_leopard.webp
+│   │       ├── jaspe_mokaite.webp
+│   │       ├── jaspe_rouge.webp
+│   │       ├── labradorite.webp
+│   │       ├── lapis_lazuli.webp
+│   │       ├── lave.webp
+│   │       ├── obsidienne_flocon_de_neige.webp
+│   │       ├── oeil_de_tigre.webp
+│   │       ├── quartz_blanc.webp
+│   │       ├── quartz_rose.webp
+│   │       ├── quartz_tourmaline_noire.webp
+│   │       ├── rodhonite.webp
+│   │       ├── sodalite.webp
+│   │       └── tourmaline.webp
+│   ├── requirements.txt
+│   ├── static
+│   │   ├── css
+│   │   │   ├── jazzmin-dark.css
+│   │   │   ├── log_style.css
+│   │   │   └── styles.css
+│   │   ├── img
+│   │   │   ├── admin_logo.webp
+│   │   │   ├── android-chrome-192x192.png
+│   │   │   ├── android-chrome-512x512.png
+│   │   │   ├── apple-touch-icon.png
+│   │   │   ├── artiste_200.webp
+│   │   │   ├── artiste_380.webp
+│   │   │   ├── artiste_469.webp
+│   │   │   ├── artiste.webp
+│   │   │   ├── attherate-icon.svg
+│   │   │   ├── camion.svg
+│   │   │   ├── card_back.webp
+│   │   │   ├── card_front.webp
+│   │   │   ├── empty_heart.svg
+│   │   │   ├── erreur-404.webp
+│   │   │   ├── facebook-round-color-icon.svg
+│   │   │   ├── favicon-16x16.png
+│   │   │   ├── favicon-32x32.png
+│   │   │   ├── favicon.ico
+│   │   │   ├── favicon.png
+│   │   │   ├── favoris_active.svg
+│   │   │   ├── filled_heart.svg
+│   │   │   ├── ic_baseline-minus.svg
+│   │   │   ├── ic_baseline-plus.svg
+│   │   │   ├── ic_delete.svg
+│   │   │   ├── icon_detail_add.svg
+│   │   │   ├── icon_detail_close.svg
+│   │   │   ├── icon_detail_delete.svg
+│   │   │   ├── icon_detail_favorie.svg
+│   │   │   ├── icon_detail_favoris.svg
+│   │   │   ├── icon_detail_next.svg
+│   │   │   ├── icon_detail_previous.svg
+│   │   │   ├── icon_detail_valider.svg
+│   │   │   ├── ig-instagram-icon.svg
+│   │   │   ├── logo_mb.webp
+│   │   │   ├── logo.webp
+│   │   │   ├── Money Yours.svg
+│   │   │   ├── phone-outline-icon.svg
+│   │   │   ├── produits
+│   │   │   │   ├── bolas.webp
+│   │   │   │   ├── boucle.webp
+│   │   │   │   ├── bouddhas.webp
+│   │   │   │   ├── bracelets.webp
+│   │   │   │   ├── deco.webp
+│   │   │   │   ├── malas.webp
+│   │   │   │   ├── orgonites.webp
+│   │   │   │   └── plaques.webp
+│   │   │   ├── promo_deco.webp
+│   │   │   ├── Shipped.svg
+│   │   │   ├── tiktok-app-icon.svg
+│   │   │   ├── Vector.webp
+│   │   │   ├── voyance_bg_og.webp
+│   │   │   ├── voyance_bg.webp
+│   │   │   └── wallpaper.webp
+│   │   └── js
+│   │       ├── accueil.js
+│   │       ├── base.js
+│   │       ├── main.js
+│   │       ├── panier.js
+│   │       ├── profil.js
+│   │       └── slider.js
+│   └── staticfiles
+│       ├── admin
+│       │   ├── css
+│       │   │   ├── autocomplete.css
+│       │   │   ├── base.css
+│       │   │   ├── changelists.css
+│       │   │   ├── dark_mode.css
+│       │   │   ├── dashboard.css
+│       │   │   ├── forms.css
+│       │   │   ├── login.css
+│       │   │   ├── nav_sidebar.css
+│       │   │   ├── responsive.css
+│       │   │   ├── responsive_rtl.css
+│       │   │   ├── rtl.css
+│       │   │   ├── vendor
+│       │   │   │   └── select2
+│       │   │   │       ├── LICENSE-SELECT2.md
+│       │   │   │       ├── select2.css
+│       │   │   │       └── select2.min.css
+│       │   │   └── widgets.css
+│       │   ├── img
+│       │   │   ├── calendar-icons.svg
+│       │   │   ├── gis
+│       │   │   │   ├── move_vertex_off.svg
+│       │   │   │   └── move_vertex_on.svg
+│       │   │   ├── icon-addlink.svg
+│       │   │   ├── icon-alert.svg
+│       │   │   ├── icon-calendar.svg
+│       │   │   ├── icon-changelink.svg
+│       │   │   ├── icon-clock.svg
+│       │   │   ├── icon-deletelink.svg
+│       │   │   ├── icon-no.svg
+│       │   │   ├── icon-unknown-alt.svg
+│       │   │   ├── icon-unknown.svg
+│       │   │   ├── icon-viewlink.svg
+│       │   │   ├── icon-yes.svg
+│       │   │   ├── inline-delete.svg
+│       │   │   ├── LICENSE
+│       │   │   ├── README.txt
+│       │   │   ├── search.svg
+│       │   │   ├── selector-icons.svg
+│       │   │   ├── sorting-icons.svg
+│       │   │   ├── tooltag-add.svg
+│       │   │   └── tooltag-arrowright.svg
+│       │   └── js
+│       │       ├── actions.js
+│       │       ├── admin
+│       │       │   ├── DateTimeShortcuts.js
+│       │       │   └── RelatedObjectLookups.js
+│       │       ├── autocomplete.js
+│       │       ├── calendar.js
+│       │       ├── cancel.js
+│       │       ├── change_form.js
+│       │       ├── collapse.js
+│       │       ├── core.js
+│       │       ├── filters.js
+│       │       ├── inlines.js
+│       │       ├── jquery.init.js
+│       │       ├── nav_sidebar.js
+│       │       ├── popup_response.js
+│       │       ├── prepopulate_init.js
+│       │       ├── prepopulate.js
+│       │       ├── SelectBox.js
+│       │       ├── SelectFilter2.js
+│       │       ├── theme.js
+│       │       ├── urlify.js
+│       │       └── vendor
+│       │           ├── jquery
+│       │           │   ├── jquery.js
+│       │           │   ├── jquery.min.js
+│       │           │   └── LICENSE.txt
+│       │           ├── select2
+│       │           │   ├── i18n
+│       │           │   │   ├── af.js
+│       │           │   │   ├── ar.js
+│       │           │   │   ├── az.js
+│       │           │   │   ├── bg.js
+│       │           │   │   ├── bn.js
+│       │           │   │   ├── bs.js
+│       │           │   │   ├── ca.js
+│       │           │   │   ├── cs.js
+│       │           │   │   ├── da.js
+│       │           │   │   ├── de.js
+│       │           │   │   ├── dsb.js
+│       │           │   │   ├── el.js
+│       │           │   │   ├── en.js
+│       │           │   │   ├── es.js
+│       │           │   │   ├── et.js
+│       │           │   │   ├── eu.js
+│       │           │   │   ├── fa.js
+│       │           │   │   ├── fi.js
+│       │           │   │   ├── fr.js
+│       │           │   │   ├── gl.js
+│       │           │   │   ├── he.js
+│       │           │   │   ├── hi.js
+│       │           │   │   ├── hr.js
+│       │           │   │   ├── hsb.js
+│       │           │   │   ├── hu.js
+│       │           │   │   ├── hy.js
+│       │           │   │   ├── id.js
+│       │           │   │   ├── is.js
+│       │           │   │   ├── it.js
+│       │           │   │   ├── ja.js
+│       │           │   │   ├── ka.js
+│       │           │   │   ├── km.js
+│       │           │   │   ├── ko.js
+│       │           │   │   ├── lt.js
+│       │           │   │   ├── lv.js
+│       │           │   │   ├── mk.js
+│       │           │   │   ├── ms.js
+│       │           │   │   ├── nb.js
+│       │           │   │   ├── ne.js
+│       │           │   │   ├── nl.js
+│       │           │   │   ├── pl.js
+│       │           │   │   ├── ps.js
+│       │           │   │   ├── pt-BR.js
+│       │           │   │   ├── pt.js
+│       │           │   │   ├── ro.js
+│       │           │   │   ├── ru.js
+│       │           │   │   ├── sk.js
+│       │           │   │   ├── sl.js
+│       │           │   │   ├── sq.js
+│       │           │   │   ├── sr-Cyrl.js
+│       │           │   │   ├── sr.js
+│       │           │   │   ├── sv.js
+│       │           │   │   ├── th.js
+│       │           │   │   ├── tk.js
+│       │           │   │   ├── tr.js
+│       │           │   │   ├── uk.js
+│       │           │   │   ├── vi.js
+│       │           │   │   ├── zh-CN.js
+│       │           │   │   └── zh-TW.js
+│       │           │   ├── LICENSE.md
+│       │           │   ├── select2.full.js
+│       │           │   └── select2.full.min.js
+│       │           └── xregexp
+│       │               ├── LICENSE.txt
+│       │               ├── xregexp.js
+│       │               └── xregexp.min.js
+│       ├── assets
+│       │   ├── css
+│       │   │   ├── black-dashboard.css
+│       │   │   ├── black-dashboard.css.map
+│       │   │   ├── black-dashboard.min.css
+│       │   │   ├── forms.css
+│       │   │   ├── nucleo-icons.css
+│       │   │   ├── theme-switcher.css
+│       │   │   └── widgets.css
+│       │   ├── demo
+│       │   │   ├── demo.css
+│       │   │   └── demo.js
+│       │   ├── fonts
+│       │   │   ├── nucleo.eot
+│       │   │   ├── nucleo.ttf
+│       │   │   ├── nucleo.woff
+│       │   │   └── nucleo.woff2
+│       │   ├── img
+│       │   │   ├── 12345.png
+│       │   │   ├── anime3.png
+│       │   │   ├── anime6.png
+│       │   │   ├── apple-icon.png
+│       │   │   ├── bg5.jpg
+│       │   │   ├── default-avatar.png
+│       │   │   ├── emilyz.jpg
+│       │   │   ├── favicon.png
+│       │   │   ├── header.jpg
+│       │   │   ├── icon-addlink.svg
+│       │   │   ├── icon-calendar.svg
+│       │   │   ├── icon-clock.svg
+│       │   │   ├── icons
+│       │   │   │   └── add.svg
+│       │   │   ├── icon-unknown-alt.svg
+│       │   │   ├── icon-unknown.svg
+│       │   │   ├── img_3115.jpg
+│       │   │   ├── james.jpg
+│       │   │   ├── mike.jpg
+│       │   │   ├── now-logo.png
+│       │   │   ├── search.svg
+│       │   │   └── selector-icons.svg
+│       │   ├── js
+│       │   │   ├── black-dashboard.js
+│       │   │   ├── black-dashboard.js.map
+│       │   │   ├── black-dashboard.min.js
+│       │   │   ├── core
+│       │   │   │   ├── bootstrap.min.js
+│       │   │   │   ├── jquery.min.js
+│       │   │   │   └── popper.min.js
+│       │   │   ├── plugins
+│       │   │   │   ├── bootstrap-notify.js
+│       │   │   │   ├── chartjs.min.js
+│       │   │   │   └── perfect-scrollbar.jquery.min.js
+│       │   │   └── themeSettings.js
+│       │   └── scss
+│       │       ├── black-dashboard
+│       │       │   ├── bootstrap
+│       │       │   │   ├── _alert.scss
+│       │       │   │   ├── _badge.scss
+│       │       │   │   ├── bootstrap-grid.scss
+│       │       │   │   ├── bootstrap-reboot.scss
+│       │       │   │   ├── bootstrap.scss
+│       │       │   │   ├── _breadcrumb.scss
+│       │       │   │   ├── _button-group.scss
+│       │       │   │   ├── _buttons.scss
+│       │       │   │   ├── _card.scss
+│       │       │   │   ├── _carousel.scss
+│       │       │   │   ├── _close.scss
+│       │       │   │   ├── _code.scss
+│       │       │   │   ├── _custom-forms.scss
+│       │       │   │   ├── _dropdown.scss
+│       │       │   │   ├── _forms.scss
+│       │       │   │   ├── _functions.scss
+│       │       │   │   ├── _grid.scss
+│       │       │   │   ├── _images.scss
+│       │       │   │   ├── _input-group.scss
+│       │       │   │   ├── _jumbotron.scss
+│       │       │   │   ├── _list-group.scss
+│       │       │   │   ├── _media.scss
+│       │       │   │   ├── mixins
+│       │       │   │   │   ├── _alert.scss
+│       │       │   │   │   ├── _background-variant.scss
+│       │       │   │   │   ├── _badge.scss
+│       │       │   │   │   ├── _border-radius.scss
+│       │       │   │   │   ├── _box-shadow.scss
+│       │       │   │   │   ├── _breakpoints.scss
+│       │       │   │   │   ├── _buttons.scss
+│       │       │   │   │   ├── _caret.scss
+│       │       │   │   │   ├── _clearfix.scss
+│       │       │   │   │   ├── _deprecate.scss
+│       │       │   │   │   ├── _float.scss
+│       │       │   │   │   ├── _forms.scss
+│       │       │   │   │   ├── _gradients.scss
+│       │       │   │   │   ├── _grid-framework.scss
+│       │       │   │   │   ├── _grid.scss
+│       │       │   │   │   ├── _hover.scss
+│       │       │   │   │   ├── _image.scss
+│       │       │   │   │   ├── _list-group.scss
+│       │       │   │   │   ├── _lists.scss
+│       │       │   │   │   ├── _nav-divider.scss
+│       │       │   │   │   ├── _pagination.scss
+│       │       │   │   │   ├── _reset-text.scss
+│       │       │   │   │   ├── _resize.scss
+│       │       │   │   │   ├── _screen-reader.scss
+│       │       │   │   │   ├── _size.scss
+│       │       │   │   │   ├── _table-row.scss
+│       │       │   │   │   ├── _text-emphasis.scss
+│       │       │   │   │   ├── _text-hide.scss
+│       │       │   │   │   ├── _text-truncate.scss
+│       │       │   │   │   ├── _transition.scss
+│       │       │   │   │   └── _visibility.scss
+│       │       │   │   ├── _mixins.scss
+│       │       │   │   ├── _modal.scss
+│       │       │   │   ├── _navbar.scss
+│       │       │   │   ├── _nav.scss
+│       │       │   │   ├── _pagination.scss
+│       │       │   │   ├── _popover.scss
+│       │       │   │   ├── _print.scss
+│       │       │   │   ├── _progress.scss
+│       │       │   │   ├── _reboot.scss
+│       │       │   │   ├── _root.scss
+│       │       │   │   ├── _spinners.scss
+│       │       │   │   ├── _tables.scss
+│       │       │   │   ├── _toasts.scss
+│       │       │   │   ├── _tooltip.scss
+│       │       │   │   ├── _transitions.scss
+│       │       │   │   ├── _type.scss
+│       │       │   │   ├── utilities
+│       │       │   │   │   ├── _align.scss
+│       │       │   │   │   ├── _background.scss
+│       │       │   │   │   ├── _borders.scss
+│       │       │   │   │   ├── _clearfix.scss
+│       │       │   │   │   ├── _display.scss
+│       │       │   │   │   ├── _embed.scss
+│       │       │   │   │   ├── _flex.scss
+│       │       │   │   │   ├── _float.scss
+│       │       │   │   │   ├── _overflow.scss
+│       │       │   │   │   ├── _position.scss
+│       │       │   │   │   ├── _screenreaders.scss
+│       │       │   │   │   ├── _shadows.scss
+│       │       │   │   │   ├── _sizing.scss
+│       │       │   │   │   ├── _spacing.scss
+│       │       │   │   │   ├── _stretched-link.scss
+│       │       │   │   │   ├── _text.scss
+│       │       │   │   │   └── _visibility.scss
+│       │       │   │   ├── _utilities.scss
+│       │       │   │   ├── _variables.scss
+│       │       │   │   └── vendor
+│       │       │   │       └── _rfs.scss
+│       │       │   ├── _buttons.scss
+│       │       │   ├── custom
+│       │       │   │   ├── _alerts.scss
+│       │       │   │   ├── _buttons.scss
+│       │       │   │   ├── cards
+│       │       │   │   │   ├── _card-chart.scss
+│       │       │   │   │   ├── _card-map.scss
+│       │       │   │   │   ├── _card-plain.scss
+│       │       │   │   │   ├── _card-task.scss
+│       │       │   │   │   └── _card-user.scss
+│       │       │   │   ├── _card.scss
+│       │       │   │   ├── _checkboxes-radio.scss
+│       │       │   │   ├── _dropdown.scss
+│       │       │   │   ├── _example-pages.scss
+│       │       │   │   ├── _fixed-plugin.scss
+│       │       │   │   ├── _footer.scss
+│       │       │   │   ├── _forms.scss
+│       │       │   │   ├── _functions.scss
+│       │       │   │   ├── _images.scss
+│       │       │   │   ├── _input-group.scss
+│       │       │   │   ├── _misc.scss
+│       │       │   │   ├── mixins
+│       │       │   │   │   ├── _alert.scss
+│       │       │   │   │   ├── _background-variant.scss
+│       │       │   │   │   ├── _badges.scss
+│       │       │   │   │   ├── _buttons.scss
+│       │       │   │   │   ├── _dropdown.scss
+│       │       │   │   │   ├── _forms.scss
+│       │       │   │   │   ├── _icon.scss
+│       │       │   │   │   ├── _inputs.scss
+│       │       │   │   │   ├── _modals.scss
+│       │       │   │   │   ├── opacity.scss
+│       │       │   │   │   ├── _page-header.scss
+│       │       │   │   │   ├── _popovers.scss
+│       │       │   │   │   ├── _vendor-prefixes.scss
+│       │       │   │   │   └── _wizard.scss
+│       │       │   │   ├── _mixins.scss
+│       │       │   │   ├── _modal.scss
+│       │       │   │   ├── _navbar.scss
+│       │       │   │   ├── _rtl.scss
+│       │       │   │   ├── _sidebar-and-main-panel.scss
+│       │       │   │   ├── _tables.scss
+│       │       │   │   ├── _type.scss
+│       │       │   │   ├── utilities
+│       │       │   │   │   ├── _backgrounds.scss
+│       │       │   │   │   ├── _floating.scss
+│       │       │   │   │   ├── _helper.scss
+│       │       │   │   │   ├── _position.scss
+│       │       │   │   │   ├── _shadows.scss
+│       │       │   │   │   ├── _sizing.scss
+│       │       │   │   │   ├── _spacing.scss
+│       │       │   │   │   ├── _text.scss
+│       │       │   │   │   └── _transform.scss
+│       │       │   │   ├── _utilities.scss
+│       │       │   │   ├── _variables.scss
+│       │       │   │   ├── vendor
+│       │       │   │   │   ├── _plugin-animate-bootstrap-notify.scss
+│       │       │   │   │   └── _plugin-perfect-scrollbar.scss
+│       │       │   │   └── _white-content.scss
+│       │       │   ├── plugins
+│       │       │   │   └── _plugin-perfect-scrollbar.scss
+│       │       │   └── _typography.scss
+│       │       └── black-dashboard.scss
+│       ├── css
+│       │   ├── jazzmin-dark.css
+│       │   ├── log_style.css
+│       │   ├── profil_style.css
+│       │   ├── styles.css
+│       │   └── twitter-bootstrap.css
+│       ├── django_ckeditor_5
+│       │   ├── app.js
+│       │   ├── dist
+│       │   │   ├── bundle.js
+│       │   │   ├── bundle.js.LICENSE.txt
+│       │   │   ├── bundle.js.map
+│       │   │   ├── styles.css
+│       │   │   ├── styles.css.map
+│       │   │   └── translations
+│       │   │       ├── af.js
+│       │   │       ├── ar.js
+│       │   │       ├── ast.js
+│       │   │       ├── az.js
+│       │   │       ├── bg.js
+│       │   │       ├── bn.js
+│       │   │       ├── bs.js
+│       │   │       ├── ca.js
+│       │   │       ├── cs.js
+│       │   │       ├── da.js
+│       │   │       ├── de-ch.js
+│       │   │       ├── de.js
+│       │   │       ├── el.js
+│       │   │       ├── en-au.js
+│       │   │       ├── en-gb.js
+│       │   │       ├── eo.js
+│       │   │       ├── es-co.js
+│       │   │       ├── es.js
+│       │   │       ├── et.js
+│       │   │       ├── eu.js
+│       │   │       ├── fa.js
+│       │   │       ├── fi.js
+│       │   │       ├── fr.js
+│       │   │       ├── gl.js
+│       │   │       ├── gu.js
+│       │   │       ├── he.js
+│       │   │       ├── hi.js
+│       │   │       ├── hr.js
+│       │   │       ├── hu.js
+│       │   │       ├── hy.js
+│       │   │       ├── id.js
+│       │   │       ├── it.js
+│       │   │       ├── ja.js
+│       │   │       ├── jv.js
+│       │   │       ├── kk.js
+│       │   │       ├── km.js
+│       │   │       ├── kn.js
+│       │   │       ├── ko.js
+│       │   │       ├── ku.js
+│       │   │       ├── lt.js
+│       │   │       ├── lv.js
+│       │   │       ├── ms.js
+│       │   │       ├── nb.js
+│       │   │       ├── ne.js
+│       │   │       ├── nl.js
+│       │   │       ├── no.js
+│       │   │       ├── oc.js
+│       │   │       ├── pl.js
+│       │   │       ├── pt-br.js
+│       │   │       ├── pt.js
+│       │   │       ├── ro.js
+│       │   │       ├── ru.js
+│       │   │       ├── si.js
+│       │   │       ├── sk.js
+│       │   │       ├── sl.js
+│       │   │       ├── sq.js
+│       │   │       ├── sr.js
+│       │   │       ├── sr-latn.js
+│       │   │       ├── sv.js
+│       │   │       ├── th.js
+│       │   │       ├── tk.js
+│       │   │       ├── tr.js
+│       │   │       ├── tt.js
+│       │   │       ├── ug.js
+│       │   │       ├── uk.js
+│       │   │       ├── ur.js
+│       │   │       ├── uz.js
+│       │   │       ├── vi.js
+│       │   │       ├── zh-cn.js
+│       │   │       └── zh.js
+│       │   └── src
+│       │       ├── ckeditor.js
+│       │       └── override-django.css
+│       ├── img
+│       │   ├── admin_logo.png
+│       │   ├── admin_logo.webp
+│       │   ├── android-chrome-192x192.png
+│       │   ├── android-chrome-512x512.png
+│       │   ├── apple-touch-icon.png
+│       │   ├── artiste_200.webp
+│       │   ├── artiste_380.webp
+│       │   ├── artiste_469.webp
+│       │   ├── artiste.PNG
+│       │   ├── artiste.webp
+│       │   ├── attherate-icon.svg
+│       │   ├── background.png
+│       │   ├── camion.svg
+│       │   ├── card_back.webp
+│       │   ├── card_front.webp
+│       │   ├── empty_heart.svg
+│       │   ├── erreur 404.png
+│       │   ├── erreur404.png
+│       │   ├── erreur-404.webp
+│       │   ├── facebook-round-color-icon.svg
+│       │   ├── favicon-16x16.png
+│       │   ├── favicon-32x32.png
+│       │   ├── favicon.ico
+│       │   ├── favicon.png
+│       │   ├── favoris_active.svg
+│       │   ├── filled_heart.svg
+│       │   ├── ic_baseline-minus.svg
+│       │   ├── ic_baseline-plus.svg
+│       │   ├── ic_delete.svg
+│       │   ├── icon_detail_add.svg
+│       │   ├── icon_detail_close.svg
+│       │   ├── icon_detail_delete.svg
+│       │   ├── icon_detail_favorie.svg
+│       │   ├── icon_detail_favoris.svg
+│       │   ├── icon_detail_next.svg
+│       │   ├── icon_detail_previous.svg
+│       │   ├── icon_detail_valider.svg
+│       │   ├── ig-instagram-icon.svg
+│       │   ├── logo_mb.webp
+│       │   ├── logo.png
+│       │   ├── logo_trans.png
+│       │   ├── logo.webp
+│       │   ├── mdi_cards-heart-outline.svg
+│       │   ├── Money Yours.svg
+│       │   ├── phone-outline-icon.svg
+│       │   ├── produits
+│       │   │   ├── bolas.png
+│       │   │   ├── bolas.webp
+│       │   │   ├── boucle.png
+│       │   │   ├── boucle.webp
+│       │   │   ├── bouddha.jpg
+│       │   │   ├── bouddhas.jpg
+│       │   │   ├── bouddhas.webp
+│       │   │   ├── bracelet.jpg
+│       │   │   ├── bracelets.png
+│       │   │   ├── bracelets.webp
+│       │   │   ├── deco.jpg
+│       │   │   ├── deco.webp
+│       │   │   ├── malas.png
+│       │   │   ├── malas.webp
+│       │   │   ├── orgonite.jpg
+│       │   │   ├── orgonites.jpg
+│       │   │   ├── orgonites.webp
+│       │   │   ├── plaque.jpg
+│       │   │   ├── plaques.jpg
+│       │   │   └── plaques.webp
+│       │   ├── promo_deco.webp
+│       │   ├── red_heart.svg
+│       │   ├── Shipped.svg
+│       │   ├── tiktok-app-icon.svg
+│       │   ├── Vector.png
+│       │   ├── Vector.webp
+│       │   ├── voyance_bg.jpg
+│       │   ├── voyance_bg_og.webp
+│       │   ├── voyance_bg.png
+│       │   ├── voyance_bg.webp
+│       │   ├── wallpaper.jpg
+│       │   └── wallpaper.webp
+│       ├── jazzmin
+│       │   ├── css
+│       │   │   └── main.css
+│       │   ├── img
+│       │   │   ├── calendar-icons.svg
+│       │   │   ├── default.jpg
+│       │   │   ├── default-log.svg
+│       │   │   ├── icon-calendar.svg
+│       │   │   ├── icon-changelink.svg
+│       │   │   └── selector-icons.svg
+│       │   ├── js
+│       │   │   ├── change_form.js
+│       │   │   ├── change_list.js
+│       │   │   ├── main.js
+│       │   │   ├── related-modal.js
+│       │   │   └── ui-builder.js
+│       │   └── plugins
+│       │       └── bootstrap-show-modal
+│       │           └── bootstrap-show-modal.min.js
+│       ├── js
+│       │   ├── accueil.js
+│       │   ├── base.js
+│       │   ├── main.js
+│       │   ├── panier.js
+│       │   ├── profil.js
+│       │   └── slider.js
+│       ├── rest_framework
+│       │   ├── css
+│       │   │   ├── bootstrap.min.css
+│       │   │   ├── bootstrap.min.css.map
+│       │   │   ├── bootstrap-theme.min.css
+│       │   │   ├── bootstrap-theme.min.css.map
+│       │   │   ├── bootstrap-tweaks.css
+│       │   │   ├── default.css
+│       │   │   ├── font-awesome-4.0.3.css
+│       │   │   └── prettify.css
+│       │   ├── docs
+│       │   │   ├── css
+│       │   │   │   ├── base.css
+│       │   │   │   ├── highlight.css
+│       │   │   │   └── jquery.json-view.min.css
+│       │   │   ├── img
+│       │   │   │   ├── favicon.ico
+│       │   │   │   └── grid.png
+│       │   │   └── js
+│       │   │       ├── api.js
+│       │   │       ├── highlight.pack.js
+│       │   │       └── jquery.json-view.min.js
+│       │   ├── fonts
+│       │   │   ├── fontawesome-webfont.eot
+│       │   │   ├── fontawesome-webfont.svg
+│       │   │   ├── fontawesome-webfont.ttf
+│       │   │   ├── fontawesome-webfont.woff
+│       │   │   ├── glyphicons-halflings-regular.eot
+│       │   │   ├── glyphicons-halflings-regular.svg
+│       │   │   ├── glyphicons-halflings-regular.ttf
+│       │   │   ├── glyphicons-halflings-regular.woff
+│       │   │   └── glyphicons-halflings-regular.woff2
+│       │   ├── img
+│       │   │   ├── glyphicons-halflings.png
+│       │   │   ├── glyphicons-halflings-white.png
+│       │   │   └── grid.png
+│       │   └── js
+│       │       ├── ajax-form.js
+│       │       ├── bootstrap.min.js
+│       │       ├── coreapi-0.1.1.js
+│       │       ├── csrf.js
+│       │       ├── default.js
+│       │       ├── jquery-3.5.1.min.js
+│       │       └── prettify-min.js
+│       └── vendor
+│           ├── adminlte
+│           │   ├── css
+│           │   │   ├── adminlte.min.css
+│           │   │   └── adminlte.min.css.map
+│           │   ├── img
+│           │   │   ├── AdminLTELogo.png
+│           │   │   ├── icons.png
+│           │   │   └── user2-160x160.jpg
+│           │   └── js
+│           │       ├── adminlte.min.js
+│           │       └── adminlte.min.js.map
+│           ├── bootstrap
+│           │   └── js
+│           │       ├── bootstrap.min.js
+│           │       └── bootstrap.min.js.map
+│           ├── bootswatch
+│           │   ├── cerulean
+│           │   │   └── bootstrap.min.css
+│           │   ├── cosmo
+│           │   │   └── bootstrap.min.css
+│           │   ├── cyborg
+│           │   │   └── bootstrap.min.css
+│           │   ├── darkly
+│           │   │   └── bootstrap.min.css
+│           │   ├── default
+│           │   │   └── bootstrap.min.css
+│           │   ├── flatly
+│           │   │   └── bootstrap.min.css
+│           │   ├── journal
+│           │   │   └── bootstrap.min.css
+│           │   ├── litera
+│           │   │   └── bootstrap.min.css
+│           │   ├── lumen
+│           │   │   └── bootstrap.min.css
+│           │   ├── lux
+│           │   │   └── bootstrap.min.css
+│           │   ├── materia
+│           │   │   └── bootstrap.min.css
+│           │   ├── minty
+│           │   │   └── bootstrap.min.css
+│           │   ├── pulse
+│           │   │   └── bootstrap.min.css
+│           │   ├── sandstone
+│           │   │   └── bootstrap.min.css
+│           │   ├── simplex
+│           │   │   └── bootstrap.min.css
+│           │   ├── sketchy
+│           │   │   └── bootstrap.min.css
+│           │   ├── slate
+│           │   │   └── bootstrap.min.css
+│           │   ├── solar
+│           │   │   └── bootstrap.min.css
+│           │   ├── spacelab
+│           │   │   └── bootstrap.min.css
+│           │   ├── superhero
+│           │   │   └── bootstrap.min.css
+│           │   ├── united
+│           │   │   └── bootstrap.min.css
+│           │   └── yeti
+│           │       └── bootstrap.min.css
+│           ├── fontawesome-free
+│           │   ├── css
+│           │   │   └── all.min.css
+│           │   └── webfonts
+│           │       ├── fa-brands-400.eot
+│           │       ├── fa-brands-400.svg
+│           │       ├── fa-brands-400.ttf
+│           │       ├── fa-brands-400.woff
+│           │       ├── fa-brands-400.woff2
+│           │       ├── fa-regular-400.eot
+│           │       ├── fa-regular-400.svg
+│           │       ├── fa-regular-400.ttf
+│           │       ├── fa-regular-400.woff
+│           │       ├── fa-regular-400.woff2
+│           │       ├── fa-solid-900.eot
+│           │       ├── fa-solid-900.svg
+│           │       ├── fa-solid-900.ttf
+│           │       ├── fa-solid-900.woff
+│           │       └── fa-solid-900.woff2
+│           └── select2
+│               ├── css
+│               │   └── select2.min.css
+│               └── js
+│                   └── select2.min.js
+└── requirements.txt
+
+110 directories, 777 files
