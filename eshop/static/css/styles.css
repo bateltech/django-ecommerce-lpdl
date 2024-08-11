@@ -3850,3 +3850,10 @@ aside p {
     }
 
 }
+
+@media screen and (min-width: 1700px) {
+    .search-bar {
+        position: fixed;
+        left: 28em;
+    }
+}
