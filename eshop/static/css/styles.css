@@ -666,7 +666,7 @@ img {
 \*-----------------------------------*/
 
 .popup-modal {
-    display: none; /* Hidden by default */
+   /*display: none; /* Hidden by default */
     position: fixed;
     left: 1rem;
     bottom: 1rem;
