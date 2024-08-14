@@ -165,6 +165,7 @@ button.login__button:hover {
 .custom-confirm-password-class::placeholder {
 
     color: #252525;
+    font-weight: bold;
 }
 
 
