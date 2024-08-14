@@ -968,7 +968,7 @@ def start_order(request):
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
 
     # Retrieve the delivery fee item from Stripe
-    delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGGcHwNiNEPJKYCIwfx5o3')
+    delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGMFHwNiNEPJKYTEQVmpzI')
 
     if total_price < 65:
         # Add the delivery fee item to the items list
