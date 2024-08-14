@@ -23,8 +23,8 @@ load_dotenv(dotenv_path)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
 
