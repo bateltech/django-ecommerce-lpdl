@@ -1232,9 +1232,14 @@ def paiement_voyance_view(request, demande_voyance_id):
     
     return render(request, 'paiement_voyance.html', context)
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 @csrf_protect
 @login_required
 def voyance_order(request, demande_voyance_id):
+
 
     data = json.loads(request.body)
 
