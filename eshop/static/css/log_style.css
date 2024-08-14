@@ -165,7 +165,6 @@ button.login__button:hover {
 .custom-confirm-password-class::placeholder {
 
     color: #252525;
-    font-weight: bold;
 }
 
 
@@ -362,7 +361,6 @@ input[type="tel"]::placeholder,
 input[type="date"]::placeholder,
 input[type="password"]::placeholder {
     color: #252525;
-    font-weight: bold;
 }
 
 .date-input {
