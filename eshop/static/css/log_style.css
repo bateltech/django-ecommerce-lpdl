@@ -356,6 +356,15 @@ input[type="password"] {
     border-radius: 3rem;
 }
 
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="date"]::placeholder,
+input[type="password"]::placeholder {
+    color: #252525;
+    font-weight: bold;
+}
+
 .date-input {
     width: 80%;
 }
