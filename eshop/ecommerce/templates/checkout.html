@@ -569,6 +569,8 @@
             'ville': document.querySelector('input[name=ville]').value,
         }
 
+        console.log(data.body)
+
         let errors = validateForm(data)
 
         if (errors.length) {

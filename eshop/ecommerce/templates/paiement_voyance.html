@@ -470,6 +470,8 @@
             'telephone': document.querySelector('input[name=telephone]').value,
         }
 
+        console.log(data.body)
+        
         let errors = validateForm(data)
 
         if (errors.length) {
