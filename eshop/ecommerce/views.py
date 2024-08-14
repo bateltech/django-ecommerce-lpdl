@@ -929,10 +929,18 @@ import json
 from .models import Cart, CartItem, Commande, DetailCommande, VIPromo
 from django.urls import reverse
 
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 @csrf_protect
 @login_required
 def start_order(request):
     cart = Cart.objects.get(user=request.user)
+
+    stripe.api_key = settings.STRIPE_API_SECRET_KEY
+
     data = json.loads(request.body)
 
     items = []
@@ -1005,6 +1013,8 @@ def start_order(request):
     success_url = request.build_absolute_uri(reverse('stripe_success')) + '?session_id={CHECKOUT_SESSION_ID}'
     cancel_url = request.build_absolute_uri(reverse('stripe_cancel'))
 
+    stripe.api_key = settings.STRIPE_API_SECRET_KEY
+    
     session = stripe.checkout.Session.create(
         payment_method_types=['card', 'paypal'],
         line_items=items,
