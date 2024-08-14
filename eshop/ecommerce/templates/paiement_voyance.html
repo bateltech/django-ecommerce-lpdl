@@ -470,8 +470,8 @@
             'telephone': document.querySelector('input[name=telephone]').value,
         }
 
-        console.log(data.body)
-        
+        console.log(JSON.stringify(data));
+
         let errors = validateForm(data)
 
         if (errors.length) {

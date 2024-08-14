@@ -569,7 +569,7 @@
             'ville': document.querySelector('input[name=ville]').value,
         }
 
-        console.log(data.body)
+        console.log(JSON.stringify(data));
 
         let errors = validateForm(data)
 
