@@ -107,6 +107,7 @@ admin.site.register(SousCategorie)
 @admin.register(Promo)
 class PromoAdmin(admin.ModelAdmin):
     list_display = ('libelle', 'discount_percentage', 'end_date')
+    filter_horizontal = ('articles')
 
 #####################################################################################
 # EDIT-ONE-FIELD-ONLY TABLES
