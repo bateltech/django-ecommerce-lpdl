@@ -227,7 +227,7 @@ class Collection(models.Model):
     libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
     description = models.TextField(null=False)
     articles = models.ManyToManyField(Article, through='DetailCollection')
-    image = models.ImageField(upload_to="collections/", blank=True, null=True)
+    image = models.ImageField(upload_to="collections/", blank=True, null=False)
     disponible = models.BooleanField(default=False, verbose_name="Disponible")
 
     def __str__(self):
