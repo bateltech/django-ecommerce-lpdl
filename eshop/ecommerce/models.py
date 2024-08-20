@@ -385,6 +385,15 @@ class DemandeVoyance(models.Model):
     def __str__(self):
         return f"Voyance pour {self.prenom} {self.nom}"
 
+import unicodedata
+import re
+
+def clean_filename(filename):
+    # Normalisation en NFKD pour séparer les accents des lettres
+    filename = unicodedata.normalize('NFKD', filename).encode('ascii', 'ignore').decode('ascii')
+    # Remplacement des caractères restants non-alphanumériques par des underscores
+    filename = re.sub(r'[^a-zA-Z0-9_-]', '_', filename)
+    return filename
 
 from PIL import Image
 from io import BytesIO
@@ -402,11 +411,14 @@ def convert_to_webp(image_field):
     # Get the original file name without extension
     original_filename = image_field.name.split('/')[-1].split('.')[0]
 
-    # Save the WebP image data as a file object with the original filename and ".webp" extension
-    webp_file = ContentFile(webp_data, name=f"{original_filename}.webp")
+    # Nettoyer le nom de fichier original pour enlever les caractères spéciaux
+    cleaned_filename = clean_filename(original_filename)
+    
+    # Sauvegarder les données de l'image WebP comme un fichier avec le nom nettoyé et l'extension ".webp"
+    webp_file = ContentFile(webp_data, name=f"{cleaned_filename}.webp")
 
     return webp_file
-
+    
 def is_webp_image(image_field):
     return image_field.name.lower().endswith('.webp')
 
