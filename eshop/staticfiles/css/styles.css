@@ -666,7 +666,7 @@ img {
 \*-----------------------------------*/
 
 .popup-modal {
-    display: none; /* Hidden by default */
+   /*display: none; /* Hidden by default */
     position: fixed;
     left: 1rem;
     bottom: 1rem;
@@ -3849,4 +3849,11 @@ aside p {
         text-align: center;
     }
 
+}
+
+@media screen and (min-width: 1700px) {
+    .search-bar {
+        position: fixed;
+        left: 28em;
+    }
 }
