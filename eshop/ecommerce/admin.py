@@ -7,9 +7,13 @@ from .models import Newsletter
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
+
+    class Media:
+       js = ('js/admin_custom.js',)
+
     filter_horizontal = ('tags', 'pierres','prix_article')  # Display tags and pierres as checkboxes
     list_display = ('libelle', 'stock', 'categorie', 'date_created')
-    readonly_fields =('created_at', 'image_tag',)  
+    readonly_fields =('created_at', 'image_tag',)
 
     def categorie(self, obj):
         return obj.categorie.libelle

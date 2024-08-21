@@ -20,6 +20,7 @@ urlpatterns = [
 
 
     path('delete_Voyance_ajax/<int:item_id>/', views.delete_Voyance_ajax, name = 'delete_Voyance_ajax'),
+    
 
 ]
 

@@ -367,13 +367,13 @@ def checkout_view(request):
             print(" price before :", price_promo)
             price_promo *= (1 - discount_percentage)
             price_promo = price_promo.quantize(Decimal('0.00'), rounding=ROUND_HALF_UP)
-            price_promo += 5
+            price_promo += Decimal('5.50')
             print("promo : ", discount_percentage)
-            print(" promo price :", price_promo)
+            print(" promo price : ", price_promo)
             vip = True
 
 
-        total_price = cart.total_price + 5
+        total_price = cart.total_price + Decimal('5.50')
 
     pub_key = settings.STRIPE_API_KEY_PUBLISHABLE
     context= {
@@ -968,7 +968,8 @@ def start_order(request):
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
 
     # Retrieve the delivery fee item from Stripe
-    delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGMFHwNiNEPJKYTEQVmpzI')
+    #delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PEGMFHwNiNEPJKYTEQVmpzI')
+    delivery_fee_item = stripe.ShippingRate.retrieve('shr_1PqGflHwNiNEPJKYkVN0TeRS')
 
     if total_price < 65:
         # Add the delivery fee item to the items list
@@ -1367,3 +1368,18 @@ def voyance_cancel(request):
 
     # ... handle cancelled payment ...
     return render(request, 'accueil.html', context)
+
+
+#########################################
+
+
+from django.http import JsonResponse
+from .models import SousCategorie
+
+def get_sous_categories(request, categorie_id):
+    
+    print(f"Catégorie ID reçu: {categorie_id}")
+    
+    sous_categories = SousCategorie.objects.filter(categorie_id=categorie_id).order_by('libelle')
+    sous_categories_data = [{'id': sc.id, 'libelle': sc.libelle} for sc in sous_categories]
+    return JsonResponse({'sous_categories': sous_categories_data})

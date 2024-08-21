@@ -59,6 +59,8 @@ urlpatterns = [
     path("newsletter/", newsletter, name="newsletter"),
     path("sendEmail/", sendEmail, name="sendEmail"),
 
+    path('get_sous_categories/<int:categorie_id>/', get_sous_categories, name='get_sous_categories'),
+
     path('robots.txt/', TemplateView.as_view(template_name="robots.txt", content_type='text/plain')),
     
 

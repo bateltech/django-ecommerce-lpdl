@@ -22,3 +22,7 @@ eshop/ecommerce/migrations/__pycache__/0009_rename_max_size_prixarticle_taille_a
 eshop/ecommerce/migrations/__pycache__/0011_article_stock.cpython-311.pyc
 eshop/ecommerce/migrations/__pycache__/0010_remove_article_fk_prix_article_and_more.cpython-311.pyc
 pierre_env/
+
+# Ignore media files
+eshop/media/
+eshop/staticfiles/
