@@ -145,9 +145,9 @@ def accueil_view(request):
 
 
 def articles_view(request):
-    categories = Categorie.objects.all()
-    sub_categories = SousCategorie.objects.filter(categorie__in=categories)
-    articles = Article.objects.filter(sous_categorie__in=sub_categories)
+    categories = Categorie.objects.all().order_by('libelle')
+    sub_categories = SousCategorie.objects.filter(categorie__in=categories).order_by('libelle')
+    articles = Article.objects.filter(sous_categorie__in=sub_categories).order_by('libelle')
     # print("Categories:", categories)
     print("Subcategories:", sub_categories)
 
@@ -269,7 +269,7 @@ def conditions_view(request):
 from django.shortcuts import get_object_or_404
 
 def pierres_view(request):
-    pierres = Pierre.objects.all()
+    pierres = Pierre.objects.all().order_by('libelle')
     utilisateur_connecte = request.user.is_authenticated
     prenom_utilisateur = request.user.first_name if utilisateur_connecte else None
 
