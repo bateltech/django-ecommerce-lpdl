@@ -150,8 +150,8 @@ class Article(models.Model):
     image = models.ImageField(upload_to="articles/", null=False)
     stock = models.IntegerField(default=0, null=False)
     prix_article = models.ManyToManyField(PrixArticle, related_name='articles')
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name='Catégorie')
-    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE, verbose_name='Sous-catégorie')
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, default=2, verbose_name='Catégorie')
+    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE, default=2, verbose_name='Sous-catégorie')
     tags = models.ManyToManyField(TagBesoin, related_name='articles', blank=True)
     pierres = models.ManyToManyField(Pierre, related_name='articles', blank=True)
     #  when I want to access all the articles related to an instance of a tag or pierre,
