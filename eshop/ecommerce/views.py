@@ -184,7 +184,12 @@ def articles_view(request):
 
 def details_view(request, article_id):
     article = Article.objects.get(pk=article_id)
-    price = article.prix_article.all()
+    # Trier les prix si le type de prix est "size_based"
+    if article.prix_article.filter(type_prix='size_based').exists():
+        price = article.prix_article.filter(type_prix='size_based').order_by('taille')
+    else:
+        price = article.prix_article.all()
+        
     categories = Categorie.objects.all()
     similar_articles = Article.objects.filter(categorie=article.categorie, sous_categorie=article.sous_categorie).exclude(pk=article_id)
 

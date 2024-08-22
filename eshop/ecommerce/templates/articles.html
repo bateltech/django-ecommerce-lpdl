@@ -383,7 +383,11 @@
                                 {% if article.prix_article.first.type_prix == "fixed" %}
                                 <p>{{ article.prix_article.first}}</p>
                                 {% else %}
-                                <p>Par taille - {{ article.prix_article.first.prix}} à {{ article.prix_article.last.prix }} €</p>
+                                {% with prices=article.get_min_max_price %}
+
+                                <p>Par taille - {{ prices.0 }}
+                                             à {{ prices.1 }} €</p>
+                                {% endwith %}
                                 {% endif %}
                             </div>
 

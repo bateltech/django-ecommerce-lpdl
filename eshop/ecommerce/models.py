@@ -167,6 +167,12 @@ class Article(models.Model):
         if self.image and not is_webp_image(self.image):
             self.image = convert_to_webp(self.image)
         super().save(*args, **kwargs)
+    
+    def get_min_max_price(self):
+        sorted_prices = self.prix_article.all().order_by('prix')
+        if sorted_prices.exists():
+            return sorted_prices.first().prix, sorted_prices.last().prix
+        return None, None
 
     def delete(self, *args, **kwargs):
         if self.image:
