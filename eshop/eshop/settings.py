@@ -16,9 +16,10 @@ from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Load .env file
-dotenv_path = os.path.join(BASE_DIR, '.env')
+dotenv_path = os.path.join(ENV_DIR, '.env')
 print(f"Loading .env from: {dotenv_path}")
 load_dotenv(dotenv_path)
 

@@ -940,6 +940,7 @@ def start_order(request):
     cart = Cart.objects.get(user=request.user)
 
     stripe.api_key = settings.STRIPE_API_SECRET_KEY
+    print("stripe api key : ", settings.STRIPE_API_SECRET_KEY)
 
     data = json.loads(request.body)
 
@@ -1379,7 +1380,7 @@ from .models import SousCategorie
 def get_sous_categories(request, categorie_id):
     
     print(f"Catégorie ID reçu: {categorie_id}")
-    
+
     sous_categories = SousCategorie.objects.filter(categorie_id=categorie_id).order_by('libelle')
     sous_categories_data = [{'id': sc.id, 'libelle': sc.libelle} for sc in sous_categories]
     return JsonResponse({'sous_categories': sous_categories_data})

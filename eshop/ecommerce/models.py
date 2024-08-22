@@ -31,7 +31,7 @@ class ClientUser(AbstractUser):
 
 # Table Pierre
 class Pierre(models.Model):
-    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
+    libelle = models.CharField(max_length=255, null=False, default="", verbose_name="Libellé")
     description = models.TextField(null=False)
     image = models.ImageField(upload_to='pierres/', null=False)
     couverture = models.ImageField(upload_to='covers/', null=False)
@@ -80,7 +80,7 @@ def delete_pierre_images(sender, instance, **kwargs):
 
 # Table Catégorie
 class Categorie(models.Model):
-    libelle = models.CharField(max_length=255, null=False, verbose_name="Nom")
+    libelle = models.CharField(max_length=255, null=False, default="", verbose_name="Nom")
 
     def __str__(self):
         return self.libelle
@@ -91,7 +91,7 @@ class Categorie(models.Model):
 
 # Table Sous Catégorie
 class SousCategorie(models.Model):
-    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
+    libelle = models.CharField(max_length=255, null=False, default="", verbose_name="Libellé")
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name="Catégorie")
 
     def __str__(self):
@@ -116,7 +116,7 @@ class Commentaire(models.Model):
 
 # Table Tag par besoin
 class TagBesoin(models.Model):
-    libelle = models.CharField(max_length=255, null=False, verbose_name="Libellé")
+    libelle = models.CharField(max_length=255, null=False, default="", verbose_name="Libellé")
 
     def __str__(self):
         return self.libelle
@@ -144,7 +144,7 @@ class PrixArticle(models.Model):
 from django.utils import timezone as timez
 # Table Article
 class Article(models.Model):
-    libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
+    libelle = models.CharField(max_length=128, null=False, default="", verbose_name="Nom")
     description = models.TextField(null=False)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
     image = models.ImageField(upload_to="articles/", null=False)
@@ -224,7 +224,7 @@ class VIPromo(models.Model):
 # Table Collection
 from django.utils.safestring import mark_safe
 class Collection(models.Model):
-    libelle = models.CharField(max_length=128, null=False, verbose_name="Nom")
+    libelle = models.CharField(max_length=128, null=False, default="", verbose_name="Nom")
     description = models.TextField(null=False)
     articles = models.ManyToManyField(Article, through='DetailCollection')
     image = models.ImageField(upload_to="collections/", blank=True, null=False)
@@ -327,10 +327,10 @@ class Commande(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Montant total")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente', verbose_name="État")
-    telephone = models.CharField(max_length=20, null=False, verbose_name='N° de téléphone')
+    telephone = models.CharField(max_length=20, null=False, default="", verbose_name='N° de téléphone')
     nom = models.CharField(max_length=100, null=False)
     prenom = models.CharField(max_length=100, null=False , verbose_name='Prénom')
-    numero_rue = models.CharField(max_length=100, null=False, verbose_name='N° de rue')
+    numero_rue = models.CharField(max_length=100, null=False, default="", verbose_name='N° de rue')
     adresse = models.CharField(max_length=255, null=False)
     ville = models.CharField(max_length=100, null=False)
     code_postal = models.CharField(max_length=20, null=False)
