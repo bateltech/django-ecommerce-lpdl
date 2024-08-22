@@ -19,6 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env file
 dotenv_path = os.path.join(BASE_DIR, '.env')
+print(f"Loading .env from: {dotenv_path}")
 load_dotenv(dotenv_path)
 
 DEFAULT_CHARSET = 'utf-8'
@@ -29,6 +30,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
 
+print("CORS_ORIGIN:", os.getenv('CORS_ORIGIN'))
+print("DB_NAME:", os.getenv('DB_NAME'))
+print("DB_USER:", os.getenv('DB_USER'))
+print("stripe api pub:", os.getenv('STRIPE_API_KEY_PUBLISHABLE'))
 
 # Application definition
 
