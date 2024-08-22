@@ -92,7 +92,7 @@ class Categorie(models.Model):
 # Table Sous Catégorie
 class SousCategorie(models.Model):
     libelle = models.CharField(max_length=255, null=False, default="", verbose_name="Libellé")
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, verbose_name="Catégorie")
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE,default=2, verbose_name="Catégorie")
 
     def __str__(self):
         return self.libelle
@@ -227,7 +227,7 @@ class Collection(models.Model):
     libelle = models.CharField(max_length=128, null=False, default="", verbose_name="Nom")
     description = models.TextField(null=False)
     articles = models.ManyToManyField(Article, through='DetailCollection')
-    image = models.ImageField(upload_to="collections/", blank=True, null=False)
+    image = models.ImageField(upload_to="collections/", blank=False, null=False, default="")
     disponible = models.BooleanField(default=False, verbose_name="Disponible")
 
     def __str__(self):
@@ -308,7 +308,7 @@ class Cart(models.Model):
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    article_price = models.ForeignKey(PrixArticle, on_delete=models.CASCADE)
+    article_price = models.ForeignKey(PrixArticle, on_delete=models.CASCADE, default=1)
     quantity = models.PositiveIntegerField(default=1)
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_item_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -328,13 +328,13 @@ class Commande(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Date')
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente', verbose_name="État")
     telephone = models.CharField(max_length=20, null=False, default="", verbose_name='N° de téléphone')
-    nom = models.CharField(max_length=100, null=False)
-    prenom = models.CharField(max_length=100, null=False , verbose_name='Prénom')
+    nom = models.CharField(max_length=100, null=False, default="")
+    prenom = models.CharField(max_length=100, null=False, default="", verbose_name='Prénom')
     numero_rue = models.CharField(max_length=100, null=False, default="", verbose_name='N° de rue')
-    adresse = models.CharField(max_length=255, null=False)
-    ville = models.CharField(max_length=100, null=False)
-    code_postal = models.CharField(max_length=20, null=False)
-    email = models.EmailField(max_length=255, null=False)
+    adresse = models.CharField(max_length=255, null=False, default="")
+    ville = models.CharField(max_length=100, null=False, default="")
+    code_postal = models.CharField(max_length=20, null=False, default="")
+    email = models.EmailField(max_length=255, null=False, default="")
     promoVIP = models.BooleanField(default=False)
     session_id = models.CharField(max_length=250,blank=True, null=True)
     payment_intent = models.CharField(max_length=250,blank=True, null=True)
@@ -357,8 +357,8 @@ class DetailCommande(models.Model):
 
 # Table Feedback
 class Feedback(models.Model):
-    contenu = models.TextField(null=False)
-    date_envoi = models.DateField(null=False)
+    contenu = models.TextField(null=False, default="")
+    date_envoi = models.DateField(null=False, default="")
     utilisateur = models.ForeignKey(ClientUser, on_delete=models.CASCADE)
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('publie', 'Publié')], default='en attente', verbose_name='État')
 
@@ -374,10 +374,10 @@ class DemandeVoyance(models.Model):
     voyance = models.CharField(max_length=128, null=False, verbose_name='Nom', default='')
     type = models.CharField(max_length=20, choices=[('par email', 'Par Email'), ('complete', 'Complète')], verbose_name='Type', default='par email')
     etat = models.CharField(max_length=20, choices=[('en attente', 'En attente'), ('payee', 'Payée')], default='en attente')
-    telephone = models.CharField(max_length=20, null=False)
-    nom = models.CharField(max_length=100, null=False)
-    prenom = models.CharField(max_length=100, null=False)
-    email = models.EmailField(max_length=255, null=False)
+    telephone = models.CharField(max_length=20, null=False, default="")
+    nom = models.CharField(max_length=100, null=False, default="")
+    prenom = models.CharField(max_length=100, null=False, default="")
+    email = models.EmailField(max_length=255, null=False, default="")
     session_id = models.CharField(max_length=250,blank=True, null=True)
     payment_intent = models.CharField(max_length=250,blank=True, null=True)
 
