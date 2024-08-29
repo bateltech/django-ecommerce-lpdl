@@ -515,7 +515,7 @@
                     <div class="swiper-wrapper">
 
                     {% for collection in collections %}
-                    <div class="card swiper-slide mon-slider">
+                    <div class="card swiper-slide mon-slider" style="overflow: visible !important;">
                         <div class="card__image">
                             <img src="{{ collection.image.url }}" loading="lazy" alt="card image of collection {{ collection.id }}">
                         </div>
@@ -648,7 +648,7 @@
                                 <p>{{voyance.description}}</p>
                                 <form action="{% url 'choose_voyance' voyance.id %}" method="post">
                                     {% csrf_token %}
-                                    <button type="submit">Choisir</button>
+                                    <button type="submit" id="voyance_{{ voyance.id }}">Choisir</button>
                                 </form>
                             </div>
                         </div>
@@ -729,6 +729,37 @@
     }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Sélectionner tous les boutons de voyance
+    var voyanceButtons = document.querySelectorAll('[id^="voyance_"]');
+
+    voyanceButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            // Vérifiez si l'utilisateur est connecté
+            if (!{{ utilisateur_connecte|yesno:"true,false" }}) {
+                event.preventDefault(); // Empêcher la soumission du formulaire
+                showToast('Veuillez vous connecter ou vous inscrire pour choisir une voyance.');
+            }
+        });
+    });
+
+    // Fonction pour afficher un toast
+    function showToast(message) {
+        Toastify({
+            text: message,
+            duration: 3000,
+            gravity: 'top',
+            position: 'right',
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+            }
+        }).showToast();
+    }
+});
+
+</script>
 
     <!--=============== MAIN JS ===============-->
     <script src="{% static 'js/accueil.js' %}" async></script>
