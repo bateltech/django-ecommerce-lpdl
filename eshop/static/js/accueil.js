@@ -6,6 +6,7 @@ const slides = document.querySelectorAll('.slide_new');
 const totalSlides = slides.length;
 const sliderContainer = document.getElementById('slider-container-new');
 let autoSlide;
+let slideTimeout;
 
 function showSlide(index) {
     slides.forEach((slide, i) => {
@@ -34,23 +35,32 @@ function stopAutoSlide() {
     clearInterval(autoSlide);
 }
 
+function resetAutoSlide() {
+    clearTimeout(slideTimeout);
+    stopAutoSlide(); // Arrête l'autoslide existant
+    slideTimeout = setTimeout(startAutoSlide, 5000); // Relance l'autoslide après l'intervalle complet
+}
+
 document.getElementById('next').addEventListener('click', () => {
-    stopAutoSlide();
     nextSlide();
-    startAutoSlide();
+    resetAutoSlide();
 });
 
 document.getElementById('prev').addEventListener('click', () => {
-    stopAutoSlide();
     prevSlide();
-    startAutoSlide();
+    resetAutoSlide();
 });
 
 // Pause the slider when the mouse is over the slider container
 sliderContainer.addEventListener('mouseover', stopAutoSlide);
 
 // Resume the slider when the mouse leaves the slider container
-sliderContainer.addEventListener('mouseout', startAutoSlide);
+sliderContainer.addEventListener('mouseout', (event) => {
+    // Vérifie si le curseur est toujours dans le slider container
+    if (!sliderContainer.contains(event.relatedTarget)) {
+        resetAutoSlide();
+    }
+});
 
-showSlide(currentIndex);
-startAutoSlide();
+showSlide(currentIndex);  // Affiche la première slide immédiatement
+startAutoSlide();         // Démarre l'autoslide dès le début

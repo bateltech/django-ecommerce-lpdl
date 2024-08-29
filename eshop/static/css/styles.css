@@ -617,9 +617,9 @@ img {
 
 .slide-content-new h1 {
     margin: 0;
-    margin-bottom: 4rem !important;
+    margin-bottom: 2rem !important;
     color: black;
-    font-size: var(--h1-font-size);
+    font-size: 2rem;
     font-weight: bold;
     font-family: var(--accueil-font);
     border-bottom: 1px solid var(--darkgray-color);

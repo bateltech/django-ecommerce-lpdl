@@ -461,7 +461,7 @@
                             <div class="slide-content-new">
                                 <h1>{{ article.libelle }}</h1>
 
-                                <p id="description_new_article">{{ article.description|truncatewords:30 }}</p>
+                                <p id="description_new_article">{{ article.description|truncatewords:20 }}</p>
 
                                 {% if article.tags.all or article.pierres.all %}
                                 {% if article.tags.all %}
