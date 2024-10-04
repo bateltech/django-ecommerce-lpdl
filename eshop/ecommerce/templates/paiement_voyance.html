@@ -362,7 +362,7 @@
 
                                 <div class="input-container">
 
-                                    <input name="email" type="email" class="form-input" placeholder="Entrez votre adresse email" required value="{{ request.user.email }}" >
+                                    <input name="email" type="email" class="form-input" placeholder="Entrez votre adresse email" required value="{{ request.user.email|default_if_none:'' }}" >
 
                                     <span class="required">*</span>
 
@@ -374,7 +374,7 @@
 
                                 <div class="input-container">
 
-                                    <input type="tel" class="form-input" name="telephone" placeholder="Numéro de téléphone" required value="{{ request.user.phone_number }}" >
+                                    <input type="tel" class="form-input" name="telephone" placeholder="Numéro de téléphone" required value="{{ request.user.phone_number|default_if_none:'' }}" >
 
                                     <span class="required">*</span>
 
@@ -386,7 +386,7 @@
 
                                 <div class="input-container">
 
-                                    <input type="text" class="form-input" name="nom" placeholder="Nom" required value="{{ request.user.last_name }}">
+                                    <input type="text" class="form-input" name="nom" placeholder="Nom" required value="{{ request.user.last_name|default_if_none:'' }}">
 
                                     <span class="required">*</span>
 
@@ -394,7 +394,7 @@
 
                                 <div class="input-container">
 
-                                    <input type="text" class="form-input" name="prenom" placeholder="Prénom" required value="{{ request.user.first_name }}">
+                                    <input type="text" class="form-input" name="prenom" placeholder="Prénom" required value="{{ request.user.first_name|default_if_none:'' }}">
 
                                     <span class="required">*</span>
 
