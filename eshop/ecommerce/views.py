@@ -1207,10 +1207,10 @@ def choose_voyance_view(request, voyance_id):
     demande_voyance = DemandeVoyance.objects.create(
         user=request.user,
         total_price=voyance.tarif,
-        telephone=request.user.phone_number,  # You may need to adjust this
-        nom=request.user.last_name,  # You may need to adjust this
-        prenom=request.user.first_name,  # You may need to adjust this
-        email=request.user.email,
+        telephone=getattr(request.user, 'phone_number', ''),  # Use empty string if phone_number is not set
+        nom=getattr(request.user, 'last_name', ''),  # Use empty string if last_name is not set
+        prenom=getattr(request.user, 'first_name', ''),  # Use empty string if first_name is not set
+        email=getattr(request.user, 'email', ''),  # Use empty string if email is not set
         voyance=voyance.libelle,
         type=voyance.type,
         etat='en attente'
