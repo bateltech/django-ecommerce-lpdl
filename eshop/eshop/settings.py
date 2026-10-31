@@ -179,9 +179,11 @@ MIDDLEWARE = [
 # CSP_IMG_SRC = ("'self'",)
 # CSP_REPORT_URI = '/csp-violation-report/'
 
-CORS_ALLOWED_ORIGINS = [
-    os.getenv('CORS_ORIGIN'),
-]
+# CORS_ALLOWED_ORIGINS = [
+#     os.getenv('CORS_ORIGIN'),
+# ]
+
+CORS_ALLOWED_ORIGINS = []
 
 ROOT_URLCONF = 'eshop.urls'
 
