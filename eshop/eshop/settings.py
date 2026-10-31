@@ -31,7 +31,12 @@ DEFAULT_CHARSET = 'utf-8'
 DEBUG = False
 
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
-ALLOWED_HOSTS = ['µ']
+ALLOWED_HOSTS = [
+    'django-ecommerce-lpdl.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
+
 print("CORS_ORIGIN:", os.getenv('CORS_ORIGIN'))
 print("DB_NAME:", os.getenv('DB_NAME'))
 print("DB_USER:", os.getenv('DB_USER'))
