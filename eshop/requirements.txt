@@ -12,7 +12,9 @@ django-phonenumber-field==7.2.0
 djangorestframework==3.14.0
 gunicorn==20.1.0
 idna==3.7
-mysqlclient==2.2.0
+#mysqlclient==2.2.0
+dj-database-url==2.1.0
+psycopg2-binary==2.9.9
 phonenumbers==8.13.23
 Pillow==10.1.0
 python-dateutil==2.9.0.post0
@@ -26,4 +28,4 @@ stripe==9.1.0
 typing_extensions==4.11.0
 tzdata==2023.3
 urllib3==2.2.1
-gunicorn
+whitenoise==6.6.0

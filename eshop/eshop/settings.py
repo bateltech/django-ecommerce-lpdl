@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,8 +30,8 @@ DEFAULT_CHARSET = 'utf-8'
 #DEBUG = True
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
-
+# ALLOWED_HOSTS = ['127.0.0.1','localhost','195.35.1.100','lapierredelune.net','www.lapierredelune.net','localhost']
+ALLOWED_HOSTS = ['µ']
 print("CORS_ORIGIN:", os.getenv('CORS_ORIGIN'))
 print("DB_NAME:", os.getenv('DB_NAME'))
 print("DB_USER:", os.getenv('DB_USER'))
@@ -159,6 +160,7 @@ CRISPY_TEMPLATE_PACK="bootstrap4"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -205,20 +207,29 @@ WSGI_APPLICATION = 'eshop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
-    # pour Test Local
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),  # Ou l'adresse de votre serveur MySQL
-        'PORT': '3306',       # Port MySQL par défaut
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
-        }
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True,
+    )
+}
+
+# DATABASES = {
+#     # pour Test Local
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),  # Ou l'adresse de votre serveur MySQL
+#         'PORT': '3306',       # Port MySQL par défaut
+#         'OPTIONS': {
+#             'charset': 'utf8mb4',
+#             'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
+#         }
+#     }
 
     # # pour PythonAnywhere
     # 'default': {
@@ -231,7 +242,7 @@ DATABASES = {
     #         'init_command':"SET sql_mode='STRICT_TRANS_TABLES'" # Pour activer le mode strict de MySQL, c'est une bonne pratique !
     #     }
     # }
-}
+#}
 
 
 #AUTH_USER_MODEL = 'auth.User'  # Assurez-vous que le chemin est correct
@@ -284,6 +295,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Spécifiez l'emplacement où les fichiers statiques seront collectés lors du déploiement
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
