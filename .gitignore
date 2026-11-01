@@ -1,6 +1,6 @@
 # Ignore migration files if not already in version control
-**/migrations/**
-!**/migrations
+!**/migrations/
+!**/migrations/*.py
 !**/migrations/__init__.py
 
 # Ignore Django specific files
